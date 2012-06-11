@@ -100,7 +100,7 @@ git checkout s01a
 Switching from spiral to master
 
 to exclude js:
-git checkout DartPen.dart.js
+git checkout dartpen.dart.js
 or 
 (see http://scottr.org/presentations/git-in-5-minutes/)
 git stash
