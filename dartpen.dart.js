@@ -860,8 +860,8 @@ Isolate.$defineClass("Input", "Object", ["doButton", "iterateInput?", "advanceIn
   this.advanceInput = $.document().query$1('#advance');
   this.iterateInput = $.document().query$1('#iterate');
   this.rotateInput.set$value(45);
-  this.advanceInput.set$value(45);
-  this.iterateInput.set$value(24);
+  this.advanceInput.set$value(90);
+  this.iterateInput.set$value(30);
   this.doButton = $.document().query$1('#do');
   $.add$1(this.doButton.get$on().get$click(), new $.Closure10(this));
  }

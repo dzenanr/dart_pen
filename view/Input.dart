@@ -1,8 +1,8 @@
 class Input {
 
   static final int DEFAULT_ROTATE = 45;
-  static final int DEFAULT_ADVANCE = 45;
-  static final int DEFAULT_ITERATE = 24;
+  static final int DEFAULT_ADVANCE = 90;
+  static final int DEFAULT_ITERATE = 30;
 
   final Pen pen;
 
