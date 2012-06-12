@@ -859,9 +859,9 @@ Isolate.$defineClass("Input", "Object", ["doButton", "iterateInput?", "advanceIn
   this.rotateInput = $.document().query$1('#rotate');
   this.advanceInput = $.document().query$1('#advance');
   this.iterateInput = $.document().query$1('#iterate');
-  this.rotateInput.set$value(45);
-  this.advanceInput.set$value(90);
-  this.iterateInput.set$value(30);
+  this.rotateInput.set$value('45');
+  this.advanceInput.set$value('90');
+  this.iterateInput.set$value('30');
   this.doButton = $.document().query$1('#do');
   $.add$1(this.doButton.get$on().get$click(), new $.Closure10(this));
  }
@@ -1186,15 +1186,24 @@ Isolate.$defineClass("Closure9", "Closure12", ["this_1"], {
 
 Isolate.$defineClass("Closure10", "Closure12", ["this_0"], {
  $call$1: function(e) {
-  var lastLine = $.last($.last(this.this_0.get$pen().get$path().get$segments()).get$lines());
-  var segment = $.Segment$2($.parseInt(this.this_0.get$iterateInput().get$value()), true);
-  $.add$1(this.this_0.get$pen().get$path().get$segments(), segment);
-  for (var i = 0; $.ltB(i, segment.lineCount); ++i) {
-    var line = $.Line$1(lastLine.get$endPoint());
-    $.indexSet(segment.lines, i, line);
-    line.set$angle($.add(lastLine.get$angle(), $.parseInt(this.this_0.get$rotateInput().get$value())));
-    line.set$pixels($.parseInt(this.this_0.get$advanceInput().get$value()));
-    lastLine = line;
+  try {
+    lastLine = $.last($.last(this.this_0.get$pen().get$path().get$segments()).get$lines());
+    lineCount = $.parseInt(this.this_0.get$iterateInput().get$value());
+    segment = $.Segment$2(lineCount, true);
+    $.add$1(this.this_0.get$pen().get$path().get$segments(), segment);
+    for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
+      line = $.Line$1(lastLine.get$endPoint());
+      $.indexSet(segment.get$lines(), i, line);
+      var t1 = $.add(lastLine.get$angle(), $.parseInt(this.this_0.get$rotateInput().get$value()));
+      line.set$angle(t1);
+      t1 = $.parseInt(this.this_0.get$advanceInput().get$value());
+      line.set$pixels(t1);
+      lastLine = line;
+    }
+  } catch (exception) {
+    t1 = $.unwrapException(exception);
+    error = t1;
+    $.print('Error in input! -- ' + $.S(error));
   }
  }
 });
@@ -1542,6 +1551,15 @@ $.convertDartClosureToJS = function(closure, arity) {
   });
   closure.$identity = function$;
   return function$;
+};
+
+$.printString = function(string) {
+  if (typeof console == "object") {
+    console.log(string);
+  } else {
+    write(string);
+    write("\n");
+  }
 };
 
 $._FixedSizeListIterator$1 = function(array) {
@@ -2179,6 +2197,10 @@ $.checkString = function(value) {
 $.defineProperty = function(obj, property, value) {
   Object.defineProperty(obj, property,
       {value: value, enumerable: false, writable: true, configurable: true});;
+};
+
+$.print = function(obj) {
+  return $.printString($.toString(obj));
 };
 
 $.geB = function(a, b) {
@@ -4430,10 +4452,10 @@ $.$defineNativeClass('SVGNumberList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x=", "angle?"], {
+$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x=", "angle="], {
 });
 
-$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x=", "angle?"], {
+$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x=", "angle="], {
 });
 
 $.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x="], {
