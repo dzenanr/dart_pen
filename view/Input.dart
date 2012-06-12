@@ -6,6 +6,8 @@ class Input {
 
   final Pen pen;
 
+  InputElement downCheckbox;
+
   InputElement rotateInput;
   InputElement advanceInput;
   InputElement iterateInput;
@@ -18,6 +20,13 @@ class Input {
     rotateInput.value = DEFAULT_ROTATE;
     advanceInput.value = DEFAULT_ADVANCE;
     iterateInput.value = DEFAULT_ITERATE;
+
+    downCheckbox = document.query('#down');
+    downCheckbox.checked = pen.down;
+    downCheckbox.on.change.add((Event e) {
+      pen.down = downCheckbox.checked;
+    });
+
     doButton = document.query('#do');
     doButton.on.click.add((MouseEvent e) {
       try {
@@ -25,6 +34,7 @@ class Input {
         int lineCount = Math.parseInt(iterateInput.value);
         if (lineCount > 0) {
           var segment = new Segment(lineCount);
+          segment.draw = pen.down;
           pen.path.segments.add(segment);
           for (var i = 0; i < segment.lineCount; i++) {
             var line = new Line(lastLine.endPoint);
