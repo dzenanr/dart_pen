@@ -1189,16 +1189,18 @@ Isolate.$defineClass("Closure10", "Closure12", ["this_0"], {
   try {
     lastLine = $.last($.last(this.this_0.get$pen().get$path().get$segments()).get$lines());
     lineCount = $.parseInt(this.this_0.get$iterateInput().get$value());
-    segment = $.Segment$2(lineCount, true);
-    $.add$1(this.this_0.get$pen().get$path().get$segments(), segment);
-    for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
-      line = $.Line$1(lastLine.get$endPoint());
-      $.indexSet(segment.get$lines(), i, line);
-      var t1 = $.add(lastLine.get$angle(), $.parseInt(this.this_0.get$rotateInput().get$value()));
-      line.set$angle(t1);
-      t1 = $.parseInt(this.this_0.get$advanceInput().get$value());
-      line.set$pixels(t1);
-      lastLine = line;
+    if ($.gtB(lineCount, 0)) {
+      segment = $.Segment$2(lineCount, true);
+      $.add$1(this.this_0.get$pen().get$path().get$segments(), segment);
+      for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
+        line = $.Line$1(lastLine.get$endPoint());
+        $.indexSet(segment.get$lines(), i, line);
+        var t1 = $.add(lastLine.get$angle(), $.parseInt(this.this_0.get$rotateInput().get$value()));
+        line.set$angle(t1);
+        t1 = $.parseInt(this.this_0.get$advanceInput().get$value());
+        line.set$pixels(t1);
+        lastLine = line;
+      }
     }
   } catch (exception) {
     t1 = $.unwrapException(exception);
