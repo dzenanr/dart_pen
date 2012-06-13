@@ -13,7 +13,7 @@ class Input {
   InputElement advanceInput;
   InputElement repeatInput;
   ButtonElement doButton;
-  ButtonElement clearButton;
+  ButtonElement centerButton;
 
   Input(this.pen) {
     turnInput = document.query('#turn');
@@ -52,6 +52,22 @@ class Input {
             lastLine = line;
           }
         }
+      } catch(final error) {
+        print('Error in input! -- $error');
+      }
+    });
+
+    centerButton = document.query('#center');
+    centerButton.on.click.add((MouseEvent e) {
+      try {
+        var lastLine = pen.path.segments.last().lines.last();
+        var segment = new Segment(1);
+        segment.draw = pen.down;
+        segment.colorCode = pen.colorCode;
+        pen.path.segments.add(segment);
+        var line = new Line.next(lastLine);
+        segment.lines[0] = line;
+        line.endPoint = center();
       } catch(final error) {
         print('Error in input! -- $error');
       }

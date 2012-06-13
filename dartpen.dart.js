@@ -390,7 +390,7 @@ Isolate.$defineClass("HashSetImplementation", "Object", ["_backingMap?"], {
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure12(t1));
+  $.forEach(this._backingMap, new $.Closure13(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -590,7 +590,7 @@ Isolate.$defineClass("ListIterator", "Object", ["list", "i"], {
  }
 });
 
-Isolate.$defineClass("Closure13", "Object", [], {
+Isolate.$defineClass("Closure14", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
@@ -834,7 +834,7 @@ Isolate.$defineClass("Segment", "Object", ["lines?", "colorCode=", "draw=", "lin
  }
 });
 
-Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "cumulativeAngle?", "beginPoint?", "lastLine"], {
+Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumulativeAngle?", "beginPoint?", "lastLine"], {
  _findEndPoint$0: function() {
   var x1 = this.beginPoint.get$x();
   var y1 = this.beginPoint.get$y();
@@ -881,7 +881,7 @@ Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "cumul
  }
 });
 
-Isolate.$defineClass("Input", "Object", ["clearButton", "doButton", "repeatInput?", "advanceInput?", "turnInput?", "colorSelect?", "downCheckbox?", "pen?"], {
+Isolate.$defineClass("Input", "Object", ["centerButton", "doButton", "repeatInput?", "advanceInput?", "turnInput?", "colorSelect?", "downCheckbox?", "pen?"], {
  Input$1: function(pen) {
   this.turnInput = $.document().query$1('#turn');
   this.advanceInput = $.document().query$1('#advance');
@@ -897,6 +897,8 @@ Isolate.$defineClass("Input", "Object", ["clearButton", "doButton", "repeatInput
   $.add$1(this.colorSelect.get$on().get$change(), new $.Closure10(this));
   this.doButton = $.document().query$1('#do');
   $.add$1(this.doButton.get$on().get$click(), new $.Closure11(this));
+  this.centerButton = $.document().query$1('#center');
+  $.add$1(this.centerButton.get$on().get$click(), new $.Closure12(this));
  }
 });
 
@@ -1165,25 +1167,25 @@ Isolate.$defineClass("_VariableSizeListIterator", "Object", [], {
  }
 });
 
-Isolate.$defineClass("Closure", "Closure13", ["box_0"], {
+Isolate.$defineClass("Closure", "Closure14", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
 });
 
-Isolate.$defineClass("Closure2", "Closure13", ["box_0"], {
+Isolate.$defineClass("Closure2", "Closure14", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
 });
 
-Isolate.$defineClass("Closure3", "Closure13", ["box_0"], {
+Isolate.$defineClass("Closure3", "Closure14", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
 });
 
-Isolate.$defineClass("Closure4", "Closure13", ["box_0"], {
+Isolate.$defineClass("Closure4", "Closure14", ["box_0"], {
  $call$2: function(k, v) {
   if (this.box_0.first_3 !== true) {
     $.add$1(this.box_0.result_1, ', ');
@@ -1195,25 +1197,25 @@ Isolate.$defineClass("Closure4", "Closure13", ["box_0"], {
  }
 });
 
-Isolate.$defineClass("Closure5", "Closure13", ["this_0"], {
+Isolate.$defineClass("Closure5", "Closure14", ["this_0"], {
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
 });
 
-Isolate.$defineClass("Closure6", "Closure13", [], {
+Isolate.$defineClass("Closure6", "Closure14", [], {
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
 });
 
-Isolate.$defineClass("Closure7", "Closure13", [], {
+Isolate.$defineClass("Closure7", "Closure14", [], {
  $call$0: function() {
   return $.CTC5;
  }
 });
 
-Isolate.$defineClass("Closure8", "Closure13", ["this_0"], {
+Isolate.$defineClass("Closure8", "Closure14", ["this_0"], {
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -1221,21 +1223,21 @@ Isolate.$defineClass("Closure8", "Closure13", ["this_0"], {
  }
 });
 
-Isolate.$defineClass("Closure9", "Closure13", ["this_0"], {
+Isolate.$defineClass("Closure9", "Closure14", ["this_0"], {
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 });
 
-Isolate.$defineClass("Closure10", "Closure13", ["this_1"], {
+Isolate.$defineClass("Closure10", "Closure14", ["this_1"], {
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$colorName(t1);
  }
 });
 
-Isolate.$defineClass("Closure11", "Closure13", ["this_2"], {
+Isolate.$defineClass("Closure11", "Closure14", ["this_2"], {
  $call$1: function(e) {
   try {
     lastLine = $.last($.last(this.this_2.get$pen().get$path().get$segments()).get$lines());
@@ -1265,19 +1267,41 @@ Isolate.$defineClass("Closure11", "Closure13", ["this_2"], {
  }
 });
 
-Isolate.$defineClass("Closure12", "Closure13", ["box_0"], {
+Isolate.$defineClass("Closure12", "Closure14", ["this_3"], {
+ $call$1: function(e) {
+  try {
+    lastLine = $.last($.last(this.this_3.get$pen().get$path().get$segments()).get$lines());
+    segment = $.Segment$2(1, true);
+    var t1 = this.this_3.get$pen().get$down();
+    segment.set$draw(t1);
+    t1 = this.this_3.get$pen().get$colorCode();
+    segment.set$colorCode(t1);
+    $.add$1(this.this_3.get$pen().get$path().get$segments(), segment);
+    line = $.Line$next$1(lastLine);
+    $.indexSet(segment.get$lines(), 0, line);
+    t1 = $.center();
+    line.set$endPoint(t1);
+  } catch (exception) {
+    t1 = $.unwrapException(exception);
+    error = t1;
+    $.print('Error in input! -- ' + $.S(error));
+  }
+ }
+});
+
+Isolate.$defineClass("Closure13", "Closure14", ["box_0"], {
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 });
 
-Isolate.$defineClass("Closure13", "Object", [], {
+Isolate.$defineClass("Closure14", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
 });
 
-Isolate.$defineClass('Closure14', 'Closure13', ['self', 'target'], {
+Isolate.$defineClass('Closure15', 'Closure14', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -3597,7 +3621,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure14(this, 'click$0'); },
+ get$click: function() { return new $.Closure15(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -3623,7 +3647,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure14(this, 'click$0'); },
+ get$click: function() { return new $.Closure15(this, 'click$0'); },
  get$$$dom_scrollWidth: function() {
   return this.scrollWidth;;
  },
