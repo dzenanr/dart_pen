@@ -2,6 +2,7 @@ class Segment {
 
   num lineCount;
   bool draw;
+  String colorCode = '#000000'; // black
 
   var lines;
 

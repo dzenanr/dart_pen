@@ -1,11 +1,9 @@
 To Do
 
-1. JSON representation of the model
-2. save the JSON representation of the model
-3. add colors (background, lines, segments, path)
-4. add line width
-5. add check box for pen down or up
-6. add simple commands for a simple programming language
-7. write a simple program and display the result
-8. add shapes
-9. rotate shapes
+display JSON representation of the model
+save the JSON representation of the model
+add simple commands for a simple programming language
+write a simple program and display the result
+add pen size; add line width
+add, size and rotate shapes
+teach some basic geometry

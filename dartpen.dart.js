@@ -781,11 +781,27 @@ Isolate.$defineClass("TypeError", "AssertionError", ["msg"], {
  }
 });
 
-Isolate.$defineClass("Pen", "Object", ["path?", "down="], {
+Isolate.$defineClass("Pen", "Object", ["path?", "_colorCode", "_colorName", "down="], {
+ get$colorCode: function() {
+  return this._colorCode;
+ },
+ set$colorName: function(colorName) {
+  this._colorName = colorName;
+  if ($.eqB(colorName, 'black')) {
+    this._colorCode = '#000000';
+  } else {
+    if ($.eqB(colorName, 'blue')) {
+      this._colorCode = '#0000ff';
+    }
+  }
+  if ($.eqB(colorName, 'red')) {
+    this._colorCode = '#ff0000';
+  }
+ },
  Pen$1: function(startPosition) {
   this.path = $.Path$0();
   var startSegment = $.Segment$2(1, false);
-  $.indexSet(startSegment.lines, 0, $.Line$1(startPosition));
+  $.indexSet(startSegment.lines, 0, $.Line$first$1(startPosition));
   $.add$1(this.path.get$segments(), startSegment);
  }
 });
@@ -795,10 +811,10 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
   var path = 'Path \n segment count: ' + $.S($.get$length(this.segments)) + ' \n' + ' \n';
   for (var t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
-    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' \n';
+    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color code: ' + $.S(t2.get$colorCode()) + ' \n' + ' \n';
     for (t2 = $.iterator(t2.get$lines()); t2.hasNext$0() === true; ) {
       var t3 = t2.next$0();
-      path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
+      path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' cosine of angle: ' + $.S($.cos(t3.get$angle())) + ' \n' + ' sine of angle: ' + $.S($.sin(t3.get$angle())) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' cumulative angle: ' + $.S(t3.get$cumulativeAngle()) + ' \n' + ' cosine of cumulative angle: ' + $.S($.cos(t3.get$cumulativeAngle())) + ' \n' + ' sine of cumulative angle: ' + $.S($.sin(t3.get$cumulativeAngle())) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
     }
   }
   return path;
@@ -810,7 +826,7 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
  }
 });
 
-Isolate.$defineClass("Segment", "Object", ["lines?", "draw=", "lineCount?"], {
+Isolate.$defineClass("Segment", "Object", ["lines?", "colorCode=", "draw=", "lineCount?"], {
  Segment$2: function(lineCount, draw) {
   var t1 = $.List(this.lineCount);
   $.setRuntimeTypeInfo(t1, ({E: 'Line'}));
@@ -818,11 +834,11 @@ Isolate.$defineClass("Segment", "Object", ["lines?", "draw=", "lineCount?"], {
  }
 });
 
-Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "beginPoint?"], {
- _findEndPoint$3: function(startPoint, lineAngle, lineLength) {
-  var x1 = startPoint.get$x();
-  var y1 = startPoint.get$y();
-  return $.Point($.add(x1, $.mul(lineLength, $.cos(lineAngle))), $.add(y1, $.mul(lineLength, $.sin(lineAngle))));
+Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "cumulativeAngle?", "beginPoint?", "lastLine"], {
+ _findEndPoint$0: function() {
+  var x1 = this.beginPoint.get$x();
+  var y1 = this.beginPoint.get$y();
+  return $.Point($.add(x1, $.mul(this.get$pixels(), $.cos(this.cumulativeAngle))), $.add(y1, $.mul(this.get$pixels(), $.sin(this.cumulativeAngle))));
  },
  get$pixels: function() {
   return this._pixels;
@@ -832,7 +848,7 @@ Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "begin
   if ($.eqB(pixels, 0)) {
     this.endPoint = this.beginPoint;
   } else {
-    this.endPoint = this._findEndPoint$3(this.beginPoint, this._angle, this._pixels);
+    this.endPoint = this._findEndPoint$0();
   }
  },
  get$angle: function() {
@@ -840,38 +856,51 @@ Isolate.$defineClass("Line", "Object", ["endPoint?", "_pixels", "_angle", "begin
  },
  set$angle: function(angle) {
   this._angle = angle;
+  if ($.eqNullB(this.lastLine)) {
+    this.cumulativeAngle = angle;
+  } else {
+    this.cumulativeAngle = $.add(this.lastLine.get$cumulativeAngle(), angle);
+    if ($.gtB(this.cumulativeAngle, 360)) {
+    }
+  }
   if ($.eqB(angle, 0)) {
-    var t1 = $.add(this.beginPoint.get$x(), this._pixels);
+    var t1 = $.add(this.beginPoint.get$x(), this.get$pixels());
     this.endPoint.set$x(t1);
     t1 = this.beginPoint.get$y();
     this.endPoint.set$y(t1);
   } else {
-    this.endPoint = this._findEndPoint$3(this.beginPoint, this._angle, this._pixels);
+    this.endPoint = this._findEndPoint$0();
   }
  },
- Line$1: function(beginPoint) {
+ Line$first$1: function(beginPoint) {
+  this.endPoint = this.beginPoint;
+ },
+ Line$next$1: function(lastLine) {
+  this.beginPoint = this.lastLine.get$endPoint();
   this.endPoint = this.beginPoint;
  }
 });
 
-Isolate.$defineClass("Input", "Object", ["doButton", "iterateInput?", "advanceInput?", "rotateInput?", "downCheckbox?", "pen?"], {
+Isolate.$defineClass("Input", "Object", ["clearButton", "doButton", "repeatInput?", "advanceInput?", "turnInput?", "colorSelect?", "downCheckbox?", "pen?"], {
  Input$1: function(pen) {
-  this.rotateInput = $.document().query$1('#rotate');
+  this.turnInput = $.document().query$1('#turn');
   this.advanceInput = $.document().query$1('#advance');
-  this.iterateInput = $.document().query$1('#iterate');
-  this.rotateInput.set$value('45');
-  this.advanceInput.set$value('90');
-  this.iterateInput.set$value('30');
+  this.repeatInput = $.document().query$1('#repeat');
+  this.turnInput.set$value('45');
+  this.advanceInput.set$value('80');
+  this.repeatInput.set$value('0');
   this.downCheckbox = $.document().query$1('#down');
   var t1 = this.pen.get$down();
   this.downCheckbox.set$checked(t1);
-  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure10(this));
+  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure9(this));
+  this.colorSelect = $.document().query$1('#color');
+  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure10(this));
   this.doButton = $.document().query$1('#do');
   $.add$1(this.doButton.get$on().get$click(), new $.Closure11(this));
  }
 });
 
-Isolate.$defineClass("Output", "Object", ["clearButton", "displayButton", "pathTextArea?", "pen?"], {
+Isolate.$defineClass("Output", "Object", ["displayButton", "pathTextArea?", "pen?"], {
  clear$0: function() {
   this.pathTextArea.set$value('');
  },
@@ -879,8 +908,6 @@ Isolate.$defineClass("Output", "Object", ["clearButton", "displayButton", "pathT
   this.pathTextArea = $.document().query$1('#path');
   this.displayButton = $.document().query$1('#display');
   $.add$1(this.displayButton.get$on().get$click(), new $.Closure8(this));
-  this.clearButton = $.document().query$1('#clear');
-  $.add$1(this.clearButton.get$on().get$click(), new $.Closure9(this));
  }
 });
 
@@ -1194,35 +1221,38 @@ Isolate.$defineClass("Closure8", "Closure13", ["this_0"], {
  }
 });
 
-Isolate.$defineClass("Closure9", "Closure13", ["this_1"], {
- $call$1: function(e) {
-  this.this_1.clear$0();
- }
-});
-
-Isolate.$defineClass("Closure10", "Closure13", ["this_0"], {
+Isolate.$defineClass("Closure9", "Closure13", ["this_0"], {
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 });
 
-Isolate.$defineClass("Closure11", "Closure13", ["this_1"], {
+Isolate.$defineClass("Closure10", "Closure13", ["this_1"], {
+ $call$1: function(e) {
+  var t1 = this.this_1.get$colorSelect().get$value();
+  this.this_1.get$pen().set$colorName(t1);
+ }
+});
+
+Isolate.$defineClass("Closure11", "Closure13", ["this_2"], {
  $call$1: function(e) {
   try {
-    lastLine = $.last($.last(this.this_1.get$pen().get$path().get$segments()).get$lines());
-    lineCount = $.parseInt(this.this_1.get$iterateInput().get$value());
+    lastLine = $.last($.last(this.this_2.get$pen().get$path().get$segments()).get$lines());
+    lineCount = $.add($.parseInt(this.this_2.get$repeatInput().get$value()), 1);
     if ($.gtB(lineCount, 0)) {
       segment = $.Segment$2(lineCount, true);
-      var t1 = this.this_1.get$pen().get$down();
+      var t1 = this.this_2.get$pen().get$down();
       segment.set$draw(t1);
-      $.add$1(this.this_1.get$pen().get$path().get$segments(), segment);
+      t1 = this.this_2.get$pen().get$colorCode();
+      segment.set$colorCode(t1);
+      $.add$1(this.this_2.get$pen().get$path().get$segments(), segment);
       for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
-        line = $.Line$1(lastLine.get$endPoint());
+        line = $.Line$next$1(lastLine);
         $.indexSet(segment.get$lines(), i, line);
-        t1 = $.add(lastLine.get$angle(), $.parseInt(this.this_1.get$rotateInput().get$value()));
+        t1 = $.parseInt(this.this_2.get$turnInput().get$value());
         line.set$angle(t1);
-        t1 = $.parseInt(this.this_1.get$advanceInput().get$value());
+        t1 = $.parseInt(this.this_2.get$advanceInput().get$value());
         line.set$pixels(t1);
         lastLine = line;
       }
@@ -1383,6 +1413,12 @@ $.allMatchesInStringUnchecked = function(needle, haystack) {
     }
   }
   return result;
+};
+
+$.Line$first$1 = function(beginPoint) {
+  var t1 = new $.Line((void 0), 0, 0, 0, beginPoint, (void 0));
+  t1.Line$first$1(beginPoint);
+  return t1;
 };
 
 $.isJsArray = function(value) {
@@ -1810,7 +1846,7 @@ $.gt = function(a, b) {
 };
 
 $.Output$1 = function(pen) {
-  var t1 = new $.Output((void 0), (void 0), (void 0), pen);
+  var t1 = new $.Output((void 0), (void 0), pen);
   t1.Output$1(pen);
   return t1;
 };
@@ -1886,7 +1922,7 @@ $.buildDynamicMetadata = function(inputTable) {
 };
 
 $.Segment$2 = function(lineCount, draw) {
-  var t1 = new $.Segment((void 0), draw, lineCount);
+  var t1 = new $.Segment((void 0), '#000000', draw, lineCount);
   t1.Segment$2(lineCount, draw);
   return t1;
 };
@@ -2045,6 +2081,12 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
 };
 
+$.Line$next$1 = function(lastLine) {
+  var t1 = new $.Line((void 0), 0, 0, 0, (void 0), lastLine);
+  t1.Line$next$1(lastLine);
+  return t1;
+};
+
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
       win.postMessage(message, targetOrigin, messagePorts);
 ;
@@ -2147,21 +2189,30 @@ $._SpeechRecognitionEventsImpl$1 = function(_ptr) {
 
 $.draw = function() {
   $.clear2();
-  $.context.beginPath$0();
-  $.context.set$lineWidth(1);
-  $.context.set$strokeStyle('#000000');
   for (var t1 = $.iterator($.pen.get$path().get$segments()); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
     if (t2.get$draw() === true) {
+      $.context.beginPath$0();
+      $.context.set$lineWidth(1);
+      var t3 = t2.get$colorCode();
+      $.context.set$strokeStyle(t3);
       for (var i = 0; $.ltB(i, t2.get$lineCount()); ++i) {
         var line = $.index(t2.get$lines(), i);
         $.context.moveTo$2(line.get$beginPoint().get$x(), line.get$beginPoint().get$y());
         $.context.lineTo$2(line.get$endPoint().get$x(), line.get$endPoint().get$y());
       }
+      $.context.stroke$0();
+      $.context.closePath$0();
     }
   }
   var lastLine = $.last($.last($.pen.get$path().get$segments()).get$lines());
-  $.context.rect$4($.sub(lastLine.get$endPoint().get$x(), 2), $.sub(lastLine.get$endPoint().get$y(), 2), 4, 4);
+  $.context.beginPath$0();
+  $.context.set$lineWidth(1);
+  t1 = $.pen.get$colorCode();
+  $.context.set$strokeStyle(t1);
+  t1 = $.pen.get$colorCode();
+  $.context.set$fillStyle(t1);
+  $.context.rect$4($.sub(lastLine.get$endPoint().get$x(), 2.0), $.sub(lastLine.get$endPoint().get$y(), 2.0), 4, 4);
   $.context.fill$0();
   $.context.stroke$0();
   $.context.closePath$0();
@@ -2436,7 +2487,7 @@ $.hashCode = function(receiver) {
 };
 
 $.Pen$1 = function(startPosition) {
-  var t1 = new $.Pen((void 0), true);
+  var t1 = new $.Pen((void 0), '#000000', 'black', true);
   t1.Pen$1(startPosition);
   return t1;
 };
@@ -2603,6 +2654,10 @@ $.index = function(a, index) {
   return $.index$slow(a, index);
 };
 
+$._TextTrackCueEventsImpl$1 = function(_ptr) {
+  return new $._TextTrackCueEventsImpl(_ptr);
+};
+
 $.toString = function(value) {
   if (typeof value == "object") {
     if ($.isJsArray(value) === true) {
@@ -2621,10 +2676,6 @@ $.toString = function(value) {
     return 'Closure';
   }
   return String(value);
-};
-
-$._TextTrackCueEventsImpl$1 = function(_ptr) {
-  return new $._TextTrackCueEventsImpl(_ptr);
 };
 
 $._ElementEventsImpl$1 = function(_ptr) {
@@ -2790,12 +2841,6 @@ $.StringBufferImpl$1 = function(content$) {
   return t1;
 };
 
-$.Line$1 = function(beginPoint) {
-  var t1 = new $.Line((void 0), 0, 0, beginPoint);
-  t1.Line$1(beginPoint);
-  return t1;
-};
-
 $._FileReaderEventsImpl$1 = function(_ptr) {
   return new $._FileReaderEventsImpl(_ptr);
 };
@@ -2805,7 +2850,7 @@ $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
   t1.Input$1(pen);
   return t1;
 };
@@ -3373,7 +3418,7 @@ $.$defineNativeClass('HTMLCanvasElement', ["width?", "height?"], {
  }
 });
 
-$.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!"], {
+$.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", "fillStyle!"], {
  stroke$0: function() {
   return this.stroke();
  },

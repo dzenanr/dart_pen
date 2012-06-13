@@ -46,23 +46,30 @@ border() {
 
 draw() {
   clear();
-  context.beginPath();
-  context.lineWidth = DEFAULT_LINE_WIDTH;
-  context.strokeStyle = DEFAULT_LINE_COLOR;
   for (Segment segment in pen.path.segments) {
     if (segment.draw) {
+      context.beginPath();
+      context.lineWidth = DEFAULT_LINE_WIDTH;
+      context.strokeStyle = segment.colorCode;
       // draw line
       for (var i = 0; i < segment.lineCount; i++) {
         Line line = segment.lines[i];
         context.moveTo(line.beginPoint.x, line.beginPoint.y);
         context.lineTo(line.endPoint.x, line.endPoint.y);
       }
+      context.stroke();
+      context.closePath();
     }
   }
   Segment lastSegment = pen.path.segments.last();
   Line lastLine = lastSegment.lines.last();
   // draw pen
-  context.rect(lastLine.endPoint.x - 2, lastLine.endPoint.y - 2, 4, 4);
+  context.beginPath();
+  context.lineWidth = DEFAULT_LINE_WIDTH;
+  context.strokeStyle = pen.colorCode;
+  context.fillStyle = pen.colorCode;
+  int s = Pen.SIZE;
+  context.rect(lastLine.endPoint.x - s/2, lastLine.endPoint.y - s/2, s, s);
   context.fill();
   context.stroke();
   context.closePath();
