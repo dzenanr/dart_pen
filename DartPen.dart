@@ -8,8 +8,10 @@
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 
-// See the basics canvas tutorial: http://dev.opera.com/articles/view/html-5-canvas-the-basics/ .
-// See the canvas painting tutorial: http://dev.opera.com/articles/view/html5-canvas-painting/ .
+// See the basics canvas tutorial:
+// http://dev.opera.com/articles/view/html-5-canvas-the-basics/ .
+// See the canvas painting tutorial:
+// http://dev.opera.com/articles/view/html5-canvas-painting/ .
 
 // For debugging use print() and CTRL+SHIFT+J to open the console in Chrome.
 
@@ -48,10 +50,10 @@ draw() {
   clear();
   for (Segment segment in pen.path.segments) {
     if (segment.draw) {
+      // draw segment lines
       context.beginPath();
       context.lineWidth = DEFAULT_LINE_WIDTH;
       context.strokeStyle = segment.colorCode;
-      // draw line
       for (var i = 0; i < segment.lineCount; i++) {
         Line line = segment.lines[i];
         context.moveTo(line.beginPoint.x, line.beginPoint.y);
@@ -61,9 +63,9 @@ draw() {
       context.closePath();
     }
   }
+  // draw pen
   Segment lastSegment = pen.path.segments.last();
   Line lastLine = lastSegment.lines.last();
-  // draw pen
   context.beginPath();
   context.lineWidth = DEFAULT_LINE_WIDTH;
   context.strokeStyle = pen.colorCode;
@@ -81,7 +83,6 @@ main() {
   pen = new Pen(center());
   input = new Input(pen);
   output = new Output(pen);
-
   // Redraw every INTERVAL ms.
   document.window.setInterval(draw, INTERVAL);
 }
