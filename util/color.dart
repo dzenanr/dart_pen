@@ -8,5 +8,6 @@ colorMap() {
   colors['gray'] = '#909090';
   colors['green'] = '#009000';
   colors['orange'] = '#ff6f00';
+  colors['red'] = '#ff0000';
   colors['yellow'] = '#ffff00';
 }

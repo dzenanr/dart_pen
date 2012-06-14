@@ -2615,6 +2615,7 @@ $.colorMap = function() {
   $.indexSet($.colors, 'gray', '#909090');
   $.indexSet($.colors, 'green', '#009000');
   $.indexSet($.colors, 'orange', '#ff6f00');
+  $.indexSet($.colors, 'red', '#ff0000');
   $.indexSet($.colors, 'yellow', '#ffff00');
 };
 
