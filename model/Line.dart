@@ -52,4 +52,12 @@ class Line {
     return new Point(x2, y2);
   }
 
+  Line copy(Line previousLine) {
+    Line line = new Line.next(previousLine);
+    line.beginPoint = previousLine.endPoint;
+    line.angle = angle;
+    line.pixels = pixels;
+    return line;
+  }
+
 }

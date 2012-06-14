@@ -9,12 +9,13 @@ class Input {
   InputElement downCheckbox;
   SelectElement colorSelect;
   SelectElement widthSelect;
+  ButtonElement centerButton;
 
   InputElement turnInput;
   InputElement goInput;
   InputElement repeatInput;
   ButtonElement doButton;
-  ButtonElement centerButton;
+  ButtonElement allButton;
 
   Input(this.pen) {
     downCheckbox = document.query('#down');
@@ -85,6 +86,11 @@ class Input {
       } catch(final error) {
         print('Error in input! -- $error');
       }
+    });
+
+    allButton = document.query('#all');
+    allButton.on.click.add((MouseEvent e) {
+      pen.path.double();
     });
   }
 

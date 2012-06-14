@@ -6,9 +6,27 @@ class Path {
     segments = new List<Segment>();
   }
 
+  double() {
+    var copiedSegments = new List<Segment>();
+    Line lastLine = segments.last().lines.last();
+    for (var i = 0; i < segments.length; i++) {
+      Segment segment = segments[i].copy(lastLine);
+      copiedSegments.add(segment);
+      lastLine = segment.lines.last();
+    }
+    for (Segment copiedSegment in copiedSegments) {
+      segments.add(copiedSegment);
+    }
+  }
+
   String toString() {
     var path = 'Path \n';
     path = '$path segment count: ${segments.length} \n';
+    var lineCount = 0;
+    for (Segment segment in segments) {
+      lineCount = lineCount + segment.lines.length;
+    }
+    path = '$path line count: $lineCount \n';
     path = '$path \n';
     for (Segment segment in segments) {
       path = '$path Segment \n';

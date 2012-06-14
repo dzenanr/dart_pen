@@ -390,7 +390,7 @@ Isolate.$defineClass("HashSetImplementation", "Object", ["_backingMap?"], {
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure14(t1));
+  $.forEach(this._backingMap, new $.Closure15(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -590,7 +590,7 @@ Isolate.$defineClass("ListIterator", "Object", ["list", "i"], {
  }
 });
 
-Isolate.$defineClass("Closure15", "Object", [], {
+Isolate.$defineClass("Closure16", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
@@ -792,8 +792,12 @@ Isolate.$defineClass("Pen", "Object", ["path?", "width=", "color=", "down="], {
 
 Isolate.$defineClass("Path", "Object", ["segments?"], {
  toString$0: function() {
-  var path = 'Path \n segment count: ' + $.S($.get$length(this.segments)) + ' \n' + ' \n';
-  for (var t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
+  var path = 'Path \n segment count: ' + $.S($.get$length(this.segments)) + ' \n';
+  for (var t1 = $.iterator(this.segments), lineCount = 0; t1.hasNext$0() === true; ) {
+    lineCount = $.add(lineCount, $.get$length(t1.next$0().get$lines()));
+  }
+  path = path + ' line count: ' + $.S(lineCount) + ' \n' + ' \n';
+  for (t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
     path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' \n';
     for (t2 = $.iterator(t2.get$lines()); t2.hasNext$0() === true; ) {
@@ -803,6 +807,20 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
   }
   return path;
  },
+ double$0: function() {
+  var copiedSegments = $.List((void 0));
+  $.setRuntimeTypeInfo(copiedSegments, ({E: 'Segment'}));
+  var lastLine = $.last($.last(this.segments).get$lines());
+  for (var i = 0; $.ltB(i, $.get$length(this.segments)); ++i) {
+    var segment = $.index(this.segments, i).copy$1(lastLine);
+    copiedSegments.push(segment);
+    lastLine = $.last(segment.get$lines());
+  }
+  for (var t1 = $.iterator(copiedSegments); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    $.add$1(this.segments, t2);
+  }
+ },
  Path$0: function() {
   var t1 = $.List((void 0));
   $.setRuntimeTypeInfo(t1, ({E: 'Segment'}));
@@ -811,6 +829,18 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
 });
 
 Isolate.$defineClass("Segment", "Object", ["lines?", "width=", "color=", "draw=", "lineCount?"], {
+ copy$1: function(lastLine) {
+  var segment = $.Segment$2(this.lineCount, true);
+  segment.draw = this.draw;
+  segment.color = this.color;
+  segment.width = this.width;
+  for (var previousLine = lastLine, i = 0; $.ltB(i, this.lineCount); ++i) {
+    var line = $.index(this.lines, i).copy$1(previousLine);
+    $.indexSet(segment.lines, i, line);
+    previousLine = line;
+  }
+  return segment;
+ },
  Segment$2: function(lineCount, draw) {
   var t1 = $.List(this.lineCount);
   $.setRuntimeTypeInfo(t1, ({E: 'Line'}));
@@ -819,6 +849,13 @@ Isolate.$defineClass("Segment", "Object", ["lines?", "width=", "color=", "draw="
 });
 
 Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumulativeAngle?", "beginPoint?", "lastLine"], {
+ copy$1: function(previousLine) {
+  var line = $.Line$next$1(previousLine);
+  line.beginPoint = previousLine.get$endPoint();
+  line.set$angle(this.get$angle());
+  line.set$pixels(this.get$pixels());
+  return line;
+ },
  _findEndPoint$0: function() {
   var x1 = this.beginPoint.get$x();
   var y1 = this.beginPoint.get$y();
@@ -856,7 +893,7 @@ Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumul
  }
 });
 
-Isolate.$defineClass("Input", "Object", ["centerButton", "doButton", "repeatInput?", "goInput?", "turnInput?", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"], {
+Isolate.$defineClass("Input", "Object", ["allButton", "doButton", "repeatInput?", "goInput?", "turnInput?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"], {
  Input$1: function(pen) {
   this.downCheckbox = $.document().query$1('#down');
   var t1 = this.pen.get$down();
@@ -876,6 +913,8 @@ Isolate.$defineClass("Input", "Object", ["centerButton", "doButton", "repeatInpu
   this.repeatInput.set$value('0');
   this.doButton = $.document().query$1('#do');
   $.add$1(this.doButton.get$on().get$click(), new $.Closure13(this));
+  this.allButton = $.document().query$1('#all');
+  $.add$1(this.allButton.get$on().get$click(), new $.Closure14(this));
  }
 });
 
@@ -925,6 +964,10 @@ Isolate.$defineClass("_DeprecatedPeerConnectionEventsImpl", "_EventsImpl", ["_pt
 });
 
 Isolate.$defineClass("_DocumentEventsImpl", "_ElementEventsImpl", ["_ptr"], {
+ get$copy: function() {
+  return this._get$1('copy');
+ },
+ copy$1: function(arg0) { return this.get$copy().$call$1(arg0); },
  get$click: function() {
   return this._get$1('click');
  },
@@ -949,6 +992,10 @@ Isolate.$defineClass("_ElementRectImpl", "Object", ["_clientRects", "_boundingCl
 });
 
 Isolate.$defineClass("_ElementEventsImpl", "_EventsImpl", ["_ptr"], {
+ get$copy: function() {
+  return this._get$1('copy');
+ },
+ copy$1: function(arg0) { return this.get$copy().$call$1(arg0); },
  get$click: function() {
   return this._get$1('click');
  },
@@ -1041,6 +1088,10 @@ Isolate.$defineClass("_PeerConnection00EventsImpl", "_EventsImpl", ["_ptr"], {
 });
 
 Isolate.$defineClass("_SVGElementInstanceEventsImpl", "_EventsImpl", ["_ptr"], {
+ get$copy: function() {
+  return this._get$1('copy');
+ },
+ copy$1: function(arg0) { return this.get$copy().$call$1(arg0); },
  get$click: function() {
   return this._get$1('click');
  },
@@ -1144,25 +1195,25 @@ Isolate.$defineClass("_VariableSizeListIterator", "Object", [], {
  }
 });
 
-Isolate.$defineClass("Closure", "Closure15", ["box_0"], {
+Isolate.$defineClass("Closure", "Closure16", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
 });
 
-Isolate.$defineClass("Closure2", "Closure15", ["box_0"], {
+Isolate.$defineClass("Closure2", "Closure16", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
 });
 
-Isolate.$defineClass("Closure3", "Closure15", ["box_0"], {
+Isolate.$defineClass("Closure3", "Closure16", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
 });
 
-Isolate.$defineClass("Closure4", "Closure15", ["box_0"], {
+Isolate.$defineClass("Closure4", "Closure16", ["box_0"], {
  $call$2: function(k, v) {
   if (this.box_0.first_3 !== true) {
     $.add$1(this.box_0.result_1, ', ');
@@ -1174,25 +1225,25 @@ Isolate.$defineClass("Closure4", "Closure15", ["box_0"], {
  }
 });
 
-Isolate.$defineClass("Closure5", "Closure15", ["this_0"], {
+Isolate.$defineClass("Closure5", "Closure16", ["this_0"], {
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
 });
 
-Isolate.$defineClass("Closure6", "Closure15", [], {
+Isolate.$defineClass("Closure6", "Closure16", [], {
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
 });
 
-Isolate.$defineClass("Closure7", "Closure15", [], {
+Isolate.$defineClass("Closure7", "Closure16", [], {
  $call$0: function() {
   return $.CTC5;
  }
 });
 
-Isolate.$defineClass("Closure8", "Closure15", ["this_0"], {
+Isolate.$defineClass("Closure8", "Closure16", ["this_0"], {
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -1200,21 +1251,21 @@ Isolate.$defineClass("Closure8", "Closure15", ["this_0"], {
  }
 });
 
-Isolate.$defineClass("Closure9", "Closure15", ["this_0"], {
+Isolate.$defineClass("Closure9", "Closure16", ["this_0"], {
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 });
 
-Isolate.$defineClass("Closure10", "Closure15", ["this_1"], {
+Isolate.$defineClass("Closure10", "Closure16", ["this_1"], {
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
  }
 });
 
-Isolate.$defineClass("Closure11", "Closure15", ["this_2"], {
+Isolate.$defineClass("Closure11", "Closure16", ["this_2"], {
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -1227,7 +1278,7 @@ Isolate.$defineClass("Closure11", "Closure15", ["this_2"], {
  }
 });
 
-Isolate.$defineClass("Closure12", "Closure15", ["this_3"], {
+Isolate.$defineClass("Closure12", "Closure16", ["this_3"], {
  $call$1: function(e) {
   try {
     lastLine = $.last($.last(this.this_3.get$pen().get$path().get$segments()).get$lines());
@@ -1251,7 +1302,7 @@ Isolate.$defineClass("Closure12", "Closure15", ["this_3"], {
  }
 });
 
-Isolate.$defineClass("Closure13", "Closure15", ["this_4"], {
+Isolate.$defineClass("Closure13", "Closure16", ["this_4"], {
  $call$1: function(e) {
   try {
     lastLine = $.last($.last(this.this_4.get$pen().get$path().get$segments()).get$lines());
@@ -1283,19 +1334,25 @@ Isolate.$defineClass("Closure13", "Closure15", ["this_4"], {
  }
 });
 
-Isolate.$defineClass("Closure14", "Closure15", ["box_0"], {
+Isolate.$defineClass("Closure14", "Closure16", ["this_5"], {
+ $call$1: function(e) {
+  this.this_5.get$pen().get$path().double$0();
+ }
+});
+
+Isolate.$defineClass("Closure15", "Closure16", ["box_0"], {
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 });
 
-Isolate.$defineClass("Closure15", "Object", [], {
+Isolate.$defineClass("Closure16", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
 });
 
-Isolate.$defineClass('Closure16', 'Closure15', ['self', 'target'], {
+Isolate.$defineClass('Closure17', 'Closure16', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -2885,7 +2942,7 @@ $._IDBVersionChangeRequestEventsImpl$1 = function(_ptr) {
 };
 
 $.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
   t1.Input$1(pen);
   return t1;
 };
@@ -3648,7 +3705,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure16(this, 'click$0'); },
+ get$click: function() { return new $.Closure17(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -3674,7 +3731,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure16(this, 'click$0'); },
+ get$click: function() { return new $.Closure17(this, 'click$0'); },
  get$$$dom_scrollWidth: function() {
   return this.scrollWidth;;
  },
