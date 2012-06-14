@@ -1,9 +1,11 @@
 To Do
 
+clear drawing
 display JSON representation of the model
 save the JSON representation of the model
 add simple commands for a simple programming language
 write a simple program and display the result
-add pen size; add line width
 add, size and rotate shapes
+add functions and recursion
+add some predefined functions that draw some fractals
 teach some basic geometry

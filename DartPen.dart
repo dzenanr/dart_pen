@@ -5,6 +5,7 @@
 #source('model/Line.dart');
 #source('view/Input.dart');
 #source('view/Output.dart');
+#source('util/color.dart');
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 
@@ -52,8 +53,8 @@ draw() {
     if (segment.draw) {
       // draw segment lines
       context.beginPath();
-      context.lineWidth = DEFAULT_LINE_WIDTH;
-      context.strokeStyle = segment.colorCode;
+      context.lineWidth = segment.width;
+      context.strokeStyle = colors[segment.color];
       for (var i = 0; i < segment.lineCount; i++) {
         Line line = segment.lines[i];
         context.moveTo(line.beginPoint.x, line.beginPoint.y);
@@ -63,21 +64,21 @@ draw() {
       context.closePath();
     }
   }
-  // draw pen
+  // draw pen as a circle
   Segment lastSegment = pen.path.segments.last();
   Line lastLine = lastSegment.lines.last();
   context.beginPath();
   context.lineWidth = DEFAULT_LINE_WIDTH;
-  context.strokeStyle = pen.colorCode;
-  context.fillStyle = pen.colorCode;
-  int s = Pen.SIZE;
-  context.rect(lastLine.endPoint.x - s/2, lastLine.endPoint.y - s/2, s, s);
+  context.strokeStyle = colors[pen.color];
+  context.fillStyle = colors[pen.color];
+  context.arc(lastLine.endPoint.x, lastLine.endPoint.y, pen.width, 0, Math.PI * 2, false);
   context.fill();
   context.stroke();
   context.closePath();
 }
 
 main() {
+  colorMap();
   canvas = document.query('#canvas');
   context = canvas.getContext('2d');
   pen = new Pen(center());

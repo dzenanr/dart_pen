@@ -1,28 +1,22 @@
 class Input {
 
   static final String DEFAULT_TURN = '45';
-  static final String DEFAULT_ADVANCE = '80';
+  static final String DEFAULT_GO = '80';
   static final String DEFAULT_REPEAT = '0';
 
   final Pen pen;
 
   InputElement downCheckbox;
   SelectElement colorSelect;
+  SelectElement widthSelect;
 
   InputElement turnInput;
-  InputElement advanceInput;
+  InputElement goInput;
   InputElement repeatInput;
   ButtonElement doButton;
   ButtonElement centerButton;
 
   Input(this.pen) {
-    turnInput = document.query('#turn');
-    advanceInput = document.query('#advance');
-    repeatInput = document.query('#repeat');
-    turnInput.value = DEFAULT_TURN;
-    advanceInput.value = DEFAULT_ADVANCE;
-    repeatInput.value = DEFAULT_REPEAT;
-
     downCheckbox = document.query('#down');
     downCheckbox.checked = pen.down;
     downCheckbox.on.change.add((Event e) {
@@ -31,27 +25,13 @@ class Input {
 
     colorSelect = document.query('#color');
     colorSelect.on.change.add((Event e) {
-      pen.colorName = colorSelect.value;
+      pen.color = colorSelect.value;
     });
 
-    doButton = document.query('#do');
-    doButton.on.click.add((MouseEvent e) {
+    widthSelect = document.query('#width');
+    widthSelect.on.change.add((Event e) {
       try {
-        var lastLine = pen.path.segments.last().lines.last();
-        int lineCount = Math.parseInt(repeatInput.value) + 1;
-        if (lineCount > 0) {
-          var segment = new Segment(lineCount);
-          segment.draw = pen.down;
-          segment.colorCode = pen.colorCode;
-          pen.path.segments.add(segment);
-          for (var i = 0; i < segment.lineCount; i++) {
-            var line = new Line.next(lastLine);
-            segment.lines[i] = line;
-            line.angle = Math.parseInt(turnInput.value);
-            line.pixels = Math.parseInt(advanceInput.value);
-            lastLine = line;
-          }
-        }
+        pen.width = Math.parseInt(widthSelect.value);
       } catch(final error) {
         print('Error in input! -- $error');
       }
@@ -63,7 +43,8 @@ class Input {
         var lastLine = pen.path.segments.last().lines.last();
         var segment = new Segment(1);
         segment.draw = pen.down;
-        segment.colorCode = pen.colorCode;
+        segment.color = pen.color;
+        segment.width = pen.width;
         pen.path.segments.add(segment);
         var line = new Line.next(lastLine);
         segment.lines[0] = line;
@@ -73,6 +54,38 @@ class Input {
       }
     });
 
+    turnInput = document.query('#turn');
+    turnInput.value = DEFAULT_TURN;
+
+    goInput = document.query('#go');
+    goInput.value = DEFAULT_GO;
+
+    repeatInput = document.query('#repeat');
+    repeatInput.value = DEFAULT_REPEAT;
+
+    doButton = document.query('#do');
+    doButton.on.click.add((MouseEvent e) {
+      try {
+        var lastLine = pen.path.segments.last().lines.last();
+        int lineCount = Math.parseInt(repeatInput.value) + 1;
+        if (lineCount > 0) {
+          var segment = new Segment(lineCount);
+          segment.draw = pen.down;
+          segment.color = pen.color;
+          segment.width = pen.width;
+          pen.path.segments.add(segment);
+          for (var i = 0; i < segment.lineCount; i++) {
+            var line = new Line.next(lastLine);
+            segment.lines[i] = line;
+            line.angle = Math.parseInt(turnInput.value);
+            line.pixels = Math.parseInt(goInput.value);
+            lastLine = line;
+          }
+        }
+      } catch(final error) {
+        print('Error in input! -- $error');
+      }
+    });
   }
 
 }

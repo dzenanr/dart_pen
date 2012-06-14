@@ -390,7 +390,7 @@ Isolate.$defineClass("HashSetImplementation", "Object", ["_backingMap?"], {
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure13(t1));
+  $.forEach(this._backingMap, new $.Closure14(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -590,7 +590,7 @@ Isolate.$defineClass("ListIterator", "Object", ["list", "i"], {
  }
 });
 
-Isolate.$defineClass("Closure14", "Object", [], {
+Isolate.$defineClass("Closure15", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
@@ -781,23 +781,7 @@ Isolate.$defineClass("TypeError", "AssertionError", ["msg"], {
  }
 });
 
-Isolate.$defineClass("Pen", "Object", ["path?", "_colorCode", "_colorName", "down="], {
- get$colorCode: function() {
-  return this._colorCode;
- },
- set$colorName: function(colorName) {
-  this._colorName = colorName;
-  if ($.eqB(colorName, 'black')) {
-    this._colorCode = '#000000';
-  } else {
-    if ($.eqB(colorName, 'blue')) {
-      this._colorCode = '#0000ff';
-    }
-  }
-  if ($.eqB(colorName, 'red')) {
-    this._colorCode = '#ff0000';
-  }
- },
+Isolate.$defineClass("Pen", "Object", ["path?", "width=", "color=", "down="], {
  Pen$1: function(startPosition) {
   this.path = $.Path$0();
   var startSegment = $.Segment$2(1, false);
@@ -811,10 +795,10 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
   var path = 'Path \n segment count: ' + $.S($.get$length(this.segments)) + ' \n' + ' \n';
   for (var t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
-    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color code: ' + $.S(t2.get$colorCode()) + ' \n' + ' \n';
+    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' \n';
     for (t2 = $.iterator(t2.get$lines()); t2.hasNext$0() === true; ) {
       var t3 = t2.next$0();
-      path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' cosine of angle: ' + $.S($.cos(t3.get$angle())) + ' \n' + ' sine of angle: ' + $.S($.sin(t3.get$angle())) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' cumulative angle: ' + $.S(t3.get$cumulativeAngle()) + ' \n' + ' cosine of cumulative angle: ' + $.S($.cos(t3.get$cumulativeAngle())) + ' \n' + ' sine of cumulative angle: ' + $.S($.sin(t3.get$cumulativeAngle())) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
+      path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' cumulative angle: ' + $.S(t3.get$cumulativeAngle()) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
     }
   }
   return path;
@@ -826,7 +810,7 @@ Isolate.$defineClass("Path", "Object", ["segments?"], {
  }
 });
 
-Isolate.$defineClass("Segment", "Object", ["lines?", "colorCode=", "draw=", "lineCount?"], {
+Isolate.$defineClass("Segment", "Object", ["lines?", "width=", "color=", "draw=", "lineCount?"], {
  Segment$2: function(lineCount, draw) {
   var t1 = $.List(this.lineCount);
   $.setRuntimeTypeInfo(t1, ({E: 'Line'}));
@@ -838,18 +822,15 @@ Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumul
  _findEndPoint$0: function() {
   var x1 = this.beginPoint.get$x();
   var y1 = this.beginPoint.get$y();
-  return $.Point($.add(x1, $.mul(this.get$pixels(), $.cos(this.cumulativeAngle))), $.add(y1, $.mul(this.get$pixels(), $.sin(this.cumulativeAngle))));
+  var cumulativeRadian = $.div($.mul(this.cumulativeAngle, 3.141592653589793), 180);
+  return $.Point($.add(x1, $.mul(this.get$pixels(), $.cos(cumulativeRadian))), $.add(y1, $.mul(this.get$pixels(), $.sin(cumulativeRadian))));
  },
  get$pixels: function() {
   return this._pixels;
  },
  set$pixels: function(pixels) {
   this._pixels = pixels;
-  if ($.eqB(pixels, 0)) {
-    this.endPoint = this.beginPoint;
-  } else {
-    this.endPoint = this._findEndPoint$0();
-  }
+  this.endPoint = this._findEndPoint$0();
  },
  get$angle: function() {
   return this._angle;
@@ -861,16 +842,10 @@ Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumul
   } else {
     this.cumulativeAngle = $.add(this.lastLine.get$cumulativeAngle(), angle);
     if ($.gtB(this.cumulativeAngle, 360)) {
+      this.cumulativeAngle = $.sub(this.cumulativeAngle, 360);
     }
   }
-  if ($.eqB(angle, 0)) {
-    var t1 = $.add(this.beginPoint.get$x(), this.get$pixels());
-    this.endPoint.set$x(t1);
-    t1 = this.beginPoint.get$y();
-    this.endPoint.set$y(t1);
-  } else {
-    this.endPoint = this._findEndPoint$0();
-  }
+  this.endPoint = this._findEndPoint$0();
  },
  Line$first$1: function(beginPoint) {
   this.endPoint = this.beginPoint;
@@ -881,24 +856,26 @@ Isolate.$defineClass("Line", "Object", ["endPoint=", "_pixels", "_angle", "cumul
  }
 });
 
-Isolate.$defineClass("Input", "Object", ["centerButton", "doButton", "repeatInput?", "advanceInput?", "turnInput?", "colorSelect?", "downCheckbox?", "pen?"], {
+Isolate.$defineClass("Input", "Object", ["centerButton", "doButton", "repeatInput?", "goInput?", "turnInput?", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"], {
  Input$1: function(pen) {
-  this.turnInput = $.document().query$1('#turn');
-  this.advanceInput = $.document().query$1('#advance');
-  this.repeatInput = $.document().query$1('#repeat');
-  this.turnInput.set$value('45');
-  this.advanceInput.set$value('80');
-  this.repeatInput.set$value('0');
   this.downCheckbox = $.document().query$1('#down');
   var t1 = this.pen.get$down();
   this.downCheckbox.set$checked(t1);
   $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure9(this));
   this.colorSelect = $.document().query$1('#color');
   $.add$1(this.colorSelect.get$on().get$change(), new $.Closure10(this));
-  this.doButton = $.document().query$1('#do');
-  $.add$1(this.doButton.get$on().get$click(), new $.Closure11(this));
+  this.widthSelect = $.document().query$1('#width');
+  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure11(this));
   this.centerButton = $.document().query$1('#center');
   $.add$1(this.centerButton.get$on().get$click(), new $.Closure12(this));
+  this.turnInput = $.document().query$1('#turn');
+  this.turnInput.set$value('45');
+  this.goInput = $.document().query$1('#go');
+  this.goInput.set$value('80');
+  this.repeatInput = $.document().query$1('#repeat');
+  this.repeatInput.set$value('0');
+  this.doButton = $.document().query$1('#do');
+  $.add$1(this.doButton.get$on().get$click(), new $.Closure13(this));
  }
 });
 
@@ -1167,25 +1144,25 @@ Isolate.$defineClass("_VariableSizeListIterator", "Object", [], {
  }
 });
 
-Isolate.$defineClass("Closure", "Closure14", ["box_0"], {
+Isolate.$defineClass("Closure", "Closure15", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
 });
 
-Isolate.$defineClass("Closure2", "Closure14", ["box_0"], {
+Isolate.$defineClass("Closure2", "Closure15", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
 });
 
-Isolate.$defineClass("Closure3", "Closure14", ["box_0"], {
+Isolate.$defineClass("Closure3", "Closure15", ["box_0"], {
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
 });
 
-Isolate.$defineClass("Closure4", "Closure14", ["box_0"], {
+Isolate.$defineClass("Closure4", "Closure15", ["box_0"], {
  $call$2: function(k, v) {
   if (this.box_0.first_3 !== true) {
     $.add$1(this.box_0.result_1, ', ');
@@ -1197,25 +1174,25 @@ Isolate.$defineClass("Closure4", "Closure14", ["box_0"], {
  }
 });
 
-Isolate.$defineClass("Closure5", "Closure14", ["this_0"], {
+Isolate.$defineClass("Closure5", "Closure15", ["this_0"], {
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
 });
 
-Isolate.$defineClass("Closure6", "Closure14", [], {
+Isolate.$defineClass("Closure6", "Closure15", [], {
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
 });
 
-Isolate.$defineClass("Closure7", "Closure14", [], {
+Isolate.$defineClass("Closure7", "Closure15", [], {
  $call$0: function() {
   return $.CTC5;
  }
 });
 
-Isolate.$defineClass("Closure8", "Closure14", ["this_0"], {
+Isolate.$defineClass("Closure8", "Closure15", ["this_0"], {
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -1223,42 +1200,25 @@ Isolate.$defineClass("Closure8", "Closure14", ["this_0"], {
  }
 });
 
-Isolate.$defineClass("Closure9", "Closure14", ["this_0"], {
+Isolate.$defineClass("Closure9", "Closure15", ["this_0"], {
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 });
 
-Isolate.$defineClass("Closure10", "Closure14", ["this_1"], {
+Isolate.$defineClass("Closure10", "Closure15", ["this_1"], {
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
-  this.this_1.get$pen().set$colorName(t1);
+  this.this_1.get$pen().set$color(t1);
  }
 });
 
-Isolate.$defineClass("Closure11", "Closure14", ["this_2"], {
+Isolate.$defineClass("Closure11", "Closure15", ["this_2"], {
  $call$1: function(e) {
   try {
-    lastLine = $.last($.last(this.this_2.get$pen().get$path().get$segments()).get$lines());
-    lineCount = $.add($.parseInt(this.this_2.get$repeatInput().get$value()), 1);
-    if ($.gtB(lineCount, 0)) {
-      segment = $.Segment$2(lineCount, true);
-      var t1 = this.this_2.get$pen().get$down();
-      segment.set$draw(t1);
-      t1 = this.this_2.get$pen().get$colorCode();
-      segment.set$colorCode(t1);
-      $.add$1(this.this_2.get$pen().get$path().get$segments(), segment);
-      for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
-        line = $.Line$next$1(lastLine);
-        $.indexSet(segment.get$lines(), i, line);
-        t1 = $.parseInt(this.this_2.get$turnInput().get$value());
-        line.set$angle(t1);
-        t1 = $.parseInt(this.this_2.get$advanceInput().get$value());
-        line.set$pixels(t1);
-        lastLine = line;
-      }
-    }
+    var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
+    this.this_2.get$pen().set$width(t1);
   } catch (exception) {
     t1 = $.unwrapException(exception);
     error = t1;
@@ -1267,15 +1227,17 @@ Isolate.$defineClass("Closure11", "Closure14", ["this_2"], {
  }
 });
 
-Isolate.$defineClass("Closure12", "Closure14", ["this_3"], {
+Isolate.$defineClass("Closure12", "Closure15", ["this_3"], {
  $call$1: function(e) {
   try {
     lastLine = $.last($.last(this.this_3.get$pen().get$path().get$segments()).get$lines());
     segment = $.Segment$2(1, true);
     var t1 = this.this_3.get$pen().get$down();
     segment.set$draw(t1);
-    t1 = this.this_3.get$pen().get$colorCode();
-    segment.set$colorCode(t1);
+    t1 = this.this_3.get$pen().get$color();
+    segment.set$color(t1);
+    t1 = this.this_3.get$pen().get$width();
+    segment.set$width(t1);
     $.add$1(this.this_3.get$pen().get$path().get$segments(), segment);
     line = $.Line$next$1(lastLine);
     $.indexSet(segment.get$lines(), 0, line);
@@ -1289,19 +1251,51 @@ Isolate.$defineClass("Closure12", "Closure14", ["this_3"], {
  }
 });
 
-Isolate.$defineClass("Closure13", "Closure14", ["box_0"], {
+Isolate.$defineClass("Closure13", "Closure15", ["this_4"], {
+ $call$1: function(e) {
+  try {
+    lastLine = $.last($.last(this.this_4.get$pen().get$path().get$segments()).get$lines());
+    lineCount = $.add($.parseInt(this.this_4.get$repeatInput().get$value()), 1);
+    if ($.gtB(lineCount, 0)) {
+      segment = $.Segment$2(lineCount, true);
+      var t1 = this.this_4.get$pen().get$down();
+      segment.set$draw(t1);
+      t1 = this.this_4.get$pen().get$color();
+      segment.set$color(t1);
+      t1 = this.this_4.get$pen().get$width();
+      segment.set$width(t1);
+      $.add$1(this.this_4.get$pen().get$path().get$segments(), segment);
+      for (i = 0; $.ltB(i, segment.get$lineCount()); i = $.add(i, 1)) {
+        line = $.Line$next$1(lastLine);
+        $.indexSet(segment.get$lines(), i, line);
+        t1 = $.parseInt(this.this_4.get$turnInput().get$value());
+        line.set$angle(t1);
+        t1 = $.parseInt(this.this_4.get$goInput().get$value());
+        line.set$pixels(t1);
+        lastLine = line;
+      }
+    }
+  } catch (exception) {
+    t1 = $.unwrapException(exception);
+    error = t1;
+    $.print('Error in input! -- ' + $.S(error));
+  }
+ }
+});
+
+Isolate.$defineClass("Closure14", "Closure15", ["box_0"], {
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 });
 
-Isolate.$defineClass("Closure14", "Object", [], {
+Isolate.$defineClass("Closure15", "Object", [], {
  toString$0: function() {
   return 'Closure';
  }
 });
 
-Isolate.$defineClass('Closure15', 'Closure14', ['self', 'target'], {
+Isolate.$defineClass('Closure16', 'Closure15', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -1531,6 +1525,11 @@ $.checkNum = function(value) {
     throw $.captureStackTrace($.IllegalArgumentException$1(value));
   }
   return value;
+};
+
+$.clear2 = function() {
+  $.context.clearRect$4(0, 0, $.canvas.get$width(), $.canvas.get$height());
+  $.border();
 };
 
 $.clear = function(receiver) {
@@ -1849,13 +1848,6 @@ $.invokeClosure = function(closure, isolate, numberOfArguments, arg1, arg2) {
   }
 };
 
-$.last = function(receiver) {
-  if ($.isJsArray(receiver) !== true) {
-    return receiver.last$0();
-  }
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
-};
-
 $._EventListenerListImpl$2 = function(_ptr, _type) {
   return new $._EventListenerListImpl(_type, _ptr);
 };
@@ -1917,6 +1909,13 @@ $.border = function() {
   $.context.closePath$0();
 };
 
+$.last = function(receiver) {
+  if ($.isJsArray(receiver) !== true) {
+    return receiver.last$0();
+  }
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
+};
+
 $.TypeError$1 = function(msg) {
   return new $.TypeError(msg);
 };
@@ -1946,7 +1945,7 @@ $.buildDynamicMetadata = function(inputTable) {
 };
 
 $.Segment$2 = function(lineCount, draw) {
-  var t1 = new $.Segment((void 0), '#000000', draw, lineCount);
+  var t1 = new $.Segment((void 0), 1, 'black', draw, lineCount);
   t1.Segment$2(lineCount, draw);
   return t1;
 };
@@ -1970,10 +1969,6 @@ $.contains$1 = function(receiver, other) {
   return $.contains$2(receiver, other, 0);
 };
 
-$._EventSourceEventsImpl$1 = function(_ptr) {
-  return new $._EventSourceEventsImpl(_ptr);
-};
-
 $.mul = function(a, b) {
   if (typeof a === 'number' && typeof b === 'number') {
     var t1 = (a * b);
@@ -1981,6 +1976,10 @@ $.mul = function(a, b) {
     t1 = $.mul$slow(a, b);
   }
   return t1;
+};
+
+$._EventSourceEventsImpl$1 = function(_ptr) {
+  return new $._EventSourceEventsImpl(_ptr);
 };
 
 $.parseInt = function(str) {
@@ -2048,11 +2047,6 @@ $.index$slow = function(a, index) {
   return a.operator$index$1(index);
 };
 
-$.clear2 = function() {
-  $.context.clearRect$4(0, 0, $.canvas.get$width(), $.canvas.get$height());
-  $.border();
-};
-
 $._emitCollection = function(c, result, visiting) {
   $.add$1(visiting, c);
   var isList = typeof c === 'object' && (c.constructor === Array || c.is$List2());
@@ -2097,18 +2091,12 @@ $.toStringWrapper = function() {
   return $.toString((this.dartException));
 };
 
-$._PeerConnection00EventsImpl$1 = function(_ptr) {
-  return new $._PeerConnection00EventsImpl(_ptr);
-};
-
 $._WorkerContextEventsImpl$1 = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
 };
 
-$.Line$next$1 = function(lastLine) {
-  var t1 = new $.Line((void 0), 0, 0, 0, (void 0), lastLine);
-  t1.Line$next$1(lastLine);
-  return t1;
+$._PeerConnection00EventsImpl$1 = function(_ptr) {
+  return new $._PeerConnection00EventsImpl(_ptr);
 };
 
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
@@ -2146,10 +2134,6 @@ $._TextTrackEventsImpl$1 = function(_ptr) {
   return new $._TextTrackEventsImpl(_ptr);
 };
 
-$._EventsImpl$1 = function(_ptr) {
-  return new $._EventsImpl(_ptr);
-};
-
 $.charCodeAt = function(receiver, index) {
   if (typeof receiver === 'string') {
     if (!(typeof index === 'number')) {
@@ -2171,6 +2155,10 @@ $._BatteryManagerEventsImpl$1 = function(_ptr) {
   return new $._BatteryManagerEventsImpl(_ptr);
 };
 
+$._EventsImpl$1 = function(_ptr) {
+  return new $._EventsImpl(_ptr);
+};
+
 $._ElementRectImpl$1 = function(element) {
   var t1 = $._SimpleClientRect$4(element.get$$$dom_clientLeft(), element.get$$$dom_clientTop(), element.get$$$dom_clientWidth(), element.get$$$dom_clientHeight());
   var t2 = $._SimpleClientRect$4(element.get$$$dom_offsetLeft(), element.get$$$dom_offsetTop(), element.get$$$dom_offsetWidth(), element.get$$$dom_offsetHeight());
@@ -2179,13 +2167,19 @@ $._ElementRectImpl$1 = function(element) {
   return new $._ElementRectImpl(element.$dom_getClientRects$0(), t4, t3, t2, t1);
 };
 
+$.HashSetImplementation$0 = function() {
+  var t1 = new $.HashSetImplementation((void 0));
+  t1.HashSetImplementation$0();
+  return t1;
+};
+
 $._IDBRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBRequestEventsImpl(_ptr);
 };
 
-$.HashSetImplementation$0 = function() {
-  var t1 = new $.HashSetImplementation((void 0));
-  t1.HashSetImplementation$0();
+$.Line$next$1 = function(lastLine) {
+  var t1 = new $.Line((void 0), 0, 0, 0, (void 0), lastLine);
+  t1.Line$next$1(lastLine);
   return t1;
 };
 
@@ -2217,8 +2211,9 @@ $.draw = function() {
     var t2 = t1.next$0();
     if (t2.get$draw() === true) {
       $.context.beginPath$0();
-      $.context.set$lineWidth(1);
-      var t3 = t2.get$colorCode();
+      var t3 = t2.get$width();
+      $.context.set$lineWidth(t3);
+      t3 = $.index($.colors, t2.get$color());
       $.context.set$strokeStyle(t3);
       for (var i = 0; $.ltB(i, t2.get$lineCount()); ++i) {
         var line = $.index(t2.get$lines(), i);
@@ -2232,11 +2227,11 @@ $.draw = function() {
   var lastLine = $.last($.last($.pen.get$path().get$segments()).get$lines());
   $.context.beginPath$0();
   $.context.set$lineWidth(1);
-  t1 = $.pen.get$colorCode();
+  t1 = $.index($.colors, $.pen.get$color());
   $.context.set$strokeStyle(t1);
-  t1 = $.pen.get$colorCode();
+  t1 = $.index($.colors, $.pen.get$color());
   $.context.set$fillStyle(t1);
-  $.context.rect$4($.sub(lastLine.get$endPoint().get$x(), 2.0), $.sub(lastLine.get$endPoint().get$y(), 2.0), 4, 4);
+  $.context.arc$6(lastLine.get$endPoint().get$x(), lastLine.get$endPoint().get$y(), $.pen.get$width(), 0, 6.283185307179586, false);
   $.context.fill$0();
   $.context.stroke$0();
   $.context.closePath$0();
@@ -2511,7 +2506,7 @@ $.hashCode = function(receiver) {
 };
 
 $.Pen$1 = function(startPosition) {
-  var t1 = new $.Pen((void 0), '#000000', 'black', true);
+  var t1 = new $.Pen((void 0), 1, 'black', true);
   t1.Pen$1(startPosition);
   return t1;
 };
@@ -2612,6 +2607,21 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.S($.getTypeNameOf(obj));
 };
 
+$.colorMap = function() {
+  $.colors = $.HashMapImplementation$0();
+  $.indexSet($.colors, 'black', '#000000');
+  $.indexSet($.colors, 'blue', '#0000ff');
+  $.indexSet($.colors, 'brown', '#963939');
+  $.indexSet($.colors, 'gray', '#909090');
+  $.indexSet($.colors, 'green', '#009000');
+  $.indexSet($.colors, 'orange', '#ff6f00');
+  $.indexSet($.colors, 'yellow', '#ffff00');
+};
+
+$._MessagePortEventsImpl$1 = function(_ptr) {
+  return new $._MessagePortEventsImpl(_ptr);
+};
+
 $.dynamicBind = function(obj, name$, methods, arguments$) {
   var tag = $.getTypeNameOf(obj);
   var method = (methods[tag]);
@@ -2638,10 +2648,6 @@ $.dynamicBind = function(obj, name$, methods, arguments$) {
     $.defineProperty(proto, name$, nullCheckMethod);
   }
   return nullCheckMethod.apply(obj, arguments$);
-};
-
-$._MessagePortEventsImpl$1 = function(_ptr) {
-  return new $._MessagePortEventsImpl(_ptr);
 };
 
 $._MeasurementRequest$2 = function(computeValue, completer) {
@@ -2678,10 +2684,6 @@ $.index = function(a, index) {
   return $.index$slow(a, index);
 };
 
-$._TextTrackCueEventsImpl$1 = function(_ptr) {
-  return new $._TextTrackCueEventsImpl(_ptr);
-};
-
 $.toString = function(value) {
   if (typeof value == "object") {
     if ($.isJsArray(value) === true) {
@@ -2700,6 +2702,10 @@ $.toString = function(value) {
     return 'Closure';
   }
   return String(value);
+};
+
+$._TextTrackCueEventsImpl$1 = function(_ptr) {
+  return new $._TextTrackCueEventsImpl(_ptr);
 };
 
 $._ElementEventsImpl$1 = function(_ptr) {
@@ -2873,14 +2879,14 @@ $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
   return new $._SharedWorkerContextEventsImpl(_ptr);
 };
 
-$.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
-  t1.Input$1(pen);
-  return t1;
-};
-
 $._IDBVersionChangeRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBVersionChangeRequestEventsImpl(_ptr);
+};
+
+$.Input$1 = function(pen) {
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  t1.Input$1(pen);
+  return t1;
 };
 
 $.NoMoreElementsException$0 = function() {
@@ -2955,6 +2961,7 @@ $.newList = function(length$) {
 };
 
 $.main = function() {
+  $.colorMap();
   $.canvas = $.document().query$1('#canvas');
   $.context = $.canvas.getContext$1('2d');
   $.pen = $.Pen$1($.center());
@@ -3305,6 +3312,7 @@ $._firstMeasurementRequest = true;
 $._pendingMeasurementFrameCallbacks = (void 0);
 $.pen = (void 0);
 $.output = (void 0);
+$.colors = (void 0);
 $.canvas = (void 0);
 $.input = (void 0);
 $._getTypeNameOf = (void 0);
@@ -3362,7 +3370,7 @@ $.$defineNativeClass('HTMLAnchorElement', [], {
 $.$defineNativeClass('WebKitAnimationList', ["length?"], {
 });
 
-$.$defineNativeClass('HTMLAppletElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLAppletElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('Attr', ["value="], {
@@ -3382,6 +3390,9 @@ $.$defineNativeClass('AudioParam', ["value="], {
 
 $.$defineNativeClass('HTMLBRElement', [], {
  clear$0: function() { return this.clear.$call$0(); }
+});
+
+$.$defineNativeClass('HTMLBaseFontElement', ["color="], {
 });
 
 $.$defineNativeClass('BatteryManager', [], {
@@ -3412,6 +3423,9 @@ $.$defineNativeClass('CSSRuleList', ["length?"], {
 });
 
 $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
+ set$width: function(value) {
+  this.setProperty$3('width', value, '');
+ },
  get$width: function() {
   return this.getPropertyValue$1('width');
  },
@@ -3424,10 +3438,19 @@ $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
  get$height: function() {
   return this.getPropertyValue$1('height');
  },
+ set$color: function(value) {
+  this.setProperty$3('color', value, '');
+ },
+ get$color: function() {
+  return this.getPropertyValue$1('color');
+ },
  get$clear: function() {
   return this.getPropertyValue$1('clear');
  },
  clear$0: function() { return this.get$clear().$call$0(); },
+ setProperty$3: function(propertyName, value, priority) {
+  return this.setProperty(propertyName,value,priority);
+ },
  getPropertyValue$1: function(propertyName) {
   return this.getPropertyValue(propertyName);
  }
@@ -3436,7 +3459,7 @@ $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
 $.$defineNativeClass('CSSValueList', ["length?"], {
 });
 
-$.$defineNativeClass('HTMLCanvasElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLCanvasElement', ["width=", "height?"], {
  getContext$1: function(contextId) {
   return this.getContext(contextId);
  }
@@ -3466,6 +3489,9 @@ $.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", 
  },
  beginPath$0: function() {
   return this.beginPath();
+ },
+ arc$6: function(x, y, radius, startAngle, endAngle, anticlockwise) {
+  return this.arc(x,y,radius,startAngle,endAngle,anticlockwise);
  }
 });
 
@@ -3621,7 +3647,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure15(this, 'click$0'); },
+ get$click: function() { return new $.Closure16(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -3647,7 +3673,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure15(this, 'click$0'); },
+ get$click: function() { return new $.Closure16(this, 'click$0'); },
  get$$$dom_scrollWidth: function() {
   return this.scrollWidth;;
  },
@@ -3703,7 +3729,7 @@ $.$defineNativeClass('Element', [], {
  }
 });
 
-$.$defineNativeClass('HTMLEmbedElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLEmbedElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('Entry', [], {
@@ -3902,6 +3928,9 @@ $.$defineNativeClass('Float64Array', ["length?"], {
  is$Collection: function() { return true; }
 });
 
+$.$defineNativeClass('HTMLFontElement', ["color="], {
+});
+
 $.$defineNativeClass('HTMLFormElement', ["length?"], {
 });
 
@@ -3914,7 +3943,7 @@ $.$defineNativeClass('HTMLFrameSetElement', [], {
  }
 });
 
-$.$defineNativeClass('HTMLHRElement', ["width?"], {
+$.$defineNativeClass('HTMLHRElement', ["width="], {
 });
 
 $.$defineNativeClass('HTMLAllCollection', ["length?"], {
@@ -4033,17 +4062,17 @@ $.$defineNativeClass('IDBVersionChangeRequest', [], {
  }
 });
 
-$.$defineNativeClass('HTMLIFrameElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLIFrameElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('ImageData', ["width?", "height?"], {
 });
 
-$.$defineNativeClass('HTMLImageElement', ["y?", "x?", "width?", "height?"], {
+$.$defineNativeClass('HTMLImageElement', ["y?", "x?", "width=", "height?"], {
  complete$1: function(arg0) { return this.complete.$call$1(arg0); }
 });
 
-$.$defineNativeClass('HTMLInputElement', ["width?", "value=", "pattern?", "height?", "checked="], {
+$.$defineNativeClass('HTMLInputElement', ["width=", "value=", "pattern?", "height?", "checked="], {
  get$on: function() {
   return $._InputElementEventsImpl$1(this);
  }
@@ -4175,7 +4204,7 @@ $.$defineNativeClass('Location', [], {
  }
 });
 
-$.$defineNativeClass('HTMLMarqueeElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLMarqueeElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('MediaController', [], {
@@ -4369,7 +4398,7 @@ $.$defineNativeClass('Notification', ["tag?"], {
  }
 });
 
-$.$defineNativeClass('HTMLObjectElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLObjectElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('OperationNotAllowedException', ["message?"], {
@@ -4396,13 +4425,13 @@ $.$defineNativeClass('PeerConnection00', [], {
  }
 });
 
-$.$defineNativeClass('WebKitPoint', ["y=", "x="], {
+$.$defineNativeClass('WebKitPoint', ["y?", "x?"], {
 });
 
 $.$defineNativeClass('PositionError', ["message?"], {
 });
 
-$.$defineNativeClass('HTMLPreElement', ["width?"], {
+$.$defineNativeClass('HTMLPreElement', ["width="], {
 });
 
 $.$defineNativeClass('HTMLProgressElement', ["value="], {
@@ -4521,7 +4550,7 @@ $.$defineNativeClass('SVGFilterElement', ["y?", "x?", "width?", "height?"], {
 $.$defineNativeClass('SVGForeignObjectElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGGlyphRefElement', ["y=", "x="], {
+$.$defineNativeClass('SVGGlyphRefElement', ["y?", "x?"], {
 });
 
 $.$defineNativeClass('SVGImageElement', ["y?", "x?", "width?", "height?"], {
@@ -4548,52 +4577,52 @@ $.$defineNativeClass('SVGNumberList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x=", "angle="], {
+$.$defineNativeClass('SVGPathSegArcAbs', ["y?", "x?", "angle="], {
 });
 
-$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x=", "angle="], {
+$.$defineNativeClass('SVGPathSegArcRel', ["y?", "x?", "angle="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegLinetoAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x="], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x="], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegLinetoRel', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoVerticalAbs', ["y="], {
+$.$defineNativeClass('SVGPathSegLinetoVerticalAbs', ["y?"], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoVerticalRel', ["y="], {
+$.$defineNativeClass('SVGPathSegLinetoVerticalRel', ["y?"], {
 });
 
 $.$defineNativeClass('SVGPathSegList', [], {
@@ -4602,16 +4631,16 @@ $.$defineNativeClass('SVGPathSegList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegMovetoAbs', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegMovetoAbs', ["y?", "x?"], {
 });
 
-$.$defineNativeClass('SVGPathSegMovetoRel', ["y=", "x="], {
+$.$defineNativeClass('SVGPathSegMovetoRel', ["y?", "x?"], {
 });
 
 $.$defineNativeClass('SVGPatternElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGPoint', ["y=", "x="], {
+$.$defineNativeClass('SVGPoint', ["y?", "x?"], {
 });
 
 $.$defineNativeClass('SVGPointList', [], {
@@ -4620,7 +4649,7 @@ $.$defineNativeClass('SVGPointList', [], {
  }
 });
 
-$.$defineNativeClass('SVGRect', ["y=", "x=", "width?", "height?"], {
+$.$defineNativeClass('SVGRect', ["y?", "x?", "width=", "height?"], {
 });
 
 $.$defineNativeClass('SVGRectElement', ["y?", "x?", "width?", "height?"], {
@@ -4775,13 +4804,13 @@ $.$defineNativeClass('StyleSheetList', ["length?"], {
  is$Collection: function() { return true; }
 });
 
-$.$defineNativeClass('HTMLTableCellElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLTableCellElement', ["width=", "height?"], {
 });
 
-$.$defineNativeClass('HTMLTableColElement', ["width?"], {
+$.$defineNativeClass('HTMLTableColElement', ["width="], {
 });
 
-$.$defineNativeClass('HTMLTableElement', ["width?"], {
+$.$defineNativeClass('HTMLTableElement', ["width="], {
 });
 
 $.$defineNativeClass('HTMLTextAreaElement', ["value="], {
@@ -4964,7 +4993,7 @@ $.$defineNativeClass('Uint8ClampedArray', [], {
  is$Collection: function() { return true; }
 });
 
-$.$defineNativeClass('HTMLVideoElement', ["width?", "height?"], {
+$.$defineNativeClass('HTMLVideoElement', ["width=", "height?"], {
 });
 
 $.$defineNativeClass('WebGLRenderingContext', [], {
@@ -5079,7 +5108,7 @@ $.$defineNativeClass('IDBOpenDBRequest', [], {
  }
 });
 
-// 214 dynamic classes.
+// 216 dynamic classes.
 // 325 classes
 // 26 !leaf
 (function(){
