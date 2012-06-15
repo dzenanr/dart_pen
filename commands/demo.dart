@@ -1,23 +1,36 @@
 demo(var p, int dn) {
-  switch(dn) {
-    case 1:
-      p.erase();
-      demo1(p);
-      break;
-    case 2:
-      p.erase();
-      demo2(p);
-      break;
-    case 3:
-      p.erase();
-      demo3(p);
-      break;
-    case 4:
-      p.erase();
-      demo4(p);
-    case 5:
-      p.erase();
-      demo5(p);
+  try {
+    switch(dn) {
+      case 1:
+        p.erase();
+        demo1(p);
+        break;
+      case 2:
+        p.erase();
+        demo2(p);
+        break;
+      case 3:
+        p.erase();
+        demo3(p);
+        break;
+      case 4:
+        p.erase();
+        demo4(p);
+        break;
+      case 5:
+        p.erase();
+        demo5(p);
+        break;
+      case 6:
+        p.erase();
+        demo6(p);
+        break;
+      default:
+        p.erase();
+        demo1(p);
+    }
+  } catch(final error) {
+    print('Error in demo! -- $error');
   }
 }
 
@@ -87,5 +100,13 @@ demo5(var p) {
   pen.toCommands(commandsString);
   pen.interpret();
 }
+
+demo6(var p) {
+  var commandsString = "color, red; width, 2; move, 15, 160, 2; color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; color, brown;  width, 2; move, -20, 40, 8; all, 6";
+  pen.toCommands(commandsString);
+  pen.interpret();
+}
+
+
 
 

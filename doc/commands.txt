@@ -7,3 +7,7 @@ or
 color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7
 
 
+color, red; width, 2; move, 15, 160, 2; color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; color, brown;  width, 2; move, -20, 40, 8; all, 6;
+
+
+ 

@@ -106,7 +106,7 @@ $$.HashMapImplementation = {"":
   if (typeof length$ !== 'number') return this.forEach$1$bailout(f, 1, length$);
   for (var i = 0; i < length$; ++i) {
     var key = $.index(this._keys, i);
-    !(key === (void 0)) && !(key === $.CTC8) && f.$call$2(key, $.index(this._values, i));
+    !(key === (void 0)) && !(key === $.CTC7) && f.$call$2(key, $.index(this._values, i));
   }
  },
  forEach$1$bailout: function(f, state, env0) {
@@ -124,7 +124,7 @@ $$.HashMapImplementation = {"":
       L0: while (true) {
         if (!$.ltB(i, length$)) break L0;
         var key = $.index(this._keys, i);
-        !(key === (void 0)) && !(key === $.CTC8) && f.$call$2(key, $.index(this._values, i));
+        !(key === (void 0)) && !(key === $.CTC7) && f.$call$2(key, $.index(this._values, i));
         ++i;
       }
   }
@@ -171,7 +171,7 @@ $$.HashMapImplementation = {"":
  operator$indexSet$2: function(key, value) {
   this._ensureCapacity$0();
   var index = this._probeForAdding$1(key);
-  if ($.index(this._keys, index) === (void 0) || $.index(this._keys, index) === $.CTC8) this._numberOfEntries = $.add(this._numberOfEntries, 1);
+  if ($.index(this._keys, index) === (void 0) || $.index(this._keys, index) === $.CTC7) this._numberOfEntries = $.add(this._numberOfEntries, 1);
   $.indexSet(this._keys, index, key);
   $.indexSet(this._values, index, value);
  },
@@ -223,7 +223,7 @@ $$.HashMapImplementation = {"":
     t1 = oldKeys.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
     var t2 = oldKeys[i];
-    if (t2 === (void 0) || t2 === $.CTC8) continue;
+    if (t2 === (void 0) || t2 === $.CTC7) continue;
     t1 = oldValues.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
     var t3 = oldValues[i];
@@ -269,7 +269,7 @@ $$.HashMapImplementation = {"":
         if (!$.ltB(i, capacity)) break L0;
         c$0:{
           var key = $.index(oldKeys, i);
-          if (key === (void 0) || key === $.CTC8) break c$0;
+          if (key === (void 0) || key === $.CTC7) break c$0;
           var value = $.index(oldValues, i);
           var newIndex = this._probeForAdding$1(key);
           $.indexSet(this._keys, newIndex, key);
@@ -310,7 +310,7 @@ $$.HashMapImplementation = {"":
       return insertionIndex;
     }
     if ($.eqB(existingKey, key)) return hash;
-    if ($.ltB(insertionIndex, 0) && $.CTC8 === existingKey) insertionIndex = hash;
+    if ($.ltB(insertionIndex, 0) && $.CTC7 === existingKey) insertionIndex = hash;
     var numberOfProbes0 = numberOfProbes + 1;
     hash = $._nextProbe(hash, numberOfProbes, $.get$length(this._keys));
     numberOfProbes = numberOfProbes0;
@@ -337,7 +337,7 @@ $$.HashMapImplementation = {"":
           return insertionIndex;
         }
         if ($.eqB(existingKey, key)) return hash;
-        if ($.ltB(insertionIndex, 0) && $.CTC8 === existingKey) insertionIndex = hash;
+        if ($.ltB(insertionIndex, 0) && $.CTC7 === existingKey) insertionIndex = hash;
         var numberOfProbes0 = numberOfProbes + 1;
         hash = $._nextProbe(hash, numberOfProbes, $.get$length(this._keys));
         numberOfProbes = numberOfProbes0;
@@ -424,7 +424,7 @@ $$.HashSetIterator = {"":
     this._nextValidIndex = t1;
     if ($.geB(t1, length$)) break;
     entry = $.index(this._entries, this._nextValidIndex);
-  } while ((entry === (void 0) || entry === $.CTC8));
+  } while ((entry === (void 0) || entry === $.CTC7));
  },
  _advance$0$bailout: function(state, env0) {
   switch (state) {
@@ -443,7 +443,7 @@ $$.HashSetIterator = {"":
         this._nextValidIndex = t1;
         if ($.geB(t1, length$)) break;
         entry = $.index(this._entries, this._nextValidIndex);
-        if (!(entry === (void 0) || entry === $.CTC8)) break L0;
+        if (!(entry === (void 0) || entry === $.CTC7)) break L0;
       }
   }
  },
@@ -488,7 +488,7 @@ $$.HashSetIterator = {"":
   if (t2 !== (t2 | 0)) throw $.iae(t2);
   var t3 = t1.length;
   if (t2 < 0 || t2 >= t3) throw $.ioore(t2);
-  t1[t2] === $.CTC8 && this._advance$0();
+  t1[t2] === $.CTC7 && this._advance$0();
   t1 = this._nextValidIndex;
   if (typeof t1 !== 'number') return this.hasNext$0$bailout(4, t1, 0);
   t2 = $.get$length(this._entries);
@@ -527,7 +527,7 @@ $$.HashSetIterator = {"":
       t1 = this._entries;
     case 3:
       state = 0;
-      $.index(t1, this._nextValidIndex) === $.CTC8 && this._advance$0();
+      $.index(t1, this._nextValidIndex) === $.CTC7 && this._advance$0();
       t1 = this._nextValidIndex;
     case 4:
       state = 0;
@@ -892,14 +892,6 @@ $$.FutureAlreadyCompleteException = {"":
  super: "Object",
  toString$0: function() {
   return 'Exception: future already completed';
- }
-};
-
-$$.FallThroughError = {"":
- [],
- super: "Object",
- toString$0: function() {
-  return 'Switch case fall-through.';
  }
 };
 
@@ -1920,10 +1912,6 @@ $.truncate = function(receiver) {
   return receiver < 0 ? $.ceil(receiver) : $.floor(receiver);
 };
 
-$.getFallThroughError = function() {
-  return $.CTC6;
-};
-
 $.isNaN = function(receiver) {
   if (typeof receiver === 'number') {
     return isNaN(receiver);
@@ -2809,7 +2797,7 @@ $.dynamicFunction = function(name$) {
     return f.methods;
   }
   var methods = ({});
-  var dartMethod = (Object.getPrototypeOf($.CTC10)[name$]);
+  var dartMethod = (Object.getPrototypeOf($.CTC9)[name$]);
   if (!(dartMethod === (void 0))) methods['Object'] = dartMethod;
   var bind = (function() {return $.dynamicBind.$call$4(this, name$, methods, Array.prototype.slice.call(arguments));});
   bind.methods = methods;
@@ -3118,7 +3106,7 @@ $._TextTrackCueEventsImpl$1 = function(_ptr) {
 $.getFunctionForTypeNameOf = function() {
   if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
   var userAgent = (navigator.userAgent);
-  if ($.contains$1(userAgent, $.CTC9) === true) return $.typeNameInChrome;
+  if ($.contains$1(userAgent, $.CTC8) === true) return $.typeNameInChrome;
   if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
   if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
   return $.constructorNameFallback;
@@ -3175,26 +3163,40 @@ $._XMLHttpRequestUploadEventsImpl$1 = function(_ptr) {
 };
 
 $.demo = function(p, dn) {
-  switch (dn) {
-    case 1:
-      p.erase$0();
-      $.demo1(p);
-      break;
-    case 2:
-      p.erase$0();
-      $.demo2(p);
-      break;
-    case 3:
-      p.erase$0();
-      $.demo3(p);
-      break;
-    case 4:
-      p.erase$0();
-      $.demo4(p);
-      throw $.captureStackTrace($.getFallThroughError());
-    case 5:
-      p.erase$0();
-      $.demo5(p);
+  try {
+    switch (dn) {
+      case 1:
+        p.erase$0();
+        $.demo1(p);
+        break;
+      case 2:
+        p.erase$0();
+        $.demo2(p);
+        break;
+      case 3:
+        p.erase$0();
+        $.demo3(p);
+        break;
+      case 4:
+        p.erase$0();
+        $.demo4(p);
+        break;
+      case 5:
+        p.erase$0();
+        $.demo5(p);
+        break;
+      case 6:
+        p.erase$0();
+        $.demo6(p);
+        break;
+      default:
+        p.erase$0();
+        $.demo1(p);
+    }
+  } catch (exception) {
+    var t1 = $.unwrapException(exception);
+    var error = t1;
+    $.print('Error in demo! -- ' + $.S(error));
   }
 };
 
@@ -3277,6 +3279,11 @@ $.demo1 = function(p) {
     t1.next$0();
     p.all$0();
   }
+};
+
+$.demo6 = function(p) {
+  $.pen.toCommands$1('color, red; width, 2; move, 15, 160, 2; color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; color, brown;  width, 2; move, -20, 40, 8; all, 6');
+  $.pen.interpret$0();
 };
 
 $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
@@ -3696,12 +3703,11 @@ Isolate.makeConstantList = function(list) {
 };
 $.CTC = Isolate.makeConstantList([]);
 $.CTC3 = new Isolate.$isolateProperties._SimpleClientRect(0, 0, 0, 0);
-$.CTC6 = new Isolate.$isolateProperties.FallThroughError();
-$.CTC7 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
+$.CTC6 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
 $.CTC4 = new Isolate.$isolateProperties.EmptyElementRect(Isolate.$isolateProperties.CTC, Isolate.$isolateProperties.CTC3, Isolate.$isolateProperties.CTC3, Isolate.$isolateProperties.CTC3, Isolate.$isolateProperties.CTC3);
-$.CTC8 = new Isolate.$isolateProperties._DeletedKeySentinel();
-$.CTC9 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
-$.CTC10 = new Isolate.$isolateProperties.Object();
+$.CTC7 = new Isolate.$isolateProperties._DeletedKeySentinel();
+$.CTC8 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
+$.CTC9 = new Isolate.$isolateProperties.Object();
 $.CTC5 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '[-[\\]{}()*+?.,\\\\^$|#\\s]');
 $.CTC2 = new Isolate.$isolateProperties.NoMoreElementsException();
 $._pendingRequests = (void 0);
@@ -4019,7 +4025,7 @@ $.$defineNativeClass('DeprecatedPeerConnection', [], {
 
 $.$defineNativeClass('HTMLDocument', [], {
  query$1: function(selectors) {
-  if ($.CTC7.hasMatch$1(selectors) === true) return this.$dom_getElementById$1($.substring$1(selectors, 1));
+  if ($.CTC6.hasMatch$1(selectors) === true) return this.$dom_getElementById$1($.substring$1(selectors, 1));
   return this.$dom_querySelector$1(selectors);
  },
  $dom_querySelector$1: function(selectors) {
