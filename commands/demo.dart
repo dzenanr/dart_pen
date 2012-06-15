@@ -29,6 +29,10 @@ demo(var p, int dn) {
         p.erase();
         demo7(p);
         break;
+      case 8:
+        p.erase();
+        demo8(p);
+        break;
       default:
         p.erase();
         demo1(p);
@@ -130,6 +134,23 @@ demo7(var p) {
     move, 90, 80, 4; 
     all, 5;
   ''';
+  pen.toCommands(commandsString);
+  pen.interpret();
+}
+
+demo8(var p) {
+  var commandsString =
+    'color, yellow;'
+    'width, 3;'
+    'move, 80, 80, 3;'
+    'color, gray;'
+    'width, 1;'
+    'move, -18, 60, 6;'
+    'color, blue;'
+    'width, 2;'
+    'move, 120, 100, 5;'
+    'move, 5, -80, 9;'
+    'all, 4';
   pen.toCommands(commandsString);
   pen.interpret();
 }

@@ -3015,6 +3015,11 @@ $._emitMap = function(m, result, visiting) {
   $.removeLast(t1.visiting_2);
 };
 
+$.demo8 = function(p) {
+  $.pen.toCommands$1('color, yellow;width, 3;move, 80, 80, 3;color, gray;width, 1;move, -18, 60, 6;color, blue;width, 2;move, 120, 100, 5;move, 5, -80, 9;all, 4');
+  $.pen.interpret$0();
+};
+
 $.startsWith = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.startsWith$1(other);
   $.checkString(other);
@@ -3197,6 +3202,10 @@ $.demo = function(p, dn) {
       case 7:
         p.erase$0();
         $.demo7(p);
+        break;
+      case 8:
+        p.erase$0();
+        $.demo8(p);
         break;
       default:
         p.erase$0();
