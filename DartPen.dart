@@ -6,6 +6,7 @@
 #source('view/Input.dart');
 #source('view/Output.dart');
 #source('util/color.dart');
+#source('commands/demo.dart');
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 

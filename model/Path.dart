@@ -6,16 +6,30 @@ class Path {
     segments = new List<Segment>();
   }
 
-  double() {
-    var copiedSegments = new List<Segment>();
-    Line lastLine = segments.last().lines.last();
-    for (var i = 0; i < segments.length; i++) {
-      Segment segment = segments[i].copy(lastLine);
-      copiedSegments.add(segment);
-      lastLine = segment.lines.last();
+  Line lastLine() {
+    Line last;
+    try {
+      last = segments.last().lastLine();
+    } catch(final error) {
+      print('Error in finding the last line of the path! -- $error');
     }
-    for (Segment copiedSegment in copiedSegments) {
-      segments.add(copiedSegment);
+    return last;
+  }
+
+  double() {
+    try {
+      var copiedSegments = new List<Segment>();
+      Line last = lastLine();
+      for (var i = 0; i < segments.length; i++) {
+        Segment segment = segments[i].copy(last);
+        copiedSegments.add(segment);
+        last = segment.lastLine();
+      }
+      for (Segment copiedSegment in copiedSegments) {
+        segments.add(copiedSegment);
+      }
+    } catch(final error) {
+      print('Error in doubling the path! -- $error');
     }
   }
 

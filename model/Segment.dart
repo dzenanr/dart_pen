@@ -11,12 +11,22 @@ class Segment {
     lines = new List<Line>(lineCount);
   }
 
-  Segment copy(Line lastLine) {
+  Line lastLine() {
+    Line last;
+    try {
+      last = lines.last();
+    } catch(final error) {
+      print('Error in finding the last line of the segment! -- $error');
+    }
+    return last;
+  }
+
+  Segment copy(Line last) {
     Segment segment = new Segment(lineCount);
     segment.draw = draw;
     segment.color = color;
     segment.width = width;
-    Line previousLine = lastLine;
+    Line previousLine = last;
     for (var i = 0; i < lineCount; i++) {
       Line line = lines[i].copy(previousLine);
       segment.lines[i] = line;

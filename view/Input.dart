@@ -1,7 +1,7 @@
 class Input {
 
   static final String DEFAULT_TURN = '45';
-  static final String DEFAULT_GO = '80';
+  static final String DEFAULT_ADVANCE = '80';
   static final String DEFAULT_REPEAT = '0';
 
   final Pen pen;
@@ -10,12 +10,14 @@ class Input {
   SelectElement colorSelect;
   SelectElement widthSelect;
   ButtonElement centerButton;
+  SelectElement demoSelect;
 
   InputElement turnInput;
-  InputElement goInput;
+  InputElement advanceInput;
   InputElement repeatInput;
-  ButtonElement doButton;
+  ButtonElement moveButton;
   ButtonElement allButton;
+  ButtonElement eraseButton;
 
   Input(this.pen) {
     downCheckbox = document.query('#down');
@@ -40,49 +42,30 @@ class Input {
 
     centerButton = document.query('#center');
     centerButton.on.click.add((MouseEvent e) {
-      try {
-        var lastLine = pen.path.segments.last().lines.last();
-        var segment = new Segment(1);
-        segment.draw = pen.down;
-        segment.color = pen.color;
-        segment.width = pen.width;
-        pen.path.segments.add(segment);
-        var line = new Line.next(lastLine);
-        segment.lines[0] = line;
-        line.endPoint = center();
-      } catch(final error) {
-        print('Error in input! -- $error');
-      }
+      pen.moveTo(center());
+    });
+
+    demoSelect = document.query('#demo');
+    demoSelect.on.change.add((Event e) {
+      demo(pen, Math.parseInt(demoSelect.value));
     });
 
     turnInput = document.query('#turn');
     turnInput.value = DEFAULT_TURN;
 
-    goInput = document.query('#go');
-    goInput.value = DEFAULT_GO;
+    advanceInput = document.query('#advance');
+    advanceInput.value = DEFAULT_ADVANCE;
 
     repeatInput = document.query('#repeat');
     repeatInput.value = DEFAULT_REPEAT;
 
-    doButton = document.query('#do');
-    doButton.on.click.add((MouseEvent e) {
+    moveButton = document.query('#move');
+    moveButton.on.click.add((MouseEvent e) {
       try {
-        var lastLine = pen.path.segments.last().lines.last();
-        int lineCount = Math.parseInt(repeatInput.value) + 1;
-        if (lineCount > 0) {
-          var segment = new Segment(lineCount);
-          segment.draw = pen.down;
-          segment.color = pen.color;
-          segment.width = pen.width;
-          pen.path.segments.add(segment);
-          for (var i = 0; i < segment.lineCount; i++) {
-            var line = new Line.next(lastLine);
-            segment.lines[i] = line;
-            line.angle = Math.parseInt(turnInput.value);
-            line.pixels = Math.parseInt(goInput.value);
-            lastLine = line;
-          }
-        }
+        num turn = Math.parseInt(turnInput.value);
+        num advance = Math.parseInt(advanceInput.value);
+        int repeat = Math.parseInt(repeatInput.value);
+        pen.move(turn, advance, repeat);
       } catch(final error) {
         print('Error in input! -- $error');
       }
@@ -90,7 +73,12 @@ class Input {
 
     allButton = document.query('#all');
     allButton.on.click.add((MouseEvent e) {
-      pen.path.double();
+      pen.all();
+    });
+
+    eraseButton = document.query('#erase');
+    eraseButton.on.click.add((MouseEvent e) {
+      pen.erase();
     });
   }
 
