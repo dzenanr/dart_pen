@@ -1,5 +1,7 @@
 To Do
 
+remember commands
+
 accept commands and display the result
 add, size and rotate shapes
 add some predefined functions that draw some fractals

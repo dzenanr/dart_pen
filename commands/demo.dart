@@ -25,6 +25,10 @@ demo(var p, int dn) {
         p.erase();
         demo6(p);
         break;
+      case 7:
+        p.erase();
+        demo7(p);
+        break;
       default:
         p.erase();
         demo1(p);
@@ -96,13 +100,36 @@ demo4(var p) {
 }
 
 demo5(var p) {
-  var commandsString = "color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7;";
+  var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7';
   pen.toCommands(commandsString);
   pen.interpret();
 }
 
 demo6(var p) {
-  var commandsString = "color, red; width, 2; move, 15, 160, 2; color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; color, brown;  width, 2; move, -20, 40, 8; all, 6";
+  var commandsString = '''
+    color, red; width, 2; move, 15, 160, 2; 
+    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; 
+    color, brown;  width, 2; move, -20, 40, 8; 
+    all, 6;
+''';
+  pen.toCommands(commandsString);
+  pen.interpret();
+}
+
+demo7(var p) {
+  var commandsString = '''
+    color, gray; 
+    width, 2; 
+    move, 45, 80, 1; 
+    color, green; 
+    width, 1; 
+    move, 33, 80, 1; 
+    color, orange;  
+    width, 3; 
+    move, 15, 80, 1; 
+    move, 90, 80, 4; 
+    all, 5;
+  ''';
   pen.toCommands(commandsString);
   pen.interpret();
 }

@@ -946,7 +946,7 @@ $$.Pen = {"":
   var i;
  },
  toCommands$1: function(commandsString) {
-  for (var t1 = $.iterator($.split($.replaceAll($.trim(commandsString), ' ', ''), ';')); t1.hasNext$0() === true; ) {
+  for (var t1 = $.iterator($.split($.replaceAll($.trim($.replaceAll(commandsString, '\n', '')), ' ', ''), ';')); t1.hasNext$0() === true; ) {
     var commandElements = $.split(t1.next$0(), ',');
     $.add$1(this.commands, commandElements);
   }
@@ -2580,7 +2580,7 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.demo5 = function(p) {
-  $.pen.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7;');
+  $.pen.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
   $.pen.interpret$0();
 };
 
@@ -3036,6 +3036,11 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.S($.getTypeNameOf(obj));
 };
 
+$.demo7 = function(p) {
+  $.pen.toCommands$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
+  $.pen.interpret$0();
+};
+
 $.colorMap = function() {
   $.colors = $.HashMapImplementation$0();
   $.indexSet($.colors, 'black', '#000000');
@@ -3189,6 +3194,10 @@ $.demo = function(p, dn) {
         p.erase$0();
         $.demo6(p);
         break;
+      case 7:
+        p.erase$0();
+        $.demo7(p);
+        break;
       default:
         p.erase$0();
         $.demo1(p);
@@ -3282,7 +3291,7 @@ $.demo1 = function(p) {
 };
 
 $.demo6 = function(p) {
-  $.pen.toCommands$1('color, red; width, 2; move, 15, 160, 2; color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; color, brown;  width, 2; move, -20, 40, 8; all, 6');
+  $.pen.toCommands$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
   $.pen.interpret$0();
 };
 

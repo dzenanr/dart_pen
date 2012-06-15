@@ -17,7 +17,7 @@ class Pen {
     down = true;
     color = 'black';
     width = 1;
-    
+
     path = new Path();
     var startSegment = new Segment(1, draw:false);
     startSegment.lines[0] = new Line.first(start);
@@ -66,7 +66,8 @@ class Pen {
   }
 
   toCommands(String commandsString) {
-    var commandsWoutSpaces = commandsString.trim().replaceAll(' ', '');
+    var singleLine = commandsString.replaceAll('\n', '');
+    var commandsWoutSpaces = singleLine.trim().replaceAll(' ', '');
     List commandStrings = commandsWoutSpaces.split(';');
     for (String commandString in commandStrings) {
       List commandElements = commandString.split(',');
@@ -85,14 +86,14 @@ class Pen {
                 down = true;
               } else if (downString == 'false') {
                 down = false;
-              } 
+              }
               break;
             case 'color':
               String colorString = command[1];
               color = colorString;
               break;
             case 'width':
-              String widthString = command[1];   
+              String widthString = command[1];
               width = Math.parseInt(widthString);
               break;
             case 'moveTo':
