@@ -10,7 +10,8 @@ class Input {
   SelectElement colorSelect;
   SelectElement widthSelect;
   ButtonElement centerButton;
-  SelectElement demoSelect;
+  SelectElement demosSelect;
+  ButtonElement demoButton;
 
   InputElement turnInput;
   InputElement advanceInput;
@@ -45,9 +46,16 @@ class Input {
       pen.moveTo(center());
     });
 
-    demoSelect = document.query('#demo');
-    demoSelect.on.change.add((Event e) {
-      demo(pen, Math.parseInt(demoSelect.value));
+    demosSelect = document.query('#demos');
+
+    demoButton = document.query('#demo');
+    demoButton.on.click.add((MouseEvent e) {
+      try {
+        var d = Math.parseInt(demosSelect.value);
+        demo(pen, d);
+      } catch(final error) {
+        randomDemo(pen);
+      }
     });
 
     turnInput = document.query('#turn');

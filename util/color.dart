@@ -11,3 +11,4 @@ colorMap() {
   colors['red'] = '#ff0000';
   colors['yellow'] = '#ffff00';
 }
+

@@ -1236,7 +1236,7 @@ $$.Line = {"":
 };
 
 $$.Input = {"":
- ["eraseButton", "allButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
+ ["eraseButton", "allButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
  super: "Object",
  Input$1: function(pen) {
   this.downCheckbox = $.document().query$1('#down');
@@ -1249,8 +1249,9 @@ $$.Input = {"":
   $.add$1(this.widthSelect.get$on().get$change(), new $.Closure11(this));
   this.centerButton = $.document().query$1('#center');
   $.add$1(this.centerButton.get$on().get$click(), new $.Closure12(this));
-  this.demoSelect = $.document().query$1('#demo');
-  $.add$1(this.demoSelect.get$on().get$change(), new $.Closure13(this));
+  this.demosSelect = $.document().query$1('#demos');
+  this.demoButton = $.document().query$1('#demo');
+  $.add$1(this.demoButton.get$on().get$click(), new $.Closure13(this));
   this.turnInput = $.document().query$1('#turn');
   this.turnInput.set$value('45');
   this.advanceInput = $.document().query$1('#advance');
@@ -1825,7 +1826,13 @@ $$.Closure13 = {"":
  ["this_4"],
  super: "Closure18",
  $call$1: function(e) {
-  $.demo(this.this_4.get$pen(), $.parseInt(this.this_4.get$demoSelect().get$value()));
+  try {
+    var d = $.parseInt(this.this_4.get$demosSelect().get$value());
+    $.demo(this.this_4.get$pen(), d);
+  } catch (exception) {
+    $.unwrapException(exception);
+    $.randomDemo(this.this_4.get$pen());
+  }
  }
 };
 
@@ -1919,6 +1926,11 @@ $.isNaN = function(receiver) {
   return receiver.isNaN$0();
 };
 
+$.isInfinite = function(receiver) {
+  if (!(typeof receiver === 'number')) return receiver.isInfinite$0();
+  return (receiver == Infinity) || (receiver == -Infinity);
+};
+
 $.eqB = function(a, b) {
   if (typeof a === "object") {
     if (!!a.operator$eq$1) return a.operator$eq$1(b) === true;
@@ -1987,6 +1999,17 @@ $.allMatchesInStringUnchecked = function(needle, haystack) {
     }
   }
   return result;
+};
+
+$.randomDemo = function(p) {
+  var start = $.center();
+  var x = $.toInt(start.get$x());
+  var y = $.toInt(start.get$y());
+  var commandsString = 'color, ' + $.S($.randomColor()) + '; ' + 'width, ' + $.S($.randomWidth()) + '; ' + 'move, ' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, ' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'down, false; ' + 'moveTo, ' + $.S(x) + ', ' + $.S(y) + '; ' + 'down, true; ' + 'color, ' + $.S($.randomColor()) + '; ' + 'width, ' + $.S($.randomWidth()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'all, ' + $.S($.randomRepeat()) + ';';
+  $.print(commandsString);
+  p.erase$0();
+  p.toCommands$1(commandsString);
+  p.interpret$0();
 };
 
 $.Line$first$1 = function(beginPoint) {
@@ -2203,6 +2226,10 @@ $.typeNameInChrome = function(obj) {
   return name$;
 };
 
+$.randomRepeat = function() {
+  return $.randomInt(10);
+};
+
 $.concatAll = function(strings) {
   $.checkNull(strings);
   for (var t1 = $.iterator(strings), result = ''; t1.hasNext$0() === true; ) {
@@ -2349,6 +2376,10 @@ $.indexSet = function(a, index, value) {
   $.indexSet$slow(a, index, value);
 };
 
+$.randomAdvance = function() {
+  return $.randomInt(120);
+};
+
 $._DOMApplicationCacheEventsImpl$1 = function(_ptr) {
   return new $._DOMApplicationCacheEventsImpl(_ptr);
 };
@@ -2486,12 +2517,24 @@ $.mul = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a * b) : $.mul$slow(a, b);
 };
 
+$.random = function() {
+  return $.random2();
+};
+
+$.randomWidth = function() {
+  return $.randomInt(4);
+};
+
 $.parseInt = function(str) {
   return $.parseInt2(str);
 };
 
 $._NotificationEventsImpl$1 = function(_ptr) {
   return new $._NotificationEventsImpl(_ptr);
+};
+
+$.randomInt = function(max) {
+  return $.toInt($.mul($.random(), max));
 };
 
 $.parseInt2 = function(str) {
@@ -2517,6 +2560,10 @@ $.lt$slow = function(a, b) {
     return a < b;
   }
   return a.operator$lt$1(b);
+};
+
+$.random2 = function() {
+  return Math.random();
 };
 
 $.index$slow = function(a, index) {
@@ -2580,8 +2627,8 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.demo5 = function(p) {
-  $.pen.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
-  $.pen.interpret$0();
+  p.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
+  p.interpret$0();
 };
 
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
@@ -2727,6 +2774,14 @@ $.draw = function() {
   $.context.fill$0();
   $.context.stroke$0();
   $.context.closePath$0();
+};
+
+$.toInt = function(receiver) {
+  if (!(typeof receiver === 'number')) return receiver.toInt$0();
+  if ($.isNaN(receiver) === true) throw $.captureStackTrace($.BadNumberFormatException$1('NaN'));
+  if ($.isInfinite(receiver) === true) throw $.captureStackTrace($.BadNumberFormatException$1('Infinity'));
+  var truncated = $.truncate(receiver);
+  return (truncated == -0.0) ? 0 : truncated;
 };
 
 $._SVGElementInstanceEventsImpl$1 = function(_ptr) {
@@ -2974,6 +3029,10 @@ $.Pen$1 = function(start) {
   return t1;
 };
 
+$.randomTurn = function() {
+  return $.randomInt(360);
+};
+
 $.mapToString = function(m) {
   var result = $.StringBufferImpl$1('');
   $._emitMap(m, result, $.List((void 0)));
@@ -3016,8 +3075,8 @@ $._emitMap = function(m, result, visiting) {
 };
 
 $.demo8 = function(p) {
-  $.pen.toCommands$1('color, yellow;width, 3;move, 80, 80, 3;color, gray;width, 1;move, -18, 60, 6;color, blue;width, 2;move, 120, 100, 5;move, 5, -80, 9;all, 4');
-  $.pen.interpret$0();
+  p.toCommands$1('color, yellow;width, 3;move, 80, 80, 3;color, gray;width, 1;move, -18, 60, 6;color, blue;width, 2;move, 120, 100, 5;move, 5, -80, 9;all, 4');
+  p.interpret$0();
 };
 
 $.startsWith = function(receiver, other) {
@@ -3042,8 +3101,8 @@ $.toStringForNativeObject = function(obj) {
 };
 
 $.demo7 = function(p) {
-  $.pen.toCommands$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
-  $.pen.interpret$0();
+  p.toCommands$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
+  p.interpret$0();
 };
 
 $.colorMap = function() {
@@ -3113,6 +3172,20 @@ $._TextTrackCueEventsImpl$1 = function(_ptr) {
   return new $._TextTrackCueEventsImpl(_ptr);
 };
 
+$.randomColor = function() {
+  var colorList = ['black', 'blue', 'brown', 'gray', 'green', 'orange', 'red', 'yellow'];
+  var colorCount = colorList.length;
+  var t1 = $.toInt($.mul($.random(), colorCount));
+  if (t1 !== (t1 | 0)) throw $.iae(t1);
+  var t2 = colorList.length;
+  if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
+  return colorList[t1];
+};
+
+$._ElementEventsImpl$1 = function(_ptr) {
+  return new $._ElementEventsImpl(_ptr);
+};
+
 $.getFunctionForTypeNameOf = function() {
   if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
   var userAgent = (navigator.userAgent);
@@ -3120,10 +3193,6 @@ $.getFunctionForTypeNameOf = function() {
   if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
   if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
   return $.constructorNameFallback;
-};
-
-$._ElementEventsImpl$1 = function(_ptr) {
-  return new $._ElementEventsImpl(_ptr);
 };
 
 $.div = function(a, b) {
@@ -3300,8 +3369,8 @@ $.demo1 = function(p) {
 };
 
 $.demo6 = function(p) {
-  $.pen.toCommands$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
-  $.pen.interpret$0();
+  p.toCommands$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
+  p.interpret$0();
 };
 
 $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
@@ -3309,7 +3378,7 @@ $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
   t1.Input$1(pen);
   return t1;
 };
