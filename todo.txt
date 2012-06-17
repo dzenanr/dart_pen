@@ -6,6 +6,8 @@ add functions and recursion
 
 To Correct
 
+Error in interpretation of commands! -- Illegal argument(s): 45 
+
 leading space in Commands
 
 after random demo

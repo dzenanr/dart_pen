@@ -119,13 +119,13 @@ randomColor; randomWidth; randomMove; randomMove; down, false; moveToStart; down
  move, 142.16733707115054, 9.842949099838734, 3;
  move, 88.21683551184833, 81.68889757245779, 11;
  color, brown;
- width, 0;
+ width, 1;
  move, 13.20301872678101, 52.70682651549578, 11;
  down, false;
  moveTo, 333, 333;
  down, true;
  color, black;
- width, 0;
+ width, 2;
  move, 271.52888369746506, 155.66762581467628, 7;
  moveTo, 333, 333;
  move, 245.14223811216652, 122.5909748673439, 10;

@@ -3,6 +3,7 @@ class Commands {
   final Pen pen;
 
   ButtonElement showButton;
+  ButtonElement clearButton;
   ButtonElement drawButton;
   TextAreaElement commandsTextArea;
 
@@ -11,6 +12,11 @@ class Commands {
     showButton.on.click.add((MouseEvent e) {
       clear();
       commandsTextArea.value = pen.fromCommands();
+    });
+
+    clearButton = document.query('#clear');
+    clearButton.on.click.add((MouseEvent e) {
+      clear();
     });
 
     drawButton = document.query('#draw');

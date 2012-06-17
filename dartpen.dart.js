@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure20(t1));
+  $.forEach(this._backingMap, new $.Closure21(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure21 = {"":
+$$.Closure22 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -1574,16 +1574,16 @@ $$.Input = {"":
   this.downCheckbox = $.document().query$1('#down');
   var t1 = this.pen.get$down();
   this.downCheckbox.set$checked(t1);
-  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure11(this));
+  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure12(this));
   this.colorSelect = $.document().query$1('#color');
-  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure12(this));
+  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure13(this));
   this.widthSelect = $.document().query$1('#width');
-  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure13(this));
+  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure14(this));
   this.centerButton = $.document().query$1('#center');
-  $.add$1(this.centerButton.get$on().get$click(), new $.Closure14(this));
+  $.add$1(this.centerButton.get$on().get$click(), new $.Closure15(this));
   this.demosSelect = $.document().query$1('#demos');
   this.demoButton = $.document().query$1('#demo');
-  $.add$1(this.demoButton.get$on().get$click(), new $.Closure15(this));
+  $.add$1(this.demoButton.get$on().get$click(), new $.Closure16(this));
   this.turnInput = $.document().query$1('#turn');
   this.turnInput.set$value('45');
   this.advanceInput = $.document().query$1('#advance');
@@ -1591,18 +1591,18 @@ $$.Input = {"":
   this.repeatInput = $.document().query$1('#repeat');
   this.repeatInput.set$value('0');
   this.moveButton = $.document().query$1('#move');
-  $.add$1(this.moveButton.get$on().get$click(), new $.Closure16(this));
+  $.add$1(this.moveButton.get$on().get$click(), new $.Closure17(this));
   this.randomButton = $.document().query$1('#random');
-  $.add$1(this.randomButton.get$on().get$click(), new $.Closure17(this));
+  $.add$1(this.randomButton.get$on().get$click(), new $.Closure18(this));
   this.allButton = $.document().query$1('#all');
-  $.add$1(this.allButton.get$on().get$click(), new $.Closure18(this));
+  $.add$1(this.allButton.get$on().get$click(), new $.Closure19(this));
   this.eraseButton = $.document().query$1('#erase');
-  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure19(this));
+  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure20(this));
  }
 };
 
 $$.Commands = {"":
- ["commandsTextArea?", "drawButton", "showButton", "pen?"],
+ ["commandsTextArea?", "drawButton", "clearButton", "showButton", "pen?"],
  super: "Object",
  clear$0: function() {
   this.commandsTextArea.set$value('');
@@ -1611,8 +1611,10 @@ $$.Commands = {"":
  Commands$1: function(pen) {
   this.showButton = $.document().query$1('#show');
   $.add$1(this.showButton.get$on().get$click(), new $.Closure9(this));
+  this.clearButton = $.document().query$1('#clear');
+  $.add$1(this.clearButton.get$on().get$click(), new $.Closure10(this));
   this.drawButton = $.document().query$1('#draw');
-  $.add$1(this.drawButton.get$on().get$click(), new $.Closure10(this));
+  $.add$1(this.drawButton.get$on().get$click(), new $.Closure11(this));
   this.commandsTextArea = $.document().query$1('#commands');
  }
 };
@@ -2064,7 +2066,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -2072,7 +2074,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -2080,7 +2082,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -2088,7 +2090,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -2100,7 +2102,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -2108,7 +2110,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -2116,7 +2118,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure21",
+ super: "Closure22",
  $call$0: function() {
   return $.CTC4;
  }
@@ -2124,7 +2126,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -2134,7 +2136,7 @@ $$.Closure8 = {"":
 
 $$.Closure9 = {"":
  ["this_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
@@ -2144,35 +2146,43 @@ $$.Closure9 = {"":
 
 $$.Closure10 = {"":
  ["this_1"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
-  this.this_1.get$pen().erase$0();
-  this.this_1.get$pen().toCommands$1(this.this_1.get$commandsTextArea().get$value());
-  this.this_1.get$pen().interpret$0();
+  this.this_1.clear$0();
  }
 };
 
 $$.Closure11 = {"":
+ ["this_2"],
+ super: "Closure22",
+ $call$1: function(e) {
+  this.this_2.get$pen().erase$0();
+  this.this_2.get$pen().toCommands$1(this.this_2.get$commandsTextArea().get$value());
+  this.this_2.get$pen().interpret$0();
+ }
+};
+
+$$.Closure12 = {"":
  ["this_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 };
 
-$$.Closure12 = {"":
+$$.Closure13 = {"":
  ["this_1"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
  }
 };
 
-$$.Closure13 = {"":
+$$.Closure14 = {"":
  ["this_2"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -2185,17 +2195,17 @@ $$.Closure13 = {"":
  }
 };
 
-$$.Closure14 = {"":
+$$.Closure15 = {"":
  ["this_3"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_3.get$pen().moveTo$1($.center());
  }
 };
 
-$$.Closure15 = {"":
+$$.Closure16 = {"":
  ["this_4"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   try {
     var d = $.parseInt(this.this_4.get$demosSelect().get$value());
@@ -2207,9 +2217,9 @@ $$.Closure15 = {"":
  }
 };
 
-$$.Closure16 = {"":
+$$.Closure17 = {"":
  ["this_5"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   try {
     var turn = $.parseInt(this.this_5.get$turnInput().get$value());
@@ -2224,25 +2234,25 @@ $$.Closure16 = {"":
  }
 };
 
-$$.Closure17 = {"":
+$$.Closure18 = {"":
  ["this_6"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_6.get$pen().randomMove$0();
  }
 };
 
-$$.Closure18 = {"":
+$$.Closure19 = {"":
  ["this_7"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_7.get$pen().all$0();
  }
 };
 
-$$.Closure19 = {"":
+$$.Closure20 = {"":
  ["this_8"],
- super: "Closure21",
+ super: "Closure22",
  $call$1: function(e) {
   this.this_8.get$pen().erase$0();
   var t1 = $.document().query$1('#down');
@@ -2250,15 +2260,15 @@ $$.Closure19 = {"":
  }
 };
 
-$$.Closure20 = {"":
+$$.Closure21 = {"":
  ["box_0"],
- super: "Closure21",
+ super: "Closure22",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure21 = {"":
+$$.Closure22 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -2266,7 +2276,7 @@ $$.Closure21 = {"":
  }
 };
 
-Isolate.$defineClass('Closure22', 'Closure21', ['self', 'target'], {
+Isolate.$defineClass('Closure23', 'Closure22', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -2990,7 +3000,7 @@ $._PeerConnection00EventsImpl$1 = function(_ptr) {
 };
 
 $.Commands$1 = function(pen) {
-  var t1 = new $.Commands((void 0), (void 0), (void 0), pen);
+  var t1 = new $.Commands((void 0), (void 0), (void 0), (void 0), pen);
   t1.Commands$1(pen);
   return t1;
 };
@@ -4288,17 +4298,17 @@ $.CTC5 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '[-[\\]{}()
 $.CTC2 = new Isolate.$isolateProperties.NoMoreElementsException();
 $._pendingRequests = (void 0);
 $.context = (void 0);
-$._nextMeasurementFrameScheduled = false;
-$._firstMeasurementRequest = true;
-$._pendingMeasurementFrameCallbacks = (void 0);
 $.pen = (void 0);
 $.commands = (void 0);
-$.colors = (void 0);
-$.data = (void 0);
 $.canvas = (void 0);
 $.colorList = (void 0);
 $.input = (void 0);
 $._getTypeNameOf = (void 0);
+$._nextMeasurementFrameScheduled = false;
+$._firstMeasurementRequest = true;
+$._pendingMeasurementFrameCallbacks = (void 0);
+$.colors = (void 0);
+$.data = (void 0);
 var $ = null;
 Isolate.$finishClasses($$);
 $$ = {};
@@ -4629,7 +4639,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure22(this, 'click$0'); },
+ get$click: function() { return new $.Closure23(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4691,7 +4701,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure22(this, 'click$0'); },
+ get$click: function() { return new $.Closure23(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);
