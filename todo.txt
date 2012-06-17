@@ -6,31 +6,24 @@ add functions and recursion
 
 To Correct
 
-Error in interpretation of commands! -- Illegal argument(s): 45 
-
 leading space in Commands
 
-after random demo
+after random demo, width = 0?
 
- color, black; is at the end!?
-
- down, false;
- down, true;
+ color, blue;
+ width, 2;
+ move, 274.98584828339517, 115.80241855233908, 8;
+ move, 36.64095603860915, 103.33348747342825, 8;
  color, black;
  width, 1;
- move, -324.28948441520333, 17.64570664614439, 5;
- move, 283.02060185931623, 104.29802384227514, 12;
- color, orange;
- width, 3;
- move, 224.71475972793996, -61.352320313453674, 1;
+ move, 117.38634327426553, 10.230339765548706, 4;
  down, false;
  moveTo, 333, 333;
  down, true;
- color, gray;
+ color, orange;
  width, 0;
- move, 24.412969322875142, 15.981129109859467, 9;
+ move, 306.68043362908065, 68.54870561510324, 3;
  moveTo, 333, 333;
- move, 359.3532699532807, 121.89520593732595, 0;
- move, 204.495484046638, 28.274128027260303, 7;
- all, 11;
- color, black;
+ move, 260.83516580052674, -140.40282912552357, 0;
+ move, 58.799488451331854, 120.26723247021437, 8;
+ all, 3;

@@ -898,9 +898,10 @@ $$.FutureAlreadyCompleteException = {"":
 $$.Pen = {"":
  ["commands", "path?", "_width", "_color", "_down", "start"],
  super: "Object",
- interpret$0: function() {
+ interpret$1: function(commandsString) {
   try {
-    for (var t1 = $.iterator(this.commands); t1.hasNext$0() === true; ) {
+    var commandList = this._toCommands$1(commandsString);
+    for (var t1 = $.iterator(commandList); t1.hasNext$0() === true; ) {
       var command = t1.next$0();
       if ($.gtB($.get$length(command), 0)) {
         switch ($.index(command, 0)) {
@@ -960,11 +961,13 @@ $$.Pen = {"":
     $.print('Error in interpretation of commands! -- ' + $.S(error));
   }
  },
- toCommands$1: function(commandsString) {
+ _toCommands$1: function(commandsString) {
+  var commandList = $.List((void 0));
+  $.setRuntimeTypeInfo(commandList, ({E: 'List'}));
   for (var t1 = $.iterator($.split($.replaceAll($.trim($.replaceAll(commandsString, '\n', '')), ' ', ''), ';')); t1.hasNext$0() === true; ) {
-    var commandElements = $.split(t1.next$0(), ',');
-    $.add$1(this.commands, commandElements);
+    commandList.push($.split(t1.next$0(), ','));
   }
+  return commandList;
  },
  fromCommands$0: function() {
   for (var t1 = $.iterator(this.commands), result = ''; t1.hasNext$0() === true; ) {
@@ -1041,7 +1044,7 @@ $$.Pen = {"":
   }
  },
  randomAll$0: function() {
-  this.all$1($.randomInt(16));
+  this.all$1($.randomInt(10));
  },
  all$1: function(repeat) {
   if (typeof repeat !== 'number') return this.all$1$bailout(repeat, 1, repeat);
@@ -1082,7 +1085,7 @@ $$.Pen = {"":
   if (typeof t1 !== 'number') return this.randomMove$0$bailout(3, t2, t1, 0);
   var t3 = $.randomNum(160);
   if (typeof t3 !== 'number') return this.randomMove$0$bailout(4, t2, t1, t3);
-  return this.move$3(t2, t1 * t3, $.randomInt(16));
+  return this.move$3(t2, t1 * t3, $.randomInt(10));
  },
  randomMove$0$bailout: function(state, env0, env1, env2) {
   switch (state) {
@@ -1118,7 +1121,7 @@ $$.Pen = {"":
       var t3 = $.randomNum(160);
     case 4:
       state = 0;
-      return this.move$3(t2, $.mul(t1, t3), $.randomInt(16));
+      return this.move$3(t2, $.mul(t1, t3), $.randomInt(10));
   }
  },
  move$3: function(turn, advance, repeat) {
@@ -1311,7 +1314,7 @@ $$.Pen = {"":
   }
  },
  randomWidth$0: function() {
-  var t1 = $.randomInt(6);
+  var t1 = $.randomInt(5);
   this.set$width(t1);
   return t1;
  },
@@ -1684,6 +1687,10 @@ $$._DeprecatedPeerConnectionEventsImpl = {"":
 $$._DocumentEventsImpl = {"":
  ["_ptr"],
  super: "_ElementEventsImpl",
+ get$select: function() {
+  return this._get$1('select');
+ },
+ select$0: function() { return this.get$select().$call$0(); },
  get$copy: function() {
   return this._get$1('copy');
  },
@@ -1720,6 +1727,10 @@ $$._ElementRectImpl = {"":
 $$._ElementEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl",
+ get$select: function() {
+  return this._get$1('select');
+ },
+ select$0: function() { return this.get$select().$call$0(); },
  get$copy: function() {
   return this._get$1('copy');
  },
@@ -1852,6 +1863,10 @@ $$._PeerConnection00EventsImpl = {"":
 $$._SVGElementInstanceEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl",
+ get$select: function() {
+  return this._get$1('select');
+ },
+ select$0: function() { return this.get$select().$call$0(); },
  get$copy: function() {
   return this._get$1('copy');
  },
@@ -1900,6 +1915,10 @@ $$._WebSocketEventsImpl = {"":
 $$._WindowEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl",
+ get$select: function() {
+  return this._get$1('select');
+ },
+ select$0: function() { return this.get$select().$call$0(); },
  get$message: function() {
   return this._get$1('message');
  },
@@ -2141,6 +2160,7 @@ $$.Closure9 = {"":
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
   this.this_0.get$commandsTextArea().set$value(t1);
+  this.this_0.get$commandsTextArea().select$0();
  }
 };
 
@@ -2157,8 +2177,7 @@ $$.Closure11 = {"":
  super: "Closure22",
  $call$1: function(e) {
   this.this_2.get$pen().erase$0();
-  this.this_2.get$pen().toCommands$1(this.this_2.get$commandsTextArea().get$value());
-  this.this_2.get$pen().interpret$0();
+  this.this_2.get$pen().interpret$1(this.this_2.get$commandsTextArea().get$value());
  }
 };
 
@@ -2292,6 +2311,19 @@ $.FutureImpl$0 = function() {
   return new $.FutureImpl([], t2, t1, false, (void 0), (void 0), (void 0), false);
 };
 
+$.demo1 = function(p) {
+  p.erase$0();
+  p.set$color('red');
+  p.move$3(45, 80, 1);
+  p.set$width(2);
+  p.set$color('yellow');
+  p.move$3(50, 80, 1);
+  p.set$width(1);
+  p.set$color('blue');
+  p.move$3(65, 80, 1);
+  p.all$1(4);
+};
+
 $.randomSign = function() {
   return $.eqB($.randomInt(10), 0) ? -1 : 1;
 };
@@ -2398,8 +2430,7 @@ $.allMatchesInStringUnchecked = function(needle, haystack) {
 
 $.randomDemo = function(p) {
   p.erase$0();
-  p.toCommands$1('randomColor; randomWidth; randomMove; randomMove; randomColor; randomWidth; randomMove; down, false; moveToStart; down, true; randomColor; randomWidth; randomMove; moveToStart; randomMove; randomMove; randomAll');
-  p.interpret$0();
+  p.interpret$1('randomColor; randomWidth; randomMove; randomMove; randomColor; randomWidth; randomMove; down, false; moveToStart; down, true; randomColor; randomWidth; randomMove; moveToStart; randomMove; randomMove; randomAll');
 };
 
 $.Line$first$1 = function(beginPoint) {
@@ -2438,6 +2469,7 @@ $.allMatches = function(receiver, str) {
 };
 
 $.demo4 = function(p) {
+  p.erase$0();
   p.set$color('red');
   p.move$3(33, 100, 2);
   p.set$color('gray');
@@ -3010,8 +3042,8 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.demo5 = function(p) {
-  p.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
-  p.interpret$0();
+  p.erase$0();
+  p.interpret$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
 };
 
 $.f1 = function(p, length$, depth) {
@@ -3067,6 +3099,7 @@ $.IndexOutOfRangeException$1 = function(_index) {
 };
 
 $.demo3 = function(p) {
+  p.erase$0();
   p.set$color('red');
   p.move$3(33, 100, 0);
   p.move$3(120, 100, 1);
@@ -3262,6 +3295,7 @@ $.geB = function(a, b) {
 };
 
 $.demo9 = function(p) {
+  p.erase$0();
   $.f1(p, 320, 4);
 };
 
@@ -3337,6 +3371,7 @@ $.indexOf2 = function(a, element, startIndex, endIndex) {
 };
 
 $.demo2 = function(p) {
+  p.erase$0();
   p.set$color('red');
   p.move$3(90, 100, 0);
   p.move$3(120, 100, 1);
@@ -3493,8 +3528,8 @@ $._emitMap = function(m, result, visiting) {
 };
 
 $.demo8 = function(p) {
-  p.toCommands$1('color, yellow; width, 3; move, 80, 80, 3; color, gray; width, 1; move, -18, 60, 6; color, blue; width, 2; move, 120, 100, 5; move, 5, -80, 9; all, 4');
-  p.interpret$0();
+  p.erase$0();
+  p.interpret$1('color, yellow; width, 3; move, 80, 80, 3; color, gray; width, 1; move, -18, 60, 6; color, blue; width, 2; move, 120, 100, 5; move, 5, -80, 9; all, 4');
 };
 
 $.startsWith = function(receiver, other) {
@@ -3519,8 +3554,8 @@ $.toStringForNativeObject = function(obj) {
 };
 
 $.demo7 = function(p) {
-  p.toCommands$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
-  p.interpret$0();
+  p.erase$0();
+  p.interpret$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
 };
 
 $.colorMap = function() {
@@ -3587,15 +3622,6 @@ $._ElementEventsImpl$1 = function(_ptr) {
   return new $._ElementEventsImpl(_ptr);
 };
 
-$.getFunctionForTypeNameOf = function() {
-  if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
-  var userAgent = (navigator.userAgent);
-  if ($.contains$1(userAgent, $.CTC8) === true) return $.typeNameInChrome;
-  if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
-  if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
-  return $.constructorNameFallback;
-};
-
 $.typeNameInFirefox = function(obj) {
   var name$ = $.constructorNameFallback(obj);
   if ($.eqB(name$, 'Window')) return 'DOMWindow';
@@ -3607,6 +3633,15 @@ $.typeNameInFirefox = function(obj) {
 
 $.div = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
+};
+
+$.getFunctionForTypeNameOf = function() {
+  if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
+  var userAgent = (navigator.userAgent);
+  if ($.contains$1(userAgent, $.CTC8) === true) return $.typeNameInChrome;
+  if ($.contains$1(userAgent, 'Firefox') === true) return $.typeNameInFirefox;
+  if ($.contains$1(userAgent, 'MSIE') === true) return $.typeNameInIE;
+  return $.constructorNameFallback;
 };
 
 $.randomListElement = function(list) {
@@ -3676,47 +3711,36 @@ $.demo = function(p, dn) {
   try {
     switch (dn) {
       case 1:
-        p.erase$0();
         $.demo1(p);
         break;
       case 2:
-        p.erase$0();
         $.demo2(p);
         break;
       case 3:
-        p.erase$0();
         $.demo3(p);
         break;
       case 4:
-        p.erase$0();
         $.demo4(p);
         break;
       case 5:
-        p.erase$0();
         $.demo5(p);
         break;
       case 6:
-        p.erase$0();
         $.demo6(p);
         break;
       case 7:
-        p.erase$0();
         $.demo7(p);
         break;
       case 8:
-        p.erase$0();
         $.demo8(p);
         break;
       case 9:
-        p.erase$0();
         $.demo9(p);
         break;
       case 10:
-        p.erase$0();
         $.demo10(p);
         break;
       default:
-        p.erase$0();
         $.demo1(p);
     }
   } catch (exception) {
@@ -3788,25 +3812,13 @@ $.div$slow = function(a, b) {
   return a.operator$div$1(b);
 };
 
-$.demo1 = function(p) {
-  p.set$color('red');
-  p.move$3(45, 80, 1);
-  p.set$width(2);
-  p.set$color('yellow');
-  p.move$3(50, 80, 1);
-  p.set$width(1);
-  p.set$color('blue');
-  p.move$3(65, 80, 1);
-  p.all$1(4);
-};
-
 $._FileReaderEventsImpl$1 = function(_ptr) {
   return new $._FileReaderEventsImpl(_ptr);
 };
 
 $.demo6 = function(p) {
-  p.toCommands$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
-  p.interpret$0();
+  p.erase$0();
+  p.interpret$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
 };
 
 $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
@@ -3877,6 +3889,7 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
 };
 
 $.demo10 = function(p) {
+  p.erase$0();
   $.f2(p, 240, 4);
 };
 
@@ -4499,6 +4512,10 @@ $.$defineNativeClass('ClientRectList', ["length?"], {
 });
 
 _ConsoleImpl = (typeof console == 'undefined' ? {} : console);
+$.$defineNativeClass('HTMLContentElement', [], {
+ select$0: function() { return this.select.$call$0(); }
+});
+
 $.$defineNativeClass('DOMApplicationCache', [], {
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
@@ -5066,6 +5083,9 @@ $.$defineNativeClass('HTMLImageElement', ["y?", "x?", "width=", "height?"], {
 });
 
 $.$defineNativeClass('HTMLInputElement', ["width=", "value=", "pattern?", "height?", "checked="], {
+ select$0: function() {
+  return this.select();
+ },
  get$on: function() {
   return $._InputElementEventsImpl$1(this);
  }
@@ -5797,6 +5817,9 @@ $.$defineNativeClass('HTMLTableElement', ["width="], {
 });
 
 $.$defineNativeClass('HTMLTextAreaElement', ["value="], {
+ select$0: function() {
+  return this.select();
+ }
 });
 
 $.$defineNativeClass('TextMetrics', ["width?"], {
@@ -6091,7 +6114,7 @@ $.$defineNativeClass('IDBOpenDBRequest', [], {
  }
 });
 
-// 215 dynamic classes.
+// 216 dynamic classes.
 // 324 classes
 // 26 !leaf
 (function(){

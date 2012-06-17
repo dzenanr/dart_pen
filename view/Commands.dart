@@ -12,6 +12,7 @@ class Commands {
     showButton.on.click.add((MouseEvent e) {
       clear();
       commandsTextArea.value = pen.fromCommands();
+      commandsTextArea.select();
     });
 
     clearButton = document.query('#clear');
@@ -22,8 +23,7 @@ class Commands {
     drawButton = document.query('#draw');
     drawButton.on.click.add((MouseEvent e) {
       pen.erase();
-      pen.toCommands(commandsTextArea.value);
-      pen.interpret();
+      pen.interpret(commandsTextArea.value);
     });
 
     commandsTextArea = document.query('#commands');

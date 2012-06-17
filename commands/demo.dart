@@ -2,47 +2,36 @@ demo(var p, int dn) {
   try {
     switch(dn) {
       case 1:
-        p.erase();
         demo1(p);
         break;
       case 2:
-        p.erase();
         demo2(p);
         break;
       case 3:
-        p.erase();
         demo3(p);
         break;
       case 4:
-        p.erase();
         demo4(p);
         break;
       case 5:
-        p.erase();
         demo5(p);
         break;
       case 6:
-        p.erase();
         demo6(p);
         break;
       case 7:
-        p.erase();
         demo7(p);
         break;
       case 8:
-        p.erase();
         demo8(p);
         break;
       case 9:
-        p.erase();
         demo9(p);
         break;
       case 10:
-        p.erase();
         demo10(p);
         break;
       default:
-        p.erase();
         demo1(p);
     }
   } catch(final error) {
@@ -51,6 +40,7 @@ demo(var p, int dn) {
 }
 
 demo1(var p) {
+  p.erase();
   p.color = 'red';
   p.move(45, 80, 1);
   p.width = 2;
@@ -63,6 +53,7 @@ demo1(var p) {
 }
 
 demo2(var p) {
+  p.erase();
   p.color = 'red';
   p.move(90, 100, 0);
   p.move(120, 100, 1);
@@ -76,6 +67,7 @@ demo2(var p) {
 }
 
 demo3(var p) {
+  p.erase();
   p.color = 'red';
   p.move(33, 100, 0);
   p.move(120, 100, 1);
@@ -89,6 +81,7 @@ demo3(var p) {
 }
 
 demo4(var p) {
+  p.erase();
   p.color = 'red';
   p.move(33, 100, 2);
   p.color = 'gray';
@@ -105,8 +98,8 @@ demo4(var p) {
 
 demo5(var p) {
   var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7';
-  p.toCommands(commandsString);
-  p.interpret();
+  p.erase();
+  p.interpret(commandsString);
 }
 
 demo6(var p) {
@@ -116,8 +109,8 @@ demo6(var p) {
     color, brown;  width, 2; move, -20, 40, 8; 
     all, 6;
 ''';
-  p.toCommands(commandsString);
-  p.interpret();
+  p.erase();
+  p.interpret(commandsString);
 }
 
 demo7(var p) {
@@ -134,8 +127,8 @@ demo7(var p) {
     move, 90, 80, 4; 
     all, 5;
   ''';
-  p.toCommands(commandsString);
-  p.interpret();
+  p.erase();
+  p.interpret(commandsString);
 }
 
 demo8(var p) {
@@ -151,8 +144,8 @@ demo8(var p) {
     'move, 120, 100, 5; '
     'move, 5, -80, 9; '
     'all, 4';
-  p.toCommands(commandsString);
-  p.interpret();
+  p.erase();
+  p.interpret(commandsString);
 }
 
 f1(var p, var length, var depth) {
@@ -170,6 +163,7 @@ f1(var p, var length, var depth) {
 }
 
 demo9(var p) {
+  p.erase();
   f1(p, 320, 4);
 }
 
@@ -188,6 +182,7 @@ f2(var p, var length, var depth) {
 }
 
 demo10(var p) {
+  p.erase();
   f2(p, 240, 4);
 }
 
@@ -211,8 +206,7 @@ randomDemo(var p) {
     'randomMove; '
     'randomAll';
   p.erase();
-  p.toCommands(commandsString);
-  p.interpret();
+  p.interpret(commandsString);
 }
 
 

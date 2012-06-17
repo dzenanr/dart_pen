@@ -2,8 +2,8 @@ class Pen {
 
   static final num MAX_TURN = 360;
   static final num MAX_ADVANCE = 160;
-  static final int MAX_REPEAT = 16;
-  static final int MAX_WIDTH = 6;
+  static final int MAX_REPEAT = 10;
+  static final int MAX_WIDTH = 5;
 
   Point start;
 
@@ -135,19 +135,22 @@ class Pen {
     return result;
   }
 
-  toCommands(String commandsString) {
+  List<List> _toCommands(String commandsString) {
+    var commandList = new List<List>();
     var singleLine = commandsString.replaceAll('\n', '');
     var commandsWoutSpaces = singleLine.trim().replaceAll(' ', '');
     List commandStrings = commandsWoutSpaces.split(';');
     for (String commandString in commandStrings) {
       List commandElements = commandString.split(',');
-      commands.add(commandElements);
+      commandList.add(commandElements);
     }
+    return commandList;
   }
 
-  interpret() {
+  interpret(String commandsString) {
     try {
-      for (var command in commands) {
+      List<List> commandList = _toCommands(commandsString);
+      for (var command in commandList) {
         if (command.length > 0) {
           switch(command[0]) {
             case 'down':
