@@ -51,6 +51,9 @@ class Pen {
 
   void set width(int width) {
     _width = width;
+    if (width == 0) {
+      _width = 1;
+    }
     commands.add(['width', width]);
   }
 
@@ -118,7 +121,7 @@ class Pen {
   String fromCommands() {
     String result = '';
     for (var command in commands) {
-      if (command.length > 0) {
+      if (command.length > 1) { // skip commands without params such as randomMove
         String commandLine = command[0];
         if (commandLine != '') {
           for (var i = 1; i < command.length; i++) {
@@ -174,6 +177,9 @@ class Pen {
               String yString = command[2];
               moveTo(new Point(Math.parseDouble(xString), Math.parseDouble(yString)));
               break;
+            case 'moveToStart':
+              moveToStart();
+              break;
             case 'randomMoveTo':
               randomMoveTo();
               break;
@@ -192,9 +198,9 @@ class Pen {
               break;
             case 'randomAll':
               randomAll();
-          }
-        }
-      }
+          } // switch
+        } // if
+      } // for
     } catch(final error) {
       print('Error in interpretation of commands! -- $error');
     }

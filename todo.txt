@@ -3,3 +3,32 @@ To Do
 add, size and rotate shapes
 teach some basic geometry
 add functions and recursion
+
+To Correct
+
+leading space in Commands
+
+after random demo
+
+ color, black; is at the end!?
+
+ down, false;
+ down, true;
+ color, black;
+ width, 1;
+ move, -324.28948441520333, 17.64570664614439, 5;
+ move, 283.02060185931623, 104.29802384227514, 12;
+ color, orange;
+ width, 3;
+ move, 224.71475972793996, -61.352320313453674, 1;
+ down, false;
+ moveTo, 333, 333;
+ down, true;
+ color, gray;
+ width, 0;
+ move, 24.412969322875142, 15.981129109859467, 9;
+ moveTo, 333, 333;
+ move, 359.3532699532807, 121.89520593732595, 0;
+ move, 204.495484046638, 28.274128027260303, 7;
+ all, 11;
+ color, black;

@@ -930,6 +930,9 @@ $$.Pen = {"":
             var yString = $.index(command, 2);
             this.moveTo$1($.Point($.parseDouble(xString), $.parseDouble(yString)));
             break;
+          case 'moveToStart':
+            this.moveToStart$0();
+            break;
           case 'randomMoveTo':
             this.randomMoveTo$0();
             break;
@@ -967,7 +970,7 @@ $$.Pen = {"":
   for (var t1 = $.iterator(this.commands), result = ''; t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
     if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2.constructor !== Array || !!!t2.is$JavaScriptIndexingBehavior)) return this.fromCommands$0$bailout(1, result, t1, t2, 0);
-    if (t2.length > 0) {
+    if (t2.length > 1) {
       var t3 = t2.length;
       if (0 >= t3) throw $.ioore(0);
       var t4 = t2[0];
@@ -1014,7 +1017,7 @@ $$.Pen = {"":
           case 1:
             state = 0;
           case 2:
-            if (state == 2 || (state == 0 && $.gtB($.get$length(t2), 0))) {
+            if (state == 2 || (state == 0 && $.gtB($.get$length(t2), 1))) {
               switch (state) {
                 case 0:
                   var commandLine = $.index(t2, 0);
@@ -1264,6 +1267,9 @@ $$.Pen = {"":
       return this.moveTo$1($.randomPoint(t2, $.mul(t1, t3)));
   }
  },
+ moveToStart$0: function() {
+  return this.moveTo$1(this.start);
+ },
  moveTo$1: function(point) {
   var lastLine = $.pen.get$path().lastLine$0();
   var segment = $.Segment$2(1, true);
@@ -1319,6 +1325,7 @@ $$.Pen = {"":
  },
  set$width: function(width) {
   this._width = width;
+  if ($.eqB(width, 0)) this._width = 1;
   $.add$1(this.commands, ['width', width]);
  },
  get$color: function() {
