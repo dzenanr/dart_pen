@@ -64,6 +64,10 @@ git commit -m 'short description'
 
 git status
 
+git rm file
+
+git status
+
 git push
 git push origin master
 Enter passphrase for key ... :
