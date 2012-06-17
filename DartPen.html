@@ -8,10 +8,11 @@
   </head>
   <body>
     <header>
-      <h3>Dart Pen: 
-        &nbsp 
+      <h3>Dart Pen
+        &nbsp &nbsp &nbsp
         <label for="down">down</label>
-        <input type="checkbox" id="down"/>        
+        <input type="checkbox" id="down"/> 
+        &nbsp &nbsp       
         <select id="color">
           <option>black</option>
           <option>blue</option>
@@ -22,6 +23,7 @@
           <option>red</option>
           <option>yellow</option>
         </select>
+        &nbsp &nbsp 
         <select id="width">
           <option>1</option>
           <option>2</option>
@@ -30,9 +32,11 @@
           <option>5</option>
           <option>6</option>
           <option>7</option>
+          <option>8</option>
         </select>
+        &nbsp &nbsp &nbsp &nbsp
         <button id="center">Center</button>
-        &nbsp 
+        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
         <select id="demos">
           <option>random</option>
           <option>1</option>
@@ -43,6 +47,8 @@
           <option>6</option>
           <option>7</option>
           <option>8</option>
+          <option>9</option>
+          <option>10</option>
         </select>
         <button id="demo">Demo</button>
       </h3>
@@ -62,16 +68,34 @@
       <label for="repeat">repeat</label>
       <input type="text" id="repeat" size="4"/> 
       <button id="move">Move</button>
-      &nbsp
-      <button id="all">All</button>
       &nbsp &nbsp
+      <button id="random">Random</button>
+      &nbsp &nbsp &nbsp &nbsp
+      <button id="all">All</button>
+      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
       <button id="erase">Erase</button>
     </section>
     
-    <section>   
-      <textarea name="path" rows=44 cols=80 id="path"></textarea>
-      <br/>
-      <button id="display">Display</button>
+    <section> 
+      <header>
+        <h4>Commands 
+          &nbsp &nbsp
+          <button id="show">Show</button>
+          &nbsp &nbsp
+          <button id="draw">Draw</button>
+        </h4>
+      </header>  
+      <textarea name="commands" rows=44 cols=80 id="commands"></textarea>    
+    </section> 
+    
+    <section> 
+      <header>
+        <h4>Data 
+          &nbsp &nbsp
+          <button id="display">Display</button>
+        </h4>
+      </header>  
+      <textarea name="path" rows=44 cols=80 id="path"></textarea>    
     </section> 
     
     <script type="application/dart" src="DartPen.dart"></script>

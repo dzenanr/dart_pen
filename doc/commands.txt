@@ -65,3 +65,54 @@ color, red; width, 2; move, 208, 98, 6; move, -295, 78, 0; move, 234, 108, 5; do
 
 color, yellow; width, 3; move, 307, 88, 7; move, -167, 112, 1; move, 268, 48, 6; down, false; moveTo, 333, 333; down, true; color, green; width, 0; move, -158, 16, 8; move, -317, 60, 2; all, 4;
 
+randomColor; randomWidth; randomMove; randomMove; down, false; moveToStart; down, true; randomColor; randomWidth; randomMove; randomAll;
+
+ move, 45, 80, 1;
+ color, blue;
+ width, 2;
+ move, 45, 80, 1;
+ color, red;
+ width, 1;
+ move, 33, 80, 1;
+ all, 7;
+
+ move, 45, 80, 1;
+ color, blue;
+ width, 2;
+ move, 17, 80, 0;
+ move, -77, 80, 0;
+ color, red;
+ width, 1;
+ move, 33, 80, 1;
+ all, 7;
+
+ move, 45, 80, 1;
+ color, blue;
+ width, 2;
+ move, 45, 80, 1;
+ color, red;
+ width, 1;
+ move, 33, 80, 1;
+ color, brown;
+ move, 15, 80, 1;
+ color, gray;
+ move, 80, 80, 7;
+ all, 5;
+
+ move, 45, 80, 1;
+ color, brown;
+ move, 33, 80, 1;
+ color, gray;
+ move, 21, 80, 2;
+ all, 4;
+ down, false;
+ moveTo, 333, 333;
+ down, true;
+ width, 2;
+ color, brown;
+ move, -33, 160, 0;
+ move, -23, 160, 1;
+ all, 4;
+
+
+ 

@@ -33,6 +33,14 @@ demo(var p, int dn) {
         p.erase();
         demo8(p);
         break;
+      case 9:
+        p.erase();
+        demo9(p);
+        break;
+      case 10:
+        p.erase();
+        demo10(p);
+        break;
       default:
         p.erase();
         demo1(p);
@@ -51,9 +59,7 @@ demo1(var p) {
   p.width = 1;
   p.color = 'blue';
   p.move(65, 80, 1);
-  for (var i in [1,2,3,4]) {
-    p.all();
-  }
+  p.all(4);
 }
 
 demo2(var p) {
@@ -66,9 +72,7 @@ demo2(var p) {
   p.color = 'blue';
   p.move(60, 100, 0);
   p.move(120, 100, 1);
-  for (var i in new List(3)) {
-    p.all();
-  }
+  p.all(3);
 }
 
 demo3(var p) {
@@ -81,9 +85,7 @@ demo3(var p) {
   p.color = 'blue';
   p.move(60, 100, 0);
   p.move(120, 100, 1);
-  for (var i = 0; i < 6; i++) {
-    p.all();
-  }
+  p.all(6);
 }
 
 demo4(var p) {
@@ -98,9 +100,7 @@ demo4(var p) {
   p.color = 'blue';
   p.move(60, 100, 2);
   p.move(15, 100, 8);
-  for (var i in new List(8)) {
-    p.all();
-  }
+  p.all(8);
 }
 
 demo5(var p) {
@@ -140,110 +140,76 @@ demo7(var p) {
 
 demo8(var p) {
   var commandsString =
-    'color, yellow;'
-    'width, 3;'
-    'move, 80, 80, 3;'
-    'color, gray;'
-    'width, 1;'
-    'move, -18, 60, 6;'
-    'color, blue;'
-    'width, 2;'
-    'move, 120, 100, 5;'
-    'move, 5, -80, 9;'
+    'color, yellow; '
+    'width, 3; '
+    'move, 80, 80, 3; '
+    'color, gray; '
+    'width, 1; '
+    'move, -18, 60, 6; '
+    'color, blue; '
+    'width, 2; '
+    'move, 120, 100, 5; '
+    'move, 5, -80, 9; '
     'all, 4';
   p.toCommands(commandsString);
   p.interpret();
 }
 
-num randomNum(num max) {
-  return Math.random() * max;
+f1(var p, var length, var depth) {
+  if (depth == 0) {
+    p.move(0, length);
+  } else {
+    f1(p, length/3, depth-1);
+    p.move(60);
+    f1(p, length/3, depth-1);
+    p.move(-120);
+    f1(p, length/3, depth-1);
+    p.move(60);
+    f1(p, length/3, depth-1);
+  }
 }
 
-int randomInt(int max) {
-  num random = Math.random() * max;
-  return random.toInt();
+demo9(var p) {
+  f1(p, 320, 4);
 }
 
-String randomColor() {
-  var colorList =
-      ['black', 'blue', 'brown', 'gray', 'green', 'orange', 'red', 'yellow'];
-  int colorCount = colorList.length;
-  num random = Math.random() * colorCount;
-  return colorList[random.toInt()];
+f2(var p, var length, var depth) {
+  if (depth == 0) {
+    p.move(0, length);
+  } else {
+    f2(p, length/3, depth-1);
+    p.move(60, length);
+    f2(p, length/3, depth-1);
+    p.move(120, length);
+    f2(p, length/3, depth-1);
+    p.move(60, length);
+    f2(p, length/3, depth-1);
+  }
 }
 
-int randomWidth() {
-  return randomInt(4);
-}
-
-int randomTurn() {
-  return randomInt(360);
-}
-
-int randomAdvance() {
-  return randomInt(120);
-}
-
-int randomRepeat() {
-  return randomInt(10);
-}
-
-randomDemo0(var p) {
-  var start = center();
-  int x = start.x.toInt();
-  int y = start.y.toInt();
-  var commandsString =
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'all, ${randomRepeat()};';
-  print(commandsString);
-  p.erase();
-  p.toCommands(commandsString);
-  p.interpret();
-}
-
-randomDemo2(var p) {
-  var commandsString =
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'all, ${randomRepeat()};';
-  print(commandsString);
-  p.erase();
-  p.toCommands(commandsString);
-  p.interpret();
+demo10(var p) {
+  f2(p, 240, 4);
 }
 
 randomDemo(var p) {
-  var start = center();
-  int x = start.x.toInt();
-  int y = start.y.toInt();
   var commandsString =
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, ${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
+    'randomColor; '
+    'randomWidth; '
+    'randomMove; '
+    'randomMove; '
+    'randomColor; '
+    'randomWidth; '
+    'randomMove; '
     'down, false; '
-    'moveTo, $x, $y; '
+    'moveToStart; '
     'down, true; '
-    'color, ${randomColor()}; '
-    'width, ${randomWidth()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'move, -${randomTurn()}, ${randomAdvance()}, ${randomRepeat()}; '
-    'all, ${randomRepeat()};';
-  print(commandsString);
+    'randomColor; '
+    'randomWidth; '
+    'randomMove; '
+    'moveToStart; '
+    'randomMove; '
+    'randomMove; '
+    'randomAll';
   p.erase();
   p.toCommands(commandsString);
   p.interpret();

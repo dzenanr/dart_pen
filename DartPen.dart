@@ -4,8 +4,10 @@
 #source('model/Segment.dart');
 #source('model/Line.dart');
 #source('view/Input.dart');
-#source('view/Output.dart');
+#source('view/Commands.dart');
+#source('view/Data.dart');
 #source('util/color.dart');
+#source('util/random.dart');
 #source('commands/demo.dart');
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
@@ -25,7 +27,8 @@ final int INTERVAL = 8;
 var canvas;
 var context;
 var input;
-var output;
+var commands;
+var data;
 var pen;
 
 Point center() {
@@ -84,7 +87,8 @@ main() {
   context = canvas.getContext('2d');
   pen = new Pen(center());
   input = new Input(pen);
-  output = new Output(pen);
+  commands = new Commands(pen);
+  data = new Data(pen);
   // Redraw every INTERVAL ms.
   document.window.setInterval(draw, INTERVAL);
 }

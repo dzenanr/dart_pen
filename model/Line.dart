@@ -30,18 +30,14 @@ class Line {
     endPoint = _findEndPoint();
   }
 
-  num get angle() {
-    return _angle;
-  }
+  num get angle() => _angle;
 
   void set pixels(num pixels) {
     _pixels = pixels;
     endPoint = _findEndPoint();
   }
 
-  num get pixels() {
-    return _pixels;
-  }
+  num get pixels() => _pixels;
 
   Point _findEndPoint() {
     var x1 = beginPoint.x;

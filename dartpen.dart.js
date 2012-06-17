@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure17(t1));
+  $.forEach(this._backingMap, new $.Closure20(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure18 = {"":
+$$.Closure21 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -896,54 +896,66 @@ $$.FutureAlreadyCompleteException = {"":
 };
 
 $$.Pen = {"":
- ["commands", "path?", "width=", "color=", "down=", "start"],
+ ["commands", "path?", "_width", "_color", "_down", "start"],
  super: "Object",
  interpret$0: function() {
   try {
     for (var t1 = $.iterator(this.commands); t1.hasNext$0() === true; ) {
       var command = t1.next$0();
-      if ($.gtB($.get$length(command), 1)) {
+      if ($.gtB($.get$length(command), 0)) {
         switch ($.index(command, 0)) {
           case 'down':
             var downString = $.index(command, 1);
-            if ($.eqB(downString, 'true')) this.down = true;
+            if ($.eqB(downString, 'true')) this.set$down(true);
             else {
-              if ($.eqB(downString, 'false')) this.down = false;
+              $.eqB(downString, 'false') && this.set$down(false);
             }
             break;
           case 'color':
             var colorString = $.index(command, 1);
-            this.color = colorString;
+            this.set$color(colorString);
+            break;
+          case 'randomColor':
+            this.randomColor$0();
             break;
           case 'width':
             var widthString = $.index(command, 1);
-            this.width = $.parseInt(widthString);
+            this.set$width($.parseInt(widthString));
+            break;
+          case 'randomWidth':
+            this.randomWidth$0();
             break;
           case 'moveTo':
             var xString = $.index(command, 1);
             var yString = $.index(command, 2);
-            this.moveTo$1($.Point($.parseInt(xString), $.parseInt(yString)));
+            this.moveTo$1($.Point($.parseDouble(xString), $.parseDouble(yString)));
+            break;
+          case 'randomMoveTo':
+            this.randomMoveTo$0();
             break;
           case 'move':
             var turnString = $.index(command, 1);
             var advanceString = $.index(command, 2);
             var repeatString = $.index(command, 3);
-            this.move$3($.parseInt(turnString), $.parseInt(advanceString), $.parseInt(repeatString));
+            this.move$3($.parseDouble(turnString), $.parseDouble(advanceString), $.parseInt(repeatString));
+            break;
+          case 'randomMove':
+            this.randomMove$0();
             break;
           case 'all':
-            var countString = $.index(command, 1);
-            for (i = 0; $.ltB(i, $.parseInt(countString)); i = $.add(i, 1)) {
-              this.all$0();
-            }
+            var repeatString0 = $.index(command, 1);
+            this.all$1($.parseInt(repeatString0));
+            break;
+          case 'randomAll':
+            this.randomAll$0();
         }
       }
     }
   } catch (exception) {
     t1 = $.unwrapException(exception);
     var error = t1;
-    $.print('Error in command interpretation! -- ' + $.S(error));
+    $.print('Error in interpretation of commands! -- ' + $.S(error));
   }
-  var i;
  },
  toCommands$1: function(commandsString) {
   for (var t1 = $.iterator($.split($.replaceAll($.trim($.replaceAll(commandsString, '\n', '')), ' ', ''), ';')); t1.hasNext$0() === true; ) {
@@ -951,25 +963,305 @@ $$.Pen = {"":
     $.add$1(this.commands, commandElements);
   }
  },
+ fromCommands$0: function() {
+  for (var t1 = $.iterator(this.commands), result = ''; t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    if (typeof t2 !== 'string' && (typeof t2 !== 'object' || t2.constructor !== Array || !!!t2.is$JavaScriptIndexingBehavior)) return this.fromCommands$0$bailout(1, result, t1, t2, 0);
+    if (t2.length > 0) {
+      var t3 = t2.length;
+      if (0 >= t3) throw $.ioore(0);
+      var t4 = t2[0];
+      if (typeof t4 !== 'string') return this.fromCommands$0$bailout(2, result, t2, t1, t4);
+      if (!(t4 === '')) {
+        for (var commandLine = t4, i = 1; i < t2.length; ++i) {
+          t3 = commandLine + ', ';
+          t4 = t2.length;
+          if (i < 0 || i >= t4) throw $.ioore(i);
+          commandLine = t3 + $.S(t2[i]);
+        }
+        commandLine = commandLine + ';\n';
+        result = result + ' ' + commandLine;
+      }
+    }
+  }
+  return result;
+ },
+ fromCommands$0$bailout: function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      result = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 2:
+      result = env0;
+      t2 = env1;
+      t1 = env2;
+      commandLine = env3;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = $.iterator(this.commands);
+      var result = '';
+    case 1:
+    case 2:
+      L0: while (true) {
+        switch (state) {
+          case 0:
+            if (!(t1.hasNext$0() === true)) break L0;
+            var t2 = t1.next$0();
+          case 1:
+            state = 0;
+          case 2:
+            if (state == 2 || (state == 0 && $.gtB($.get$length(t2), 0))) {
+              switch (state) {
+                case 0:
+                  var commandLine = $.index(t2, 0);
+                case 2:
+                  state = 0;
+                  if (!$.eqB(commandLine, '')) {
+                    var i = 1;
+                    L1: while (true) {
+                      if (!$.ltB(i, $.get$length(t2))) break L1;
+                      commandLine = $.S(commandLine) + ', ' + $.S($.index(t2, i));
+                      ++i;
+                    }
+                    commandLine = $.S(commandLine) + ';\n';
+                    result = result + ' ' + commandLine;
+                  }
+              }
+            }
+        }
+      }
+      return result;
+  }
+ },
+ randomAll$0: function() {
+  this.all$1($.randomInt(16));
+ },
+ all$1: function(repeat) {
+  if (typeof repeat !== 'number') return this.all$1$bailout(repeat, 1, repeat);
+  for (var i = 0; i < repeat; ++i) {
+    this.path.double$0();
+  }
+  $.add$1(this.commands, ['all', repeat]);
+ },
+ all$1$bailout: function(repeat, state, env0) {
+  switch (state) {
+    case 1:
+      repeat = env0;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      var i = 0;
+      L0: while (true) {
+        if (!$.ltB(i, repeat)) break L0;
+        this.path.double$0();
+        ++i;
+      }
+      $.add$1(this.commands, ['all', repeat]);
+  }
+ },
  all$0: function() {
-  this.path.double$0();
+  return this.all$1(1)
+},
+ randomMove$0: function() {
+  var t1 = $.randomSign();
+  if (typeof t1 !== 'number') return this.randomMove$0$bailout(1, t1, 0, 0);
+  var t2 = $.randomNum(360);
+  if (typeof t2 !== 'number') return this.randomMove$0$bailout(2, t1, t2, 0);
+  t2 = t1 * t2;
+  t1 = $.randomSign();
+  if (typeof t1 !== 'number') return this.randomMove$0$bailout(3, t2, t1, 0);
+  var t3 = $.randomNum(160);
+  if (typeof t3 !== 'number') return this.randomMove$0$bailout(4, t2, t1, t3);
+  return this.move$3(t2, t1 * t3, $.randomInt(16));
+ },
+ randomMove$0$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      break;
+    case 2:
+      t1 = env0;
+      t2 = env1;
+      break;
+    case 3:
+      t2 = env0;
+      t1 = env1;
+      break;
+    case 4:
+      t2 = env0;
+      t1 = env1;
+      t3 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = $.randomSign();
+    case 1:
+      state = 0;
+      var t2 = $.randomNum(360);
+    case 2:
+      state = 0;
+      t2 = $.mul(t1, t2);
+      t1 = $.randomSign();
+    case 3:
+      state = 0;
+      var t3 = $.randomNum(160);
+    case 4:
+      state = 0;
+      return this.move$3(t2, $.mul(t1, t3), $.randomInt(16));
+  }
  },
  move$3: function(turn, advance, repeat) {
+  if (typeof repeat !== 'number') return this.move$3$bailout(turn, advance, repeat, 1, repeat, 0, 0, 0, 0);
   var lastLine = this.path.lastLine$0();
-  var lineCount = $.add(repeat, 1);
-  if ($.gtB(lineCount, 0)) {
+  var lineCount = repeat + 1;
+  if (lineCount > 0) {
     var segment = $.Segment$2(lineCount, true);
     segment.draw = $.pen.get$down();
     segment.color = $.pen.get$color();
     segment.width = $.pen.get$width();
     $.add$1(this.path.get$segments(), segment);
-    for (var i = 0; $.ltB(i, segment.lineCount); ++i) {
+    var i = 0;
+    while (true) {
+      var t1 = segment.lineCount;
+      if (typeof t1 !== 'number') return this.move$3$bailout(turn, advance, repeat, 2, segment, lastLine, repeat, i, t1);
+      if (!(i < t1)) break;
       var line = $.Line$next$1(lastLine);
-      $.indexSet(segment.lines, i, line);
+      t1 = segment.lines;
+      if (typeof t1 !== 'object' || t1.constructor !== Array || !!t1.immutable$list || !!!t1.is$JavaScriptIndexingBehavior) return this.move$3$bailout(turn, advance, repeat, 3, i, line, segment, repeat, t1);
+      var t2 = t1.length;
+      if (i < 0 || i >= t2) throw $.ioore(i);
+      t1[i] = line;
       line.set$angle(turn);
       line.set$pixels(advance);
       lastLine = line;
+      ++i;
     }
+  }
+  $.add$1(this.commands, ['move', turn, advance, repeat]);
+ },
+ move$3$bailout: function(turn, advance, repeat, state, env0, env1, env2, env3, env4) {
+  switch (state) {
+    case 1:
+      repeat = env0;
+      break;
+    case 2:
+      segment = env0;
+      lastLine = env1;
+      repeat = env2;
+      i = env3;
+      t1 = env4;
+      break;
+    case 3:
+      i = env0;
+      line = env1;
+      segment = env2;
+      repeat = env3;
+      t1 = env4;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      var lastLine = this.path.lastLine$0();
+      var lineCount = $.add(repeat, 1);
+    case 2:
+    case 3:
+      if (state == 2 || state == 3 || (state == 0 && $.gtB(lineCount, 0))) {
+        switch (state) {
+          case 0:
+            var segment = $.Segment$2(lineCount, true);
+            segment.draw = $.pen.get$down();
+            segment.color = $.pen.get$color();
+            segment.width = $.pen.get$width();
+            $.add$1(this.path.get$segments(), segment);
+            var i = 0;
+          case 2:
+          case 3:
+            L0: while (true) {
+              switch (state) {
+                case 0:
+                  var t1 = segment.lineCount;
+                case 2:
+                  state = 0;
+                  if (!$.ltB(i, t1)) break L0;
+                  var line = $.Line$next$1(lastLine);
+                  t1 = segment.lines;
+                case 3:
+                  state = 0;
+                  $.indexSet(t1, i, line);
+                  line.set$angle(turn);
+                  line.set$pixels(advance);
+                  lastLine = line;
+                  ++i;
+              }
+            }
+        }
+      }
+      $.add$1(this.commands, ['move', turn, advance, repeat]);
+  }
+ },
+ move$1: function(turn) {
+  return this.move$3(turn,0,0)
+},
+ move$2: function(turn,advance) {
+  return this.move$3(turn,advance,0)
+},
+ randomMoveTo$0: function() {
+  var t1 = $.randomSign();
+  if (typeof t1 !== 'number') return this.randomMoveTo$0$bailout(1, t1, 0, 0);
+  var t2 = this.start.get$x();
+  if (typeof t2 !== 'number') return this.randomMoveTo$0$bailout(2, t1, t2, 0);
+  t2 = t1 * t2;
+  t1 = $.randomSign();
+  if (typeof t1 !== 'number') return this.randomMoveTo$0$bailout(3, t2, t1, 0);
+  var t3 = this.start.get$y();
+  if (typeof t3 !== 'number') return this.randomMoveTo$0$bailout(4, t2, t1, t3);
+  return this.moveTo$1($.randomPoint(t2, t1 * t3));
+ },
+ randomMoveTo$0$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      break;
+    case 2:
+      t1 = env0;
+      t2 = env1;
+      break;
+    case 3:
+      t2 = env0;
+      t1 = env1;
+      break;
+    case 4:
+      t2 = env0;
+      t1 = env1;
+      t3 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var t1 = $.randomSign();
+    case 1:
+      state = 0;
+      var t2 = this.start.get$x();
+    case 2:
+      state = 0;
+      t2 = $.mul(t1, t2);
+      t1 = $.randomSign();
+    case 3:
+      state = 0;
+      var t3 = this.start.get$y();
+    case 4:
+      state = 0;
+      return this.moveTo$1($.randomPoint(t2, $.mul(t1, t3)));
   }
  },
  moveTo$1: function(point) {
@@ -986,6 +1278,7 @@ $$.Pen = {"":
   if (0 >= t2) throw $.ioore(0);
   t1[0] = line;
   line.endPoint = point;
+  $.add$1(this.commands, ['moveTo', point.get$x(), point.get$y()]);
  },
  moveTo$1$bailout: function(point, state, env0, env1) {
   switch (state) {
@@ -1008,15 +1301,47 @@ $$.Pen = {"":
       state = 0;
       $.indexSet(t1, 0, line);
       line.endPoint = point;
+      $.add$1(this.commands, ['moveTo', point.get$x(), point.get$y()]);
   }
+ },
+ randomWidth$0: function() {
+  var t1 = $.randomInt(6);
+  this.set$width(t1);
+  return t1;
+ },
+ randomColor$0: function() {
+  var t1 = $.randomListElement($.colorList);
+  this.set$color(t1);
+  return t1;
+ },
+ get$width: function() {
+  return this._width;
+ },
+ set$width: function(width) {
+  this._width = width;
+  $.add$1(this.commands, ['width', width]);
+ },
+ get$color: function() {
+  return this._color;
+ },
+ set$color: function(color) {
+  this._color = color;
+  $.add$1(this.commands, ['color', color]);
+ },
+ get$down: function() {
+  return this._down;
+ },
+ set$down: function(down) {
+  this._down = down;
+  $.add$1(this.commands, ['down', down]);
  },
  erase$0: function() {
   this._init$0();
  },
  _init$0: function() {
-  this.down = true;
-  this.color = 'black';
-  this.width = 1;
+  this._down = true;
+  this._color = 'black';
+  this._width = 1;
   this.path = $.Path$0();
   var startSegment = $.Segment$2(1, false);
   $.indexSet(startSegment.lines, 0, $.Line$first$1(this.start));
@@ -1226,32 +1551,32 @@ $$.Line = {"":
   this.endPoint = this._findEndPoint$0();
  },
  lastLine$0: function() { return this.lastLine.$call$0(); },
- Line$next$1: function(lastLine) {
-  this.beginPoint = this.lastLine.get$endPoint();
+ Line$first$1: function(beginPoint) {
   this.endPoint = this.beginPoint;
  },
- Line$first$1: function(beginPoint) {
+ Line$next$1: function(lastLine) {
+  this.beginPoint = this.lastLine.get$endPoint();
   this.endPoint = this.beginPoint;
  }
 };
 
 $$.Input = {"":
- ["eraseButton", "allButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
+ ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox=", "pen?"],
  super: "Object",
  Input$1: function(pen) {
   this.downCheckbox = $.document().query$1('#down');
   var t1 = this.pen.get$down();
   this.downCheckbox.set$checked(t1);
-  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure9(this));
+  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure11(this));
   this.colorSelect = $.document().query$1('#color');
-  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure10(this));
+  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure12(this));
   this.widthSelect = $.document().query$1('#width');
-  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure11(this));
+  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure13(this));
   this.centerButton = $.document().query$1('#center');
-  $.add$1(this.centerButton.get$on().get$click(), new $.Closure12(this));
+  $.add$1(this.centerButton.get$on().get$click(), new $.Closure14(this));
   this.demosSelect = $.document().query$1('#demos');
   this.demoButton = $.document().query$1('#demo');
-  $.add$1(this.demoButton.get$on().get$click(), new $.Closure13(this));
+  $.add$1(this.demoButton.get$on().get$click(), new $.Closure15(this));
   this.turnInput = $.document().query$1('#turn');
   this.turnInput.set$value('45');
   this.advanceInput = $.document().query$1('#advance');
@@ -1259,24 +1584,43 @@ $$.Input = {"":
   this.repeatInput = $.document().query$1('#repeat');
   this.repeatInput.set$value('0');
   this.moveButton = $.document().query$1('#move');
-  $.add$1(this.moveButton.get$on().get$click(), new $.Closure14(this));
+  $.add$1(this.moveButton.get$on().get$click(), new $.Closure16(this));
+  this.randomButton = $.document().query$1('#random');
+  $.add$1(this.randomButton.get$on().get$click(), new $.Closure17(this));
   this.allButton = $.document().query$1('#all');
-  $.add$1(this.allButton.get$on().get$click(), new $.Closure15(this));
+  $.add$1(this.allButton.get$on().get$click(), new $.Closure18(this));
   this.eraseButton = $.document().query$1('#erase');
-  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure16(this));
+  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure19(this));
  }
 };
 
-$$.Output = {"":
- ["displayButton", "pathTextArea?", "pen?"],
+$$.Commands = {"":
+ ["commandsTextArea?", "drawButton", "showButton", "pen?"],
+ super: "Object",
+ clear$0: function() {
+  this.commandsTextArea.set$value('');
+  return '';
+ },
+ Commands$1: function(pen) {
+  this.showButton = $.document().query$1('#show');
+  $.add$1(this.showButton.get$on().get$click(), new $.Closure9(this));
+  this.drawButton = $.document().query$1('#draw');
+  $.add$1(this.drawButton.get$on().get$click(), new $.Closure10(this));
+  this.commandsTextArea = $.document().query$1('#commands');
+ }
+};
+
+$$.Data = {"":
+ ["pathTextArea?", "displayButton", "pen?"],
  super: "Object",
  clear$0: function() {
   this.pathTextArea.set$value('');
+  return '';
  },
- Output$1: function(pen) {
-  this.pathTextArea = $.document().query$1('#path');
+ Data$1: function(pen) {
   this.displayButton = $.document().query$1('#display');
   $.add$1(this.displayButton.get$on().get$click(), new $.Closure8(this));
+  this.pathTextArea = $.document().query$1('#path');
  }
 };
 
@@ -1713,7 +2057,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -1721,7 +2065,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -1729,7 +2073,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -1737,7 +2081,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -1749,7 +2093,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -1757,7 +2101,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -1765,7 +2109,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure18",
+ super: "Closure21",
  $call$0: function() {
   return $.CTC4;
  }
@@ -1773,7 +2117,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -1783,25 +2127,45 @@ $$.Closure8 = {"":
 
 $$.Closure9 = {"":
  ["this_0"],
- super: "Closure18",
+ super: "Closure21",
+ $call$1: function(e) {
+  this.this_0.clear$0();
+  var t1 = this.this_0.get$pen().fromCommands$0();
+  this.this_0.get$commandsTextArea().set$value(t1);
+ }
+};
+
+$$.Closure10 = {"":
+ ["this_1"],
+ super: "Closure21",
+ $call$1: function(e) {
+  this.this_1.get$pen().erase$0();
+  this.this_1.get$pen().toCommands$1(this.this_1.get$commandsTextArea().get$value());
+  this.this_1.get$pen().interpret$0();
+ }
+};
+
+$$.Closure11 = {"":
+ ["this_0"],
+ super: "Closure21",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 };
 
-$$.Closure10 = {"":
+$$.Closure12 = {"":
  ["this_1"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
  }
 };
 
-$$.Closure11 = {"":
+$$.Closure13 = {"":
  ["this_2"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -1814,17 +2178,17 @@ $$.Closure11 = {"":
  }
 };
 
-$$.Closure12 = {"":
+$$.Closure14 = {"":
  ["this_3"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   this.this_3.get$pen().moveTo$1($.center());
  }
 };
 
-$$.Closure13 = {"":
+$$.Closure15 = {"":
  ["this_4"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   try {
     var d = $.parseInt(this.this_4.get$demosSelect().get$value());
@@ -1836,9 +2200,9 @@ $$.Closure13 = {"":
  }
 };
 
-$$.Closure14 = {"":
+$$.Closure16 = {"":
  ["this_5"],
- super: "Closure18",
+ super: "Closure21",
  $call$1: function(e) {
   try {
     var turn = $.parseInt(this.this_5.get$turnInput().get$value());
@@ -1853,31 +2217,41 @@ $$.Closure14 = {"":
  }
 };
 
-$$.Closure15 = {"":
- ["this_6"],
- super: "Closure18",
- $call$1: function(e) {
-  this.this_6.get$pen().all$0();
- }
-};
-
-$$.Closure16 = {"":
- ["this_7"],
- super: "Closure18",
- $call$1: function(e) {
-  this.this_7.get$pen().erase$0();
- }
-};
-
 $$.Closure17 = {"":
+ ["this_6"],
+ super: "Closure21",
+ $call$1: function(e) {
+  this.this_6.get$pen().randomMove$0();
+ }
+};
+
+$$.Closure18 = {"":
+ ["this_7"],
+ super: "Closure21",
+ $call$1: function(e) {
+  this.this_7.get$pen().all$0();
+ }
+};
+
+$$.Closure19 = {"":
+ ["this_8"],
+ super: "Closure21",
+ $call$1: function(e) {
+  this.this_8.get$pen().erase$0();
+  var t1 = $.document().query$1('#down');
+  this.this_8.set$downCheckbox(t1);
+ }
+};
+
+$$.Closure20 = {"":
  ["box_0"],
- super: "Closure18",
+ super: "Closure21",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure18 = {"":
+$$.Closure21 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -1885,7 +2259,7 @@ $$.Closure18 = {"":
  }
 };
 
-Isolate.$defineClass('Closure19', 'Closure18', ['self', 'target'], {
+Isolate.$defineClass('Closure22', 'Closure21', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -1899,6 +2273,10 @@ $.FutureImpl$0 = function() {
   var t1 = [];
   var t2 = [];
   return new $.FutureImpl([], t2, t1, false, (void 0), (void 0), (void 0), false);
+};
+
+$.randomSign = function() {
+  return $.eqB($.randomInt(10), 0) ? -1 : 1;
 };
 
 $.iae = function(argument) {
@@ -2002,13 +2380,8 @@ $.allMatchesInStringUnchecked = function(needle, haystack) {
 };
 
 $.randomDemo = function(p) {
-  var start = $.center();
-  var x = $.toInt(start.get$x());
-  var y = $.toInt(start.get$y());
-  var commandsString = 'color, ' + $.S($.randomColor()) + '; ' + 'width, ' + $.S($.randomWidth()) + '; ' + 'move, ' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, ' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'down, false; ' + 'moveTo, ' + $.S(x) + ', ' + $.S(y) + '; ' + 'down, true; ' + 'color, ' + $.S($.randomColor()) + '; ' + 'width, ' + $.S($.randomWidth()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'move, -' + $.S($.randomTurn()) + ', ' + $.S($.randomAdvance()) + ', ' + $.S($.randomRepeat()) + '; ' + 'all, ' + $.S($.randomRepeat()) + ';';
-  $.print(commandsString);
   p.erase$0();
-  p.toCommands$1(commandsString);
+  p.toCommands$1('randomColor; randomWidth; randomMove; randomMove; randomColor; randomWidth; randomMove; down, false; moveToStart; down, true; randomColor; randomWidth; randomMove; moveToStart; randomMove; randomMove; randomAll');
   p.interpret$0();
 };
 
@@ -2059,10 +2432,7 @@ $.demo4 = function(p) {
   p.set$color('blue');
   p.move$3(60, 100, 2);
   p.move$3(15, 100, 8);
-  for (var t1 = $.iterator($.List(8)); t1.hasNext$0() === true; ) {
-    t1.next$0();
-    p.all$0();
-  }
+  p.all$1(8);
 };
 
 $.dynamicSetMetadata = function(inputTable) {
@@ -2117,22 +2487,6 @@ $._IDBOpenDBRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBOpenDBRequestEventsImpl(_ptr);
 };
 
-$.typeNameInIE = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) {
-    if (!!obj.xmlVersion) return 'Document';
-    return 'HTMLDocument';
-  }
-  if ($.eqB(name$, 'HTMLTableDataCellElement')) return 'HTMLTableCellElement';
-  if ($.eqB(name$, 'HTMLTableHeaderCellElement')) return 'HTMLTableCellElement';
-  if ($.eqB(name$, 'MSStyleCSSProperties')) return 'CSSStyleDeclaration';
-  if ($.eqB(name$, 'CanvasPixelArray')) return 'Uint8ClampedArray';
-  if ($.eqB(name$, 'HTMLPhraseElement')) return 'HTMLElement';
-  if ($.eqB(name$, 'MouseWheelEvent')) return 'WheelEvent';
-  return name$;
-};
-
 $.FutureAlreadyCompleteException$0 = function() {
   return new $.FutureAlreadyCompleteException();
 };
@@ -2163,6 +2517,26 @@ $.NullPointerException$2 = function(functionName, arguments$) {
   return new $.NullPointerException(arguments$, functionName);
 };
 
+$.randomPoint = function(maxX, maxY) {
+  return $.Point($.randomNum(maxX), $.randomNum(maxY));
+};
+
+$.typeNameInIE = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) {
+    if (!!obj.xmlVersion) return 'Document';
+    return 'HTMLDocument';
+  }
+  if ($.eqB(name$, 'HTMLTableDataCellElement')) return 'HTMLTableCellElement';
+  if ($.eqB(name$, 'HTMLTableHeaderCellElement')) return 'HTMLTableCellElement';
+  if ($.eqB(name$, 'MSStyleCSSProperties')) return 'CSSStyleDeclaration';
+  if ($.eqB(name$, 'CanvasPixelArray')) return 'Uint8ClampedArray';
+  if ($.eqB(name$, 'HTMLPhraseElement')) return 'HTMLElement';
+  if ($.eqB(name$, 'MouseWheelEvent')) return 'WheelEvent';
+  return name$;
+};
+
 $.printString = function(string) {
   if (typeof dartPrint == "function") dartPrint(string);
   else {
@@ -2189,11 +2563,6 @@ $.tdiv = function(a, b) {
   return a.operator$tdiv$1(b);
 };
 
-$.clear = function(receiver) {
-  if ($.isJsArray(receiver) !== true) return receiver.clear$0();
-  $.set$length(receiver, 0);
-};
-
 $.convertDartClosureToJS = function(closure, arity) {
   if (closure === (void 0)) return;
   var function$ = (closure.$identity);
@@ -2209,8 +2578,9 @@ $._FixedSizeListIterator$1 = function(array) {
   return new $._FixedSizeListIterator($.get$length(array), 0, array);
 };
 
-$.JSSyntaxRegExp$3 = function(pattern, multiLine, ignoreCase) {
-  return new $.JSSyntaxRegExp(ignoreCase, multiLine, pattern);
+$.clear = function(receiver) {
+  if ($.isJsArray(receiver) !== true) return receiver.clear$0();
+  $.set$length(receiver, 0);
 };
 
 $.split = function(receiver, pattern) {
@@ -2226,8 +2596,8 @@ $.typeNameInChrome = function(obj) {
   return name$;
 };
 
-$.randomRepeat = function() {
-  return $.randomInt(10);
+$.JSSyntaxRegExp$3 = function(pattern, multiLine, ignoreCase) {
+  return new $.JSSyntaxRegExp(ignoreCase, multiLine, pattern);
 };
 
 $.concatAll = function(strings) {
@@ -2243,6 +2613,10 @@ $.concatAll = function(strings) {
 
 $._InputElementEventsImpl$1 = function(_ptr) {
   return new $._InputElementEventsImpl(_ptr);
+};
+
+$.randomNum = function(max) {
+  return $.mul($.random(), max);
 };
 
 $.S = function(value) {
@@ -2319,23 +2693,18 @@ $.eqNull = function(a) {
   return typeof a === "undefined";
 };
 
-$.clear2 = function() {
-  $.context.clearRect$4(0, 0, $.canvas.get$width(), $.canvas.get$height());
-  $.border();
-};
-
 $.regExpGetNative = function(regExp) {
   var r = (regExp._re);
   return r === (void 0) ? (regExp._re = $.regExpMakeNative(regExp, false)) : r;
 };
 
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.captureStackTrace($.NoSuchMethodException$4(obj, name$, arguments$, (void 0)));
-};
-
 $.checkNull = function(object) {
   if (object === (void 0)) throw $.captureStackTrace($.NullPointerException$2((void 0), $.CTC));
   return object;
+};
+
+$.throwNoSuchMethod = function(obj, name$, arguments$) {
+  throw $.captureStackTrace($.NoSuchMethodException$4(obj, name$, arguments$, (void 0)));
 };
 
 $.CompleterImpl$0 = function() {
@@ -2376,8 +2745,9 @@ $.indexSet = function(a, index, value) {
   $.indexSet$slow(a, index, value);
 };
 
-$.randomAdvance = function() {
-  return $.randomInt(120);
+$.clear2 = function() {
+  $.context.clearRect$4(0, 0, $.canvas.get$width(), $.canvas.get$height());
+  $.border();
 };
 
 $._DOMApplicationCacheEventsImpl$1 = function(_ptr) {
@@ -2415,12 +2785,6 @@ $._EventListenerListImpl$2 = function(_ptr, _type) {
 
 $.gt = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a > b) : $.gt$slow(a, b);
-};
-
-$.Output$1 = function(pen) {
-  var t1 = new $.Output((void 0), (void 0), pen);
-  t1.Output$1(pen);
-  return t1;
 };
 
 $._createMeasurementFuture = function(computeValue, completer) {
@@ -2504,6 +2868,10 @@ $.checkNumbers = function(a, b) {
   return false;
 };
 
+$.random = function() {
+  return $.random2();
+};
+
 $._EventSourceEventsImpl$1 = function(_ptr) {
   return new $._EventSourceEventsImpl(_ptr);
 };
@@ -2517,12 +2885,8 @@ $.mul = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a * b) : $.mul$slow(a, b);
 };
 
-$.random = function() {
-  return $.random2();
-};
-
-$.randomWidth = function() {
-  return $.randomInt(4);
+$.random2 = function() {
+  return Math.random();
 };
 
 $.parseInt = function(str) {
@@ -2531,10 +2895,6 @@ $.parseInt = function(str) {
 
 $._NotificationEventsImpl$1 = function(_ptr) {
   return new $._NotificationEventsImpl(_ptr);
-};
-
-$.randomInt = function(max) {
-  return $.toInt($.mul($.random(), max));
 };
 
 $.parseInt2 = function(str) {
@@ -2555,15 +2915,15 @@ $.parseInt2 = function(str) {
   return ret;
 };
 
+$.randomInt = function(max) {
+  return $.toInt($.randomNum(max));
+};
+
 $.lt$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) {
     return a < b;
   }
   return a.operator$lt$1(b);
-};
-
-$.random2 = function() {
-  return Math.random();
 };
 
 $.index$slow = function(a, index) {
@@ -2622,6 +2982,12 @@ $._PeerConnection00EventsImpl$1 = function(_ptr) {
   return new $._PeerConnection00EventsImpl(_ptr);
 };
 
+$.Commands$1 = function(pen) {
+  var t1 = new $.Commands((void 0), (void 0), (void 0), pen);
+  t1.Commands$1(pen);
+  return t1;
+};
+
 $._WorkerContextEventsImpl$1 = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
 };
@@ -2629,6 +2995,23 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 $.demo5 = function(p) {
   p.toCommands$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
   p.interpret$0();
+};
+
+$.f1 = function(p, length$, depth) {
+  if (typeof length$ !== 'number') return $.f1$bailout(p, length$, depth, 1, length$, 0);
+  if (typeof depth !== 'number') return $.f1$bailout(p, length$, depth, 2, length$, depth);
+  if (depth === 0) p.move$2(0, length$);
+  else {
+    var t1 = length$ / 3;
+    var t2 = depth - 1;
+    $.f1(p, t1, t2);
+    p.move$1(60);
+    $.f1(p, t1, t2);
+    p.move$1(-120);
+    $.f1(p, t1, t2);
+    p.move$1(60);
+    $.f1(p, t1, t2);
+  }
 };
 
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
@@ -2676,9 +3059,7 @@ $.demo3 = function(p) {
   p.set$color('blue');
   p.move$3(60, 100, 0);
   p.move$3(120, 100, 1);
-  for (var i = 0; i < 6; ++i) {
-    p.all$0();
-  }
+  p.all$1(6);
 };
 
 $._TextTrackEventsImpl$1 = function(_ptr) {
@@ -2842,8 +3223,45 @@ $.regExpExec = function(regExp, str) {
   return result;
 };
 
+$.f2 = function(p, length$, depth) {
+  if (typeof length$ !== 'number') return $.f2$bailout(p, length$, depth, 1, length$, 0);
+  if (typeof depth !== 'number') return $.f2$bailout(p, length$, depth, 2, length$, depth);
+  if (depth === 0) p.move$2(0, length$);
+  else {
+    var t1 = length$ / 3;
+    var t2 = depth - 1;
+    $.f2(p, t1, t2);
+    p.move$2(60, length$);
+    $.f2(p, t1, t2);
+    p.move$2(120, length$);
+    $.f2(p, t1, t2);
+    p.move$2(60, length$);
+    $.f2(p, t1, t2);
+  }
+};
+
 $.geB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b) === true;
+};
+
+$.demo9 = function(p) {
+  $.f1(p, 320, 4);
+};
+
+$.Data$1 = function(pen) {
+  var t1 = new $.Data((void 0), (void 0), pen);
+  t1.Data$1(pen);
+  return t1;
+};
+
+$.stringContainsUnchecked = function(receiver, other, startIndex) {
+  if (typeof other === 'string') {
+    return !($.indexOf$2(receiver, other, startIndex) === -1);
+  }
+  if (typeof other === 'object' && !!other.is$JSSyntaxRegExp) {
+    return other.hasMatch$1($.substring$1(receiver, startIndex));
+  }
+  return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
 };
 
 $.dynamicFunction = function(name$) {
@@ -2858,16 +3276,6 @@ $.dynamicFunction = function(name$) {
   bind.methods = methods;
   $.defineProperty((Object.prototype), name$, bind);
   return methods;
-};
-
-$.stringContainsUnchecked = function(receiver, other, startIndex) {
-  if (typeof other === 'string') {
-    return !($.indexOf$2(receiver, other, startIndex) === -1);
-  }
-  if (typeof other === 'object' && !!other.is$JSSyntaxRegExp) {
-    return other.hasMatch$1($.substring$1(receiver, startIndex));
-  }
-  return $.iterator($.allMatches(other, $.substring$1(receiver, startIndex))).hasNext$0();
 };
 
 $.removeLast = function(receiver) {
@@ -2921,10 +3329,7 @@ $.demo2 = function(p) {
   p.set$color('blue');
   p.move$3(60, 100, 0);
   p.move$3(120, 100, 1);
-  for (var t1 = $.iterator($.List(3)); t1.hasNext$0() === true; ) {
-    t1.next$0();
-    p.all$0();
-  }
+  p.all$1(3);
 };
 
 $._firstProbe = function(hashCode, length$) {
@@ -2946,15 +3351,15 @@ $.ioore = function(index) {
   throw $.captureStackTrace($.IndexOutOfRangeException$1(index));
 };
 
+$.regExpAttachGlobalNative = function(regExp) {
+  regExp._re = $.regExpMakeNative(regExp, true);
+};
+
 $.gt$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) {
     return a > b;
   }
   return a.operator$gt$1(b);
-};
-
-$.regExpAttachGlobalNative = function(regExp) {
-  regExp._re = $.regExpMakeNative(regExp, true);
 };
 
 $._DOMWindowCrossFrameImpl$1 = function(_window) {
@@ -3029,10 +3434,6 @@ $.Pen$1 = function(start) {
   return t1;
 };
 
-$.randomTurn = function() {
-  return $.randomInt(360);
-};
-
 $.mapToString = function(m) {
   var result = $.StringBufferImpl$1('');
   $._emitMap(m, result, $.List((void 0)));
@@ -3075,7 +3476,7 @@ $._emitMap = function(m, result, visiting) {
 };
 
 $.demo8 = function(p) {
-  p.toCommands$1('color, yellow;width, 3;move, 80, 80, 3;color, gray;width, 1;move, -18, 60, 6;color, blue;width, 2;move, 120, 100, 5;move, 5, -80, 9;all, 4');
+  p.toCommands$1('color, yellow; width, 3; move, 80, 80, 3; color, gray; width, 1; move, -18, 60, 6; color, blue; width, 2; move, 120, 100, 5; move, 5, -80, 9; all, 4');
   p.interpret$0();
 };
 
@@ -3106,6 +3507,7 @@ $.demo7 = function(p) {
 };
 
 $.colorMap = function() {
+  $.colorList = ['black', 'blue', 'brown', 'gray', 'green', 'orange', 'red', 'yellow'];
   $.colors = $.HashMapImplementation$0();
   $.indexSet($.colors, 'black', '#000000');
   $.indexSet($.colors, 'blue', '#0000ff');
@@ -3115,6 +3517,7 @@ $.colorMap = function() {
   $.indexSet($.colors, 'orange', '#ff6f00');
   $.indexSet($.colors, 'red', '#ff0000');
   $.indexSet($.colors, 'yellow', '#ffff00');
+  return $.colors;
 };
 
 $._MessagePortEventsImpl$1 = function(_ptr) {
@@ -3149,15 +3552,6 @@ $._MeasurementRequest$2 = function(computeValue, completer) {
   return new $._MeasurementRequest(false, (void 0), completer, computeValue);
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
-  if ($.eqB(name$, 'XMLDocument')) return 'Document';
-  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
-  return name$;
-};
-
 $.index = function(a, index) {
   if (typeof a == "string" || a.constructor === Array) {
     var key = (index >>> 0);
@@ -3170,16 +3564,6 @@ $.index = function(a, index) {
 
 $._TextTrackCueEventsImpl$1 = function(_ptr) {
   return new $._TextTrackCueEventsImpl(_ptr);
-};
-
-$.randomColor = function() {
-  var colorList = ['black', 'blue', 'brown', 'gray', 'green', 'orange', 'red', 'yellow'];
-  var colorCount = colorList.length;
-  var t1 = $.toInt($.mul($.random(), colorCount));
-  if (t1 !== (t1 | 0)) throw $.iae(t1);
-  var t2 = colorList.length;
-  if (t1 < 0 || t1 >= t2) throw $.ioore(t1);
-  return colorList[t1];
 };
 
 $._ElementEventsImpl$1 = function(_ptr) {
@@ -3195,8 +3579,21 @@ $.getFunctionForTypeNameOf = function() {
   return $.constructorNameFallback;
 };
 
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) return 'HTMLDocument';
+  if ($.eqB(name$, 'XMLDocument')) return 'Document';
+  if ($.eqB(name$, 'WorkerMessageEvent')) return 'MessageEvent';
+  return name$;
+};
+
 $.div = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
+};
+
+$.randomListElement = function(list) {
+  return $.index(list, $.randomInt($.sub($.get$length(list), 1)));
 };
 
 $.toLowerCase = function(receiver) {
@@ -3212,8 +3609,8 @@ $.sin2 = function(value) {
   return Math.sin($.checkNum(value));
 };
 
-$.MatchImplementation$5 = function(pattern, str, _start, _end, _groups) {
-  return new $.MatchImplementation(_groups, _end, _start, str, pattern);
+$.parseDouble = function(str) {
+  return $.parseDouble2(str);
 };
 
 $.List = function(length$) {
@@ -3224,8 +3621,17 @@ $._SimpleClientRect$4 = function(left, top$, width, height) {
   return new $._SimpleClientRect(height, width, top$, left);
 };
 
-$.stringReplaceJS = function(receiver, replacer, to) {
-  return receiver.replace(replacer, to.replace('$', '$$$$'));
+$.parseDouble2 = function(str) {
+  $.checkString(str);
+  var ret = (parseFloat(str));
+  if (ret === 0) {
+    var t1 = $.startsWith(str, '0x') === true || $.startsWith(str, '0X') === true;
+  } else t1 = false;
+  if (t1) {
+    ret = (parseInt(str));
+  }
+  if ($.isNaN(ret) === true && !$.eqB(str, 'NaN') && !$.eqB(str, '-NaN')) throw $.captureStackTrace($.BadNumberFormatException$1(str));
+  return ret;
 };
 
 $.UnsupportedOperationException$1 = function(_message) {
@@ -3237,8 +3643,16 @@ $._createSafe = function(w) {
   return $._DOMWindowCrossFrameImpl$1(w);
 };
 
+$.stringReplaceJS = function(receiver, replacer, to) {
+  return receiver.replace(replacer, to.replace('$', '$$$$'));
+};
+
 $._XMLHttpRequestUploadEventsImpl$1 = function(_ptr) {
   return new $._XMLHttpRequestUploadEventsImpl(_ptr);
+};
+
+$.MatchImplementation$5 = function(pattern, str, _start, _end, _groups) {
+  return new $.MatchImplementation(_groups, _end, _start, str, pattern);
 };
 
 $.demo = function(p, dn) {
@@ -3275,6 +3689,14 @@ $.demo = function(p, dn) {
       case 8:
         p.erase$0();
         $.demo8(p);
+        break;
+      case 9:
+        p.erase$0();
+        $.demo9(p);
+        break;
+      case 10:
+        p.erase$0();
+        $.demo10(p);
         break;
       default:
         p.erase$0();
@@ -3349,10 +3771,6 @@ $.div$slow = function(a, b) {
   return a.operator$div$1(b);
 };
 
-$._FileReaderEventsImpl$1 = function(_ptr) {
-  return new $._FileReaderEventsImpl(_ptr);
-};
-
 $.demo1 = function(p) {
   p.set$color('red');
   p.move$3(45, 80, 1);
@@ -3362,10 +3780,11 @@ $.demo1 = function(p) {
   p.set$width(1);
   p.set$color('blue');
   p.move$3(65, 80, 1);
-  for (var t1 = $.iterator([1, 2, 3, 4]); t1.hasNext$0() === true; ) {
-    t1.next$0();
-    p.all$0();
-  }
+  p.all$1(4);
+};
+
+$._FileReaderEventsImpl$1 = function(_ptr) {
+  return new $._FileReaderEventsImpl(_ptr);
 };
 
 $.demo6 = function(p) {
@@ -3378,7 +3797,7 @@ $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
   t1.Input$1(pen);
   return t1;
 };
@@ -3395,6 +3814,12 @@ $.gtB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a > b) : $.gt$slow(a, b) === true;
 };
 
+$.replaceAll = function(receiver, from, to) {
+  if (!(typeof receiver === 'string')) return receiver.replaceAll$2(from, to);
+  $.checkString(to);
+  return $.stringReplaceAllUnchecked(receiver, from, to);
+};
+
 $.setRuntimeTypeInfo = function(target, typeInfo) {
   if (!(target === (void 0))) target.builtin$typeInfo = typeInfo;
 };
@@ -3405,12 +3830,6 @@ $.eqNullB = function(a) {
     return false;
   }
   return typeof a === "undefined";
-};
-
-$.replaceAll = function(receiver, from, to) {
-  if (!(typeof receiver === 'string')) return receiver.replaceAll$2(from, to);
-  $.checkString(to);
-  return $.stringReplaceAllUnchecked(receiver, from, to);
 };
 
 $._FrameSetElementEventsImpl$1 = function(_ptr) {
@@ -3440,6 +3859,10 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
   return new $._FileWriterEventsImpl(_ptr);
 };
 
+$.demo10 = function(p) {
+  $.f2(p, 240, 4);
+};
+
 $.newList = function(length$) {
   if (length$ === (void 0)) {
     return new Array();
@@ -3456,7 +3879,8 @@ $.main = function() {
   $.context = $.canvas.getContext$1('2d');
   $.pen = $.Pen$1($.center());
   $.input = $.Input$1($.pen);
-  $.output = $.Output$1($.pen);
+  $.commands = $.Commands$1($.pen);
+  $.data = $.Data$1($.pen);
   $.document().get$window().setInterval$2($.draw, 8);
 };
 
@@ -3579,35 +4003,32 @@ $._BodyElementEventsImpl$1 = function(_ptr) {
   return new $._BodyElementEventsImpl(_ptr);
 };
 
-$.allMatchesInStringUnchecked$bailout = function(needle, haystack, state, env0, env1, env2) {
+$.f1$bailout = function(p, length$, depth, state, env0, env1) {
   switch (state) {
     case 1:
       length$ = env0;
-      result = env1;
-      patternLength = env2;
+      break;
+    case 2:
+      length$ = env0;
+      depth = env1;
       break;
   }
   switch (state) {
     case 0:
-      var result = $.List((void 0));
-      $.setRuntimeTypeInfo(result, ({E: 'Match'}));
-      var length$ = $.get$length(haystack);
-      var patternLength = $.get$length(needle);
     case 1:
       state = 0;
-      var startIndex = 0;
-      L0: while (true) {
-        if (!true) break L0;
-        var position = $.indexOf$2(haystack, needle, startIndex);
-        if ($.eqB(position, -1)) break;
-        result.push($.StringMatch$3(position, haystack, needle));
-        var endIndex = $.add(position, patternLength);
-        if ($.eqB(endIndex, length$)) break;
-        else {
-          startIndex = $.eqB(position, endIndex) ? $.add(startIndex, 1) : endIndex;
-        }
+    case 2:
+      state = 0;
+      if ($.eqB(depth, 0)) p.move$2(0, length$);
+      else {
+        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$1(60);
+        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$1(-120);
+        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$1(60);
+        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
       }
-      return result;
   }
 };
 
@@ -3763,6 +4184,67 @@ $.buildDynamicMetadata$bailout = function(inputTable, state, env0, env1, env2, e
   }
 };
 
+$.allMatchesInStringUnchecked$bailout = function(needle, haystack, state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      length$ = env0;
+      result = env1;
+      patternLength = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var result = $.List((void 0));
+      $.setRuntimeTypeInfo(result, ({E: 'Match'}));
+      var length$ = $.get$length(haystack);
+      var patternLength = $.get$length(needle);
+    case 1:
+      state = 0;
+      var startIndex = 0;
+      L0: while (true) {
+        if (!true) break L0;
+        var position = $.indexOf$2(haystack, needle, startIndex);
+        if ($.eqB(position, -1)) break;
+        result.push($.StringMatch$3(position, haystack, needle));
+        var endIndex = $.add(position, patternLength);
+        if ($.eqB(endIndex, length$)) break;
+        else {
+          startIndex = $.eqB(position, endIndex) ? $.add(startIndex, 1) : endIndex;
+        }
+      }
+      return result;
+  }
+};
+
+$.f2$bailout = function(p, length$, depth, state, env0, env1) {
+  switch (state) {
+    case 1:
+      length$ = env0;
+      break;
+    case 2:
+      length$ = env0;
+      depth = env1;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+    case 2:
+      state = 0;
+      if ($.eqB(depth, 0)) p.move$2(0, length$);
+      else {
+        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$2(60, length$);
+        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$2(120, length$);
+        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
+        p.move$2(60, length$);
+        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
+      }
+  }
+};
+
 $.dynamicBind.$call$4 = $.dynamicBind;
 $.dynamicBind.$name = "dynamicBind";
 $.draw.$call$0 = $.draw;
@@ -3803,9 +4285,11 @@ $._nextMeasurementFrameScheduled = false;
 $._firstMeasurementRequest = true;
 $._pendingMeasurementFrameCallbacks = (void 0);
 $.pen = (void 0);
-$.output = (void 0);
+$.commands = (void 0);
 $.colors = (void 0);
+$.data = (void 0);
 $.canvas = (void 0);
+$.colorList = (void 0);
 $.input = (void 0);
 $._getTypeNameOf = (void 0);
 var $ = null;
@@ -4138,7 +4622,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure19(this, 'click$0'); },
+ get$click: function() { return new $.Closure22(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4200,7 +4684,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure19(this, 'click$0'); },
+ get$click: function() { return new $.Closure22(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);

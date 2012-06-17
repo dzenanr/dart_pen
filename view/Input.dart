@@ -17,6 +17,7 @@ class Input {
   InputElement advanceInput;
   InputElement repeatInput;
   ButtonElement moveButton;
+  ButtonElement randomButton;
   ButtonElement allButton;
   ButtonElement eraseButton;
 
@@ -79,6 +80,11 @@ class Input {
       }
     });
 
+    randomButton = document.query('#random');
+    randomButton.on.click.add((MouseEvent e) {
+      pen.randomMove();
+    });
+
     allButton = document.query('#all');
     allButton.on.click.add((MouseEvent e) {
       pen.all();
@@ -87,6 +93,7 @@ class Input {
     eraseButton = document.query('#erase');
     eraseButton.on.click.add((MouseEvent e) {
       pen.erase();
+      downCheckbox = document.query('#down');
     });
   }
 
