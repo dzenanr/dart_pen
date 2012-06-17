@@ -93,7 +93,9 @@ class Input {
     eraseButton = document.query('#erase');
     eraseButton.on.click.add((MouseEvent e) {
       pen.erase();
-      downCheckbox = document.query('#down');
+      downCheckbox.checked = true;
+      colorSelect.value = 'black';
+      widthSelect.value = '1';
     });
   }
 

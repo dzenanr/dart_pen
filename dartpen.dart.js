@@ -1571,7 +1571,7 @@ $$.Line = {"":
 };
 
 $$.Input = {"":
- ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox=", "pen?"],
+ ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
  super: "Object",
  Input$1: function(pen) {
   this.downCheckbox = $.document().query$1('#down');
@@ -2274,8 +2274,9 @@ $$.Closure20 = {"":
  super: "Closure22",
  $call$1: function(e) {
   this.this_8.get$pen().erase$0();
-  var t1 = $.document().query$1('#down');
-  this.this_8.set$downCheckbox(t1);
+  this.this_8.get$downCheckbox().set$checked(true);
+  this.this_8.get$colorSelect().set$value('black');
+  this.this_8.get$widthSelect().set$value('1');
  }
 };
 
