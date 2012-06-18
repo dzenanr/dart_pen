@@ -16,6 +16,8 @@
 // http://dev.opera.com/articles/view/html-5-canvas-the-basics/ .
 // See the canvas painting tutorial:
 // http://dev.opera.com/articles/view/html5-canvas-painting/ .
+// Some turtle programs:
+// http://www.sonic.net/~nbs/webturtle/examples/
 
 // For debugging use print() and CTRL+SHIFT+J to open the console in Chrome.
 

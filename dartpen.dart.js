@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure23(t1));
+  $.forEach(this._backingMap, new $.Closure24(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure24 = {"":
+$$.Closure25 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -1177,7 +1177,7 @@ $$.Pen = {"":
  left$1: function(angle) {
   $.gtB(angle, 0) && this.move$1($.neg(angle));
  },
- get$left: function() { return new $.Closure25(this, 'left$1'); },
+ get$left: function() { return new $.Closure26(this, 'left$1'); },
  right$1: function(angle) {
   if (typeof angle !== 'number') return this.right$1$bailout(angle, 1, angle);
   angle > 0 && this.move$1(angle);
@@ -2092,7 +2092,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -2100,7 +2100,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -2108,7 +2108,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -2116,7 +2116,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -2128,7 +2128,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -2136,7 +2136,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -2144,7 +2144,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure24",
+ super: "Closure25",
  $call$0: function() {
   return $.CTC4;
  }
@@ -2152,7 +2152,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -2162,7 +2162,7 @@ $$.Closure8 = {"":
 
 $$.Closure9 = {"":
  ["this_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
@@ -2173,7 +2173,7 @@ $$.Closure9 = {"":
 
 $$.Closure10 = {"":
  ["this_1"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_1.clear$0();
  }
@@ -2181,7 +2181,7 @@ $$.Closure10 = {"":
 
 $$.Closure11 = {"":
  ["this_2"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_2.get$pen().erase$0();
   this.this_2.get$pen().interpret$1(this.this_2.get$commandsTextArea().get$value());
@@ -2190,7 +2190,7 @@ $$.Closure11 = {"":
 
 $$.Closure12 = {"":
  ["this_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
@@ -2199,7 +2199,7 @@ $$.Closure12 = {"":
 
 $$.Closure13 = {"":
  ["this_1"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
@@ -2208,7 +2208,7 @@ $$.Closure13 = {"":
 
 $$.Closure14 = {"":
  ["this_2"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -2223,7 +2223,7 @@ $$.Closure14 = {"":
 
 $$.Closure15 = {"":
  ["this_3"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_3.get$pen().moveTo$1($.center());
  }
@@ -2231,7 +2231,7 @@ $$.Closure15 = {"":
 
 $$.Closure16 = {"":
  ["this_4"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   try {
     var d = $.parseInt(this.this_4.get$demosSelect().get$value());
@@ -2245,7 +2245,7 @@ $$.Closure16 = {"":
 
 $$.Closure17 = {"":
  ["this_5"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   try {
     var turn = $.parseDouble(this.this_5.get$turnInput().get$value());
@@ -2262,7 +2262,7 @@ $$.Closure17 = {"":
 
 $$.Closure18 = {"":
  ["this_6"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_6.get$pen().randomMove$0();
  }
@@ -2270,7 +2270,7 @@ $$.Closure18 = {"":
 
 $$.Closure19 = {"":
  ["this_7"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_7.get$pen().all$0();
  }
@@ -2278,7 +2278,7 @@ $$.Closure19 = {"":
 
 $$.Closure20 = {"":
  ["this_8"],
- super: "Closure24",
+ super: "Closure25",
  $call$1: function(e) {
   this.this_8.get$pen().erase$0();
   this.this_8.get$downCheckbox().set$checked(true);
@@ -2289,7 +2289,7 @@ $$.Closure20 = {"":
 
 $$.Closure21 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_1.move$2(0, length$);
   else {
@@ -2306,7 +2306,7 @@ $$.Closure21 = {"":
 
 $$.Closure22 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_12.forward$1(length$);
   else {
@@ -2323,13 +2323,26 @@ $$.Closure22 = {"":
 
 $$.Closure23 = {"":
  ["box_0"],
- super: "Closure24",
+ super: "Closure25",
+ $call$1: function(size) {
+  for (var t1 = $.iterator($.colorList); t1.hasNext$0() === true; ) {
+    var t2 = t1.next$0();
+    this.box_0.p_13.set$color(t2);
+    this.box_0.p_13.forward$1(size);
+    this.box_0.p_13.left$1(90);
+  }
+ }
+};
+
+$$.Closure24 = {"":
+ ["box_0"],
+ super: "Closure25",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure24 = {"":
+$$.Closure25 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -2337,10 +2350,10 @@ $$.Closure24 = {"":
  }
 };
 
-Isolate.$defineClass('Closure25', 'Closure24', ['self', 'target'], {
+Isolate.$defineClass('Closure26', 'Closure25', ['self', 'target'], {
 $call$1: function(p0) { return this.self[this.target](p0); }
 });
-Isolate.$defineClass('Closure26', 'Closure24', ['self', 'target'], {
+Isolate.$defineClass('Closure27', 'Closure25', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -3147,6 +3160,14 @@ $.demo3 = function(p) {
   p.all$1(6);
 };
 
+$.demo11 = function(p) {
+  var t1 = ({});
+  t1.p_1 = p;
+  var t2 = new $.Closure21(t1);
+  t1.p_1.erase$0();
+  t2.$call$2(240, 4);
+};
+
 $._TextTrackEventsImpl$1 = function(_ptr) {
   return new $._TextTrackEventsImpl(_ptr);
 };
@@ -3318,10 +3339,17 @@ $.geB = function(a, b) {
 
 $.demo9 = function(p) {
   var t1 = ({});
-  t1.p_12 = p;
-  var t2 = new $.Closure22(t1);
-  t1.p_12.erase$0();
-  t2.$call$2(240, 4);
+  t1.p_13 = p;
+  var t2 = new $.Closure23(t1);
+  t1.p_13.erase$0();
+  t1.p_13.set$width(2);
+  for (var t3 = $.iterator($.List(16)), size = 60; t3.hasNext$0() === true; ) {
+    t3.next$0();
+    t2.$call$1(size);
+    size += 10;
+    t1.p_13.forward$1(10);
+    t1.p_13.right$1(18);
+  }
 };
 
 $.Data$1 = function(pen) {
@@ -3761,6 +3789,9 @@ $.demo = function(p, dn) {
       case 10:
         $.demo10(p);
         break;
+      case 11:
+        $.demo11(p);
+        break;
       default:
         $.demo1(p);
     }
@@ -3911,9 +3942,9 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
 
 $.demo10 = function(p) {
   var t1 = ({});
-  t1.p_1 = p;
-  var t2 = new $.Closure21(t1);
-  t1.p_1.erase$0();
+  t1.p_12 = p;
+  var t2 = new $.Closure22(t1);
+  t1.p_12.erase$0();
   t2.$call$2(240, 4);
 };
 
@@ -4629,7 +4660,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure26(this, 'click$0'); },
+ get$click: function() { return new $.Closure27(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4691,7 +4722,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure26(this, 'click$0'); },
+ get$click: function() { return new $.Closure27(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);

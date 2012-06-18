@@ -13,6 +13,10 @@ Shapes
  move, 90, 100, 3;
  all, 6;
  
+ Square Spiral
+ 
+ demo 9
+ 
  Triangle
  
  move, 0, 80, 0;
@@ -36,7 +40,15 @@ Shapes
  move, -120, 80, 0;
  all, 3;
  
- Polygon
+ Star
+ 
+ move, 0, 150, 0;
+ move, -159, 0, 0;
+ all, 1;
+ all, 1;
+ all, 1;
+ 
+ Polygon (regular)
  
  move, 45, 100, 0;
  move, 45, 100, 0;

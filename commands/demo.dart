@@ -31,6 +31,9 @@ demo(var p, int dn) {
       case 10:
         demo10(p);
         break;
+      case 11:
+        demo11(p);
+        break;
       default:
         demo1(p);
     }
@@ -149,6 +152,25 @@ demo8(var p) {
 }
 
 demo9(var p) {
+  multicolorSquare(var size) {
+    for (var c in colorList) {
+      p.color = c;
+      p.forward(size);
+      p.left(90);
+    }
+  }
+  p.erase();
+  p.width = 2;
+  var size = 60;
+  for (var i in new List(16)) {
+    multicolorSquare(size);
+    size = size + 10;       // Increase the size for next time
+    p.forward(10);          // Move the pen forward
+    p.right(18);
+  }
+}
+
+demo10(var p) {
   f1(var length, var depth) {
     if (depth == 0) {
       p.forward(length);
@@ -168,7 +190,7 @@ demo9(var p) {
   //f1(500, 4);
 }
 
-demo10(var p) {
+demo11(var p) {
   f2(var length, var depth) {
     if (depth == 0) {
       p.move(0, length);

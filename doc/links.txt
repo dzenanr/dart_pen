@@ -1,3 +1,7 @@
+Smart Dart Art
+
+https://github.com/dzenanr/DartPen
+
 Turtle Geometry
 
 google turtle geometry
@@ -6,6 +10,10 @@ Intro
 
 http://en.wikipedia.org/wiki/PythonTurtle
 http://en.wikipedia.org/wiki/Turtle_graphics
+
+Algorithms
+
+http://en.wikipedia.org/wiki/Eulerian_path
 
 Assignments
 
@@ -39,6 +47,7 @@ Courses
 http://www.cse.chalmers.se/edu/course/afp/index.html
 http://www.stanford.edu/class/cs106a/
 http://www.cse.chalmers.se/~bengt/korea-course/
+https://sites.google.com/site/educ343543/mathematics/turtle-geometry
 
 Fractals
 
@@ -88,6 +97,10 @@ http://pythonturtle.org/
 https://github.com/cool-RR/PythonTurtle
 http://openbookproject.net/thinkcs/python/english3e/hello_little_turtles.html
 
+Recursion
+
+http://openbookproject.net/thinkcs/python/english3e/recursion.html
+
 Shapes
 
 http://en.wikipedia.org/wiki/Polygon
@@ -104,7 +117,15 @@ http://teachout1.net/village/java/tree3.html
 
 Turtle Programs
 
+http://www.sonic.net/~nbs/webturtle/
+http://www.sonic.net/~nbs/webturtle/examples/
 http://faculty.nps.edu/ncrowe/curve2.htm
+http://openbookproject.net/thinkcs/python/english3e/recursion.html
+http://www.atarimagazines.com/compute/issue20/turtle_Education.php
+
+Videos
+
+http://www.tjleone.com/turtle_geometry.htm
 
 
 
