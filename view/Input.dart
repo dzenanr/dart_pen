@@ -71,8 +71,8 @@ class Input {
     moveButton = document.query('#move');
     moveButton.on.click.add((MouseEvent e) {
       try {
-        num turn = Math.parseInt(turnInput.value);
-        num advance = Math.parseInt(advanceInput.value);
+        num turn = Math.parseDouble(turnInput.value);
+        num advance = Math.parseDouble(advanceInput.value);
         int repeat = Math.parseInt(repeatInput.value);
         pen.move(turn, advance, repeat);
       } catch(final error) {

@@ -2248,8 +2248,8 @@ $$.Closure17 = {"":
  super: "Closure24",
  $call$1: function(e) {
   try {
-    var turn = $.parseInt(this.this_5.get$turnInput().get$value());
-    var advance = $.parseInt(this.this_5.get$advanceInput().get$value());
+    var turn = $.parseDouble(this.this_5.get$turnInput().get$value());
+    var advance = $.parseDouble(this.this_5.get$advanceInput().get$value());
     var repeat = $.parseInt(this.this_5.get$repeatInput().get$value());
     this.this_5.get$pen().move$3(turn, advance, repeat);
   } catch (exception) {
