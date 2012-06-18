@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure21(t1));
+  $.forEach(this._backingMap, new $.Closure23(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure22 = {"":
+$$.Closure24 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -943,6 +943,22 @@ $$.Pen = {"":
             var repeatString = $.index(command, 3);
             this.move$3($.parseDouble(turnString), $.parseDouble(advanceString), $.parseInt(repeatString));
             break;
+          case 'right':
+            var turnString0 = $.index(command, 1);
+            this.right$1($.parseDouble(turnString0));
+            break;
+          case 'left':
+            var turnString1 = $.index(command, 1);
+            this.left$1($.parseDouble(turnString1));
+            break;
+          case 'forward':
+            var advanceString0 = $.index(command, 1);
+            this.forward$1($.parseDouble(advanceString0));
+            break;
+          case 'backward':
+            var advanceString1 = $.index(command, 1);
+            this.backward$1($.parseDouble(advanceString1));
+            break;
           case 'randomMove':
             this.randomMove$0();
             break;
@@ -1124,99 +1140,85 @@ $$.Pen = {"":
       return this.move$3(t2, $.mul(t1, t3), $.randomInt(10));
   }
  },
- move$3: function(turn, advance, repeat) {
-  if (typeof repeat !== 'number') return this.move$3$bailout(turn, advance, repeat, 1, repeat, 0, 0, 0, 0);
-  var lastLine = this.path.lastLine$0();
-  var lineCount = repeat + 1;
-  if (lineCount > 0) {
-    var segment = $.Segment$2(lineCount, true);
-    segment.draw = $.pen.get$down();
-    segment.color = $.pen.get$color();
-    segment.width = $.pen.get$width();
-    $.add$1(this.path.get$segments(), segment);
-    var i = 0;
-    while (true) {
-      var t1 = segment.lineCount;
-      if (typeof t1 !== 'number') return this.move$3$bailout(turn, advance, repeat, 2, segment, lastLine, repeat, i, t1);
-      if (!(i < t1)) break;
-      var line = $.Line$next$1(lastLine);
-      t1 = segment.lines;
-      if (typeof t1 !== 'object' || t1.constructor !== Array || !!t1.immutable$list || !!!t1.is$JavaScriptIndexingBehavior) return this.move$3$bailout(turn, advance, repeat, 3, i, line, segment, repeat, t1);
-      var t2 = t1.length;
-      if (i < 0 || i >= t2) throw $.ioore(i);
-      t1[i] = line;
-      line.set$angle(turn);
-      line.set$pixels(advance);
-      lastLine = line;
-      ++i;
-    }
-  }
-  $.add$1(this.commands, ['move', turn, advance, repeat]);
+ backward$1: function(steps) {
+  if (typeof steps !== 'number') return this.backward$1$bailout(steps, 1, steps);
+  steps > 0 && this.move$2(0, -steps);
  },
- move$3$bailout: function(turn, advance, repeat, state, env0, env1, env2, env3, env4) {
+ backward$1$bailout: function(steps, state, env0) {
   switch (state) {
     case 1:
-      repeat = env0;
-      break;
-    case 2:
-      segment = env0;
-      lastLine = env1;
-      repeat = env2;
-      i = env3;
-      t1 = env4;
-      break;
-    case 3:
-      i = env0;
-      line = env1;
-      segment = env2;
-      repeat = env3;
-      t1 = env4;
+      steps = env0;
       break;
   }
   switch (state) {
     case 0:
     case 1:
       state = 0;
-      var lastLine = this.path.lastLine$0();
-      var lineCount = $.add(repeat, 1);
-    case 2:
-    case 3:
-      if (state == 2 || state == 3 || (state == 0 && $.gtB(lineCount, 0))) {
-        switch (state) {
-          case 0:
-            var segment = $.Segment$2(lineCount, true);
-            segment.draw = $.pen.get$down();
-            segment.color = $.pen.get$color();
-            segment.width = $.pen.get$width();
-            $.add$1(this.path.get$segments(), segment);
-            var i = 0;
-          case 2:
-          case 3:
-            L0: while (true) {
-              switch (state) {
-                case 0:
-                  var t1 = segment.lineCount;
-                case 2:
-                  state = 0;
-                  if (!$.ltB(i, t1)) break L0;
-                  var line = $.Line$next$1(lastLine);
-                  t1 = segment.lines;
-                case 3:
-                  state = 0;
-                  $.indexSet(t1, i, line);
-                  line.set$angle(turn);
-                  line.set$pixels(advance);
-                  lastLine = line;
-                  ++i;
-              }
-            }
-        }
-      }
-      $.add$1(this.commands, ['move', turn, advance, repeat]);
+      $.gtB(steps, 0) && this.move$2(0, $.neg(steps));
   }
+ },
+ forward$1: function(steps) {
+  if (typeof steps !== 'number') return this.forward$1$bailout(steps, 1, steps);
+  steps > 0 && this.move$2(0, steps);
+ },
+ forward$1$bailout: function(steps, state, env0) {
+  switch (state) {
+    case 1:
+      steps = env0;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      $.gtB(steps, 0) && this.move$2(0, steps);
+  }
+ },
+ left$1: function(angle) {
+  $.gtB(angle, 0) && this.move$1($.neg(angle));
+ },
+ get$left: function() { return new $.Closure25(this, 'left$1'); },
+ right$1: function(angle) {
+  if (typeof angle !== 'number') return this.right$1$bailout(angle, 1, angle);
+  angle > 0 && this.move$1(angle);
+ },
+ right$1$bailout: function(angle, state, env0) {
+  switch (state) {
+    case 1:
+      angle = env0;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      $.gtB(angle, 0) && this.move$1(angle);
+  }
+ },
+ move$3: function(turn, advance, repeat) {
+  var lastLine = this.path.lastLine$0();
+  var lineCount = $.add(repeat, 1);
+  if ($.gtB(lineCount, 0)) {
+    var segment = $.Segment$2(lineCount, true);
+    segment.draw = $.pen.get$down();
+    segment.color = $.pen.get$color();
+    segment.width = $.pen.get$width();
+    $.add$1(this.path.get$segments(), segment);
+    for (var i = 0; $.ltB(i, segment.lineCount); ++i) {
+      var line = $.Line$next$1(lastLine);
+      $.indexSet(segment.lines, i, line);
+      line.set$angle(turn);
+      line.set$pixels(advance);
+      lastLine = line;
+    }
+  }
+  $.add$1(this.commands, ['move', turn, advance, repeat]);
  },
  move$1: function(turn) {
   return this.move$3(turn,0,0)
+},
+ move$2: function(turn,advance) {
+  return this.move$3(turn,advance,0)
 },
  move$2: function(turn,advance) {
   return this.move$3(turn,advance,0)
@@ -1327,8 +1329,8 @@ $$.Pen = {"":
   return this._width;
  },
  set$width: function(width) {
-  this._width = width;
   if ($.eqB(width, 0)) this._width = 1;
+  else this._width = width;
   $.add$1(this.commands, ['width', width]);
  },
  get$color: function() {
@@ -1716,7 +1718,12 @@ $$._SimpleClientRect = {"":
  },
  operator$eq$1: function(other) {
   return !(other === (void 0)) && $.eqB(this.left, other.get$left()) && $.eqB(this.top, other.get$top()) && $.eqB(this.width, other.get$width()) && $.eqB(this.height, other.get$height());
- }
+ },
+ get$right: function() {
+  return $.add(this.left, this.width);
+ },
+ right$1: function(arg0) { return this.get$right().$call$1(arg0); },
+ left$1: function(arg0) { return this.left.$call$1(arg0); }
 };
 
 $$._ElementRectImpl = {"":
@@ -2085,7 +2092,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -2093,7 +2100,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -2101,7 +2108,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -2109,7 +2116,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -2121,7 +2128,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -2129,7 +2136,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -2137,7 +2144,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure22",
+ super: "Closure24",
  $call$0: function() {
   return $.CTC4;
  }
@@ -2145,7 +2152,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -2155,7 +2162,7 @@ $$.Closure8 = {"":
 
 $$.Closure9 = {"":
  ["this_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
@@ -2166,7 +2173,7 @@ $$.Closure9 = {"":
 
 $$.Closure10 = {"":
  ["this_1"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_1.clear$0();
  }
@@ -2174,7 +2181,7 @@ $$.Closure10 = {"":
 
 $$.Closure11 = {"":
  ["this_2"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_2.get$pen().erase$0();
   this.this_2.get$pen().interpret$1(this.this_2.get$commandsTextArea().get$value());
@@ -2183,7 +2190,7 @@ $$.Closure11 = {"":
 
 $$.Closure12 = {"":
  ["this_0"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
@@ -2192,7 +2199,7 @@ $$.Closure12 = {"":
 
 $$.Closure13 = {"":
  ["this_1"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
@@ -2201,7 +2208,7 @@ $$.Closure13 = {"":
 
 $$.Closure14 = {"":
  ["this_2"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -2216,7 +2223,7 @@ $$.Closure14 = {"":
 
 $$.Closure15 = {"":
  ["this_3"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_3.get$pen().moveTo$1($.center());
  }
@@ -2224,7 +2231,7 @@ $$.Closure15 = {"":
 
 $$.Closure16 = {"":
  ["this_4"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   try {
     var d = $.parseInt(this.this_4.get$demosSelect().get$value());
@@ -2238,7 +2245,7 @@ $$.Closure16 = {"":
 
 $$.Closure17 = {"":
  ["this_5"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   try {
     var turn = $.parseInt(this.this_5.get$turnInput().get$value());
@@ -2255,7 +2262,7 @@ $$.Closure17 = {"":
 
 $$.Closure18 = {"":
  ["this_6"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_6.get$pen().randomMove$0();
  }
@@ -2263,7 +2270,7 @@ $$.Closure18 = {"":
 
 $$.Closure19 = {"":
  ["this_7"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_7.get$pen().all$0();
  }
@@ -2271,7 +2278,7 @@ $$.Closure19 = {"":
 
 $$.Closure20 = {"":
  ["this_8"],
- super: "Closure22",
+ super: "Closure24",
  $call$1: function(e) {
   this.this_8.get$pen().erase$0();
   this.this_8.get$downCheckbox().set$checked(true);
@@ -2282,13 +2289,47 @@ $$.Closure20 = {"":
 
 $$.Closure21 = {"":
  ["box_0"],
- super: "Closure22",
+ super: "Closure24",
+ $call$2: function(length$, depth) {
+  if ($.eqB(depth, 0)) this.box_0.p_1.move$2(0, length$);
+  else {
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_1.move$2(60, length$);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_1.move$2(120, length$);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_1.move$2(60, length$);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+  }
+ }
+};
+
+$$.Closure22 = {"":
+ ["box_0"],
+ super: "Closure24",
+ $call$2: function(length$, depth) {
+  if ($.eqB(depth, 0)) this.box_0.p_12.forward$1(length$);
+  else {
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_12.right$1(60);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_12.left$1(120);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+    this.box_0.p_12.right$1(60);
+    this.$call$2($.div(length$, 3), $.sub(depth, 1));
+  }
+ }
+};
+
+$$.Closure23 = {"":
+ ["box_0"],
+ super: "Closure24",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure22 = {"":
+$$.Closure24 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -2296,7 +2337,10 @@ $$.Closure22 = {"":
  }
 };
 
-Isolate.$defineClass('Closure23', 'Closure22', ['self', 'target'], {
+Isolate.$defineClass('Closure25', 'Closure24', ['self', 'target'], {
+$call$1: function(p0) { return this.self[this.target](p0); }
+});
+Isolate.$defineClass('Closure26', 'Closure24', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -2918,10 +2962,6 @@ $.checkNumbers = function(a, b) {
   return false;
 };
 
-$.random = function() {
-  return $.random2();
-};
-
 $._EventSourceEventsImpl$1 = function(_ptr) {
   return new $._EventSourceEventsImpl(_ptr);
 };
@@ -2935,38 +2975,24 @@ $.mul = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a * b) : $.mul$slow(a, b);
 };
 
-$.random2 = function() {
-  return Math.random();
+$.random = function() {
+  return $.random2();
 };
 
-$.parseInt = function(str) {
-  return $.parseInt2(str);
+$.random2 = function() {
+  return Math.random();
 };
 
 $._NotificationEventsImpl$1 = function(_ptr) {
   return new $._NotificationEventsImpl(_ptr);
 };
 
-$.parseInt2 = function(str) {
-  $.checkString(str);
-  if (!(/^\s*[+-]?(?:0[xX][abcdefABCDEF0-9]+|\d+)\s*$/.test(str))) throw $.captureStackTrace($.BadNumberFormatException$1(str));
-  var trimmed = $.trim(str);
-  if ($.gtB($.get$length(trimmed), 2)) {
-    var t1 = $.eqB($.index(trimmed, 1), 'x') || $.eqB($.index(trimmed, 1), 'X');
-  } else t1 = false;
-  if (!t1) {
-    if ($.gtB($.get$length(trimmed), 3)) {
-      t1 = $.eqB($.index(trimmed, 2), 'x') || $.eqB($.index(trimmed, 2), 'X');
-    } else t1 = false;
-  } else t1 = true;
-  var base = t1 ? 16 : 10;
-  var ret = (parseInt(trimmed, base));
-  if ($.isNaN(ret) === true) throw $.captureStackTrace($.BadNumberFormatException$1(str));
-  return ret;
-};
-
 $.randomInt = function(max) {
   return $.toInt($.randomNum(max));
+};
+
+$.parseInt = function(str) {
+  return $.parseInt2(str);
 };
 
 $.lt$slow = function(a, b) {
@@ -2986,6 +3012,31 @@ $.index$slow = function(a, index) {
     return a[index];
   }
   return a.operator$index$1(index);
+};
+
+$.neg = function(a) {
+  if (typeof a === "number") {
+    return -a;
+  }
+  return a.operator$negate$0();
+};
+
+$.parseInt2 = function(str) {
+  $.checkString(str);
+  if (!(/^\s*[+-]?(?:0[xX][abcdefABCDEF0-9]+|\d+)\s*$/.test(str))) throw $.captureStackTrace($.BadNumberFormatException$1(str));
+  var trimmed = $.trim(str);
+  if ($.gtB($.get$length(trimmed), 2)) {
+    var t1 = $.eqB($.index(trimmed, 1), 'x') || $.eqB($.index(trimmed, 1), 'X');
+  } else t1 = false;
+  if (!t1) {
+    if ($.gtB($.get$length(trimmed), 3)) {
+      t1 = $.eqB($.index(trimmed, 2), 'x') || $.eqB($.index(trimmed, 2), 'X');
+    } else t1 = false;
+  } else t1 = true;
+  var base = t1 ? 16 : 10;
+  var ret = (parseInt(trimmed, base));
+  if ($.isNaN(ret) === true) throw $.captureStackTrace($.BadNumberFormatException$1(str));
+  return ret;
 };
 
 $._emitCollection = function(c, result, visiting) {
@@ -3045,23 +3096,6 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 $.demo5 = function(p) {
   p.erase$0();
   p.interpret$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
-};
-
-$.f1 = function(p, length$, depth) {
-  if (typeof length$ !== 'number') return $.f1$bailout(p, length$, depth, 1, length$, 0);
-  if (typeof depth !== 'number') return $.f1$bailout(p, length$, depth, 2, length$, depth);
-  if (depth === 0) p.move$2(0, length$);
-  else {
-    var t1 = length$ / 3;
-    var t2 = depth - 1;
-    $.f1(p, t1, t2);
-    p.move$1(60);
-    $.f1(p, t1, t2);
-    p.move$1(-120);
-    $.f1(p, t1, t2);
-    p.move$1(60);
-    $.f1(p, t1, t2);
-  }
 };
 
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
@@ -3263,6 +3297,10 @@ $.add = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
+$.div = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
+};
+
 $.defineProperty = function(obj, property, value) {
   Object.defineProperty(obj, property,
       {value: value, enumerable: false, writable: true, configurable: true});;
@@ -3274,30 +3312,16 @@ $.regExpExec = function(regExp, str) {
   return result;
 };
 
-$.f2 = function(p, length$, depth) {
-  if (typeof length$ !== 'number') return $.f2$bailout(p, length$, depth, 1, length$, 0);
-  if (typeof depth !== 'number') return $.f2$bailout(p, length$, depth, 2, length$, depth);
-  if (depth === 0) p.move$2(0, length$);
-  else {
-    var t1 = length$ / 3;
-    var t2 = depth - 1;
-    $.f2(p, t1, t2);
-    p.move$2(60, length$);
-    $.f2(p, t1, t2);
-    p.move$2(120, length$);
-    $.f2(p, t1, t2);
-    p.move$2(60, length$);
-    $.f2(p, t1, t2);
-  }
-};
-
 $.geB = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b) === true;
 };
 
 $.demo9 = function(p) {
-  p.erase$0();
-  $.f1(p, 320, 4);
+  var t1 = ({});
+  t1.p_12 = p;
+  var t2 = new $.Closure22(t1);
+  t1.p_12.erase$0();
+  t2.$call$2(240, 4);
 };
 
 $.Data$1 = function(pen) {
@@ -3632,10 +3656,6 @@ $.typeNameInFirefox = function(obj) {
   return name$;
 };
 
-$.div = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
-};
-
 $.getFunctionForTypeNameOf = function() {
   if (!((typeof(navigator)) === 'object')) return $.typeNameInChrome;
   var userAgent = (navigator.userAgent);
@@ -3890,8 +3910,11 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
 };
 
 $.demo10 = function(p) {
-  p.erase$0();
-  $.f2(p, 240, 4);
+  var t1 = ({});
+  t1.p_1 = p;
+  var t2 = new $.Closure21(t1);
+  t1.p_1.erase$0();
+  t2.$call$2(240, 4);
 };
 
 $.newList = function(length$) {
@@ -4032,35 +4055,6 @@ $._AllMatchesIterator$2 = function(re, _str) {
 
 $._BodyElementEventsImpl$1 = function(_ptr) {
   return new $._BodyElementEventsImpl(_ptr);
-};
-
-$.f1$bailout = function(p, length$, depth, state, env0, env1) {
-  switch (state) {
-    case 1:
-      length$ = env0;
-      break;
-    case 2:
-      length$ = env0;
-      depth = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-    case 2:
-      state = 0;
-      if ($.eqB(depth, 0)) p.move$2(0, length$);
-      else {
-        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$1(60);
-        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$1(-120);
-        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$1(60);
-        $.f1(p, $.div(length$, 3), $.sub(depth, 1));
-      }
-  }
 };
 
 $.stringReplaceAllUnchecked$bailout = function(receiver, from, to, state, env0) {
@@ -4247,35 +4241,6 @@ $.allMatchesInStringUnchecked$bailout = function(needle, haystack, state, env0, 
   }
 };
 
-$.f2$bailout = function(p, length$, depth, state, env0, env1) {
-  switch (state) {
-    case 1:
-      length$ = env0;
-      break;
-    case 2:
-      length$ = env0;
-      depth = env1;
-      break;
-  }
-  switch (state) {
-    case 0:
-    case 1:
-      state = 0;
-    case 2:
-      state = 0;
-      if ($.eqB(depth, 0)) p.move$2(0, length$);
-      else {
-        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$2(60, length$);
-        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$2(120, length$);
-        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
-        p.move$2(60, length$);
-        $.f2(p, $.div(length$, 3), $.sub(depth, 1));
-      }
-  }
-};
-
 $.dynamicBind.$call$4 = $.dynamicBind;
 $.dynamicBind.$name = "dynamicBind";
 $.draw.$call$0 = $.draw;
@@ -4440,9 +4405,14 @@ $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
  get$top: function() {
   return this.getPropertyValue$1('top');
  },
+ get$right: function() {
+  return this.getPropertyValue$1('right');
+ },
+ right$1: function(arg0) { return this.get$right().$call$1(arg0); },
  get$left: function() {
   return this.getPropertyValue$1('left');
  },
+ left$1: function(arg0) { return this.get$left().$call$1(arg0); },
  get$height: function() {
   return this.getPropertyValue$1('height');
  },
@@ -4507,6 +4477,8 @@ $.$defineNativeClass('CharacterData', ["length?"], {
 });
 
 $.$defineNativeClass('ClientRect', ["width?", "top?", "left?", "height?"], {
+ right$1: function(arg0) { return this.right.$call$1(arg0); },
+ left$1: function(arg0) { return this.left.$call$1(arg0); }
 });
 
 $.$defineNativeClass('ClientRectList', ["length?"], {
@@ -4657,7 +4629,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure23(this, 'click$0'); },
+ get$click: function() { return new $.Closure26(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4719,7 +4691,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure23(this, 'click$0'); },
+ get$click: function() { return new $.Closure26(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);
@@ -5461,6 +5433,8 @@ $.$defineNativeClass('RangeException', ["message?"], {
 });
 
 $.$defineNativeClass('Rect', ["top?", "left?"], {
+ right$1: function(arg0) { return this.right.$call$1(arg0); },
+ left$1: function(arg0) { return this.left.$call$1(arg0); }
 });
 
 $.$defineNativeClass('SQLError', ["message?"], {

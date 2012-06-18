@@ -50,9 +50,10 @@ class Pen {
   String get color() => _color;
 
   void set width(int width) {
-    _width = width;
     if (width == 0) {
       _width = 1;
+    } else {
+      _width = width;
     }
     commands.add(['width', width]);
   }
@@ -100,6 +101,30 @@ class Pen {
     }
 
     commands.add(['move', turn, advance, repeat]);
+  }
+
+  right (num angle) {
+    if (angle > 0) {
+      move(angle);
+    }
+  }
+
+  left (num angle) {
+    if (angle > 0) {
+      move(-angle);
+    }
+  }
+
+  forward(num steps) {
+    if (steps > 0) {
+      move(0, steps);
+    }
+  }
+
+  backward(num steps) {
+    if (steps > 0) {
+      move(0, -steps);
+    }
   }
 
   randomMove() =>
@@ -191,6 +216,22 @@ class Pen {
               String advanceString = command[2];
               String repeatString = command[3];
               move(Math.parseDouble(turnString), Math.parseDouble(advanceString), Math.parseInt(repeatString));
+              break;
+            case 'right':
+              String turnString = command[1];
+              right(Math.parseDouble(turnString));
+              break;
+            case 'left':
+              String turnString = command[1];
+              left(Math.parseDouble(turnString));
+              break;
+            case 'forward':
+              String advanceString = command[1];
+              forward(Math.parseDouble(advanceString));
+              break;
+            case 'backward':
+              String advanceString = command[1];
+              backward(Math.parseDouble(advanceString));
               break;
             case 'randomMove':
               randomMove();

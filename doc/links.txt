@@ -34,6 +34,10 @@ http://www.cse.chalmers.se/edu/course/afp/index.html
 http://www.stanford.edu/class/cs106a/
 http://www.cse.chalmers.se/~bengt/korea-course/
 
+Fractals
+
+http://www.algorithm.co.il/blogs/computer-science/fractals-in-10-minutes-no-6-turtle-snowflake/
+
 Geometry
 
 http://en.wikipedia.org/wiki/Line_(geometry)

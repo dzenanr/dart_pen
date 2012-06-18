@@ -148,42 +148,42 @@ demo8(var p) {
   p.interpret(commandsString);
 }
 
-f1(var p, var length, var depth) {
-  if (depth == 0) {
-    p.move(0, length);
-  } else {
-    f1(p, length/3, depth-1);
-    p.move(60);
-    f1(p, length/3, depth-1);
-    p.move(-120);
-    f1(p, length/3, depth-1);
-    p.move(60);
-    f1(p, length/3, depth-1);
-  }
-}
-
 demo9(var p) {
-  p.erase();
-  f1(p, 320, 4);
-}
-
-f2(var p, var length, var depth) {
-  if (depth == 0) {
-    p.move(0, length);
-  } else {
-    f2(p, length/3, depth-1);
-    p.move(60, length);
-    f2(p, length/3, depth-1);
-    p.move(120, length);
-    f2(p, length/3, depth-1);
-    p.move(60, length);
-    f2(p, length/3, depth-1);
+  f1(var length, var depth) {
+    if (depth == 0) {
+      p.forward(length);
+    } else {
+      f1(length/3, depth-1);
+      p.right(60);
+      f1(length/3, depth-1);
+      p.left(120);
+      f1(length/3, depth-1);
+      p.right(60);
+      f1(length/3, depth-1);
+    }
   }
+  p.erase();
+  f1(240, 4);
+  //f1(320, 4);
+  //f1(500, 4);
 }
 
 demo10(var p) {
+  f2(var length, var depth) {
+    if (depth == 0) {
+      p.move(0, length);
+    } else {
+      f2(length/3, depth-1);
+      p.move(60, length);
+      f2(length/3, depth-1);
+      p.move(120, length);
+      f2(length/3, depth-1);
+      p.move(60, length);
+      f2(length/3, depth-1);
+    }
+  }
   p.erase();
-  f2(p, 240, 4);
+  f2(240, 4);
 }
 
 randomDemo(var p) {
