@@ -1,5 +1,7 @@
 Shapes
 
+http://www.sonic.net/~nbs/webturtle/examples/
+
  Square
 
  move, 90, 100, 0;

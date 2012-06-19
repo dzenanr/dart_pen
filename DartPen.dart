@@ -23,6 +23,7 @@
 
 final int DEFAULT_LINE_WIDTH = 1;
 final String DEFAULT_LINE_COLOR = '#000000'; // black
+final int DEFAULT_FONT_SIZE = 11;
 // The board is redrawn every INTERVAL ms.
 final int INTERVAL = 8;
 
@@ -65,19 +66,28 @@ draw() {
         Line line = segment.lines[i];
         context.moveTo(line.beginPoint.x, line.beginPoint.y);
         context.lineTo(line.endPoint.x, line.endPoint.y);
+        var x = (line.beginPoint.x + line.endPoint.x) / 2;
+        var y = (line.beginPoint.y + line.endPoint.y) / 2;
+        context.fillText(segment.text, x + 2, y - 2, line.pixels);
       }
       context.stroke();
       context.closePath();
     }
   }
   // draw pen as a circle
-  Segment lastSegment = pen.path.segments.last();
-  Line lastLine = lastSegment.lines.last();
+  Line lastLine = pen.path.lastLine();
   context.beginPath();
   context.lineWidth = DEFAULT_LINE_WIDTH;
   context.strokeStyle = colors[pen.color];
   context.fillStyle = colors[pen.color];
-  context.arc(lastLine.endPoint.x, lastLine.endPoint.y, pen.width, 0, Math.PI * 2, false);
+  context.arc(
+    lastLine.endPoint.x, lastLine.endPoint.y, pen.width + 1, 0, Math.PI * 2, false);
+  // draw the current direction
+  Line direction = new Line.next(lastLine);
+  direction.endPoint = direction.findEndPoint(
+    direction.beginPoint, lastLine.cumulativeAngle, pen.width + 8);
+  context.moveTo(direction.beginPoint.x, direction.beginPoint.y);
+  context.lineTo(direction.endPoint.x, direction.endPoint.y);
   context.fill();
   context.stroke();
   context.closePath();

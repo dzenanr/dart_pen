@@ -6,24 +6,9 @@ add functions and recursion
 
 To Correct
 
-leading space in Commands
 
-after random demo, width = 0?
 
- color, blue;
- width, 2;
- move, 274.98584828339517, 115.80241855233908, 8;
- move, 36.64095603860915, 103.33348747342825, 8;
- color, black;
- width, 1;
- move, 117.38634327426553, 10.230339765548706, 4;
- down, false;
- moveTo, 333, 333;
- down, true;
- color, orange;
- width, 0;
- move, 306.68043362908065, 68.54870561510324, 3;
- moveTo, 333, 333;
- move, 260.83516580052674, -140.40282912552357, 0;
- move, 58.799488451331854, 120.26723247021437, 8;
- all, 3;
+
+ 
+ 
+ 

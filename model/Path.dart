@@ -48,6 +48,7 @@ class Path {
       path = '$path draw: ${segment.draw} \n';
       path = '$path color: ${segment.color} \n';
       path = '$path width: ${segment.width} \n';
+      path = '$path text: ${segment.text} \n';
       path = '$path \n';
       for (Line line in segment.lines) {
         path = '$path Line \n';

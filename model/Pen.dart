@@ -10,6 +10,7 @@ class Pen {
   bool _down;
   String _color;
   int _width;
+  String _write;
 
   var path;
   var commands;
@@ -22,6 +23,7 @@ class Pen {
     _down = true;
     _color = 'black';
     _width = 1;
+    _write = '';
 
     path = new Path();
     var startSegment = new Segment(1, draw:false);
@@ -37,14 +39,14 @@ class Pen {
 
   void set down(bool down) {
     _down = down;
-    commands.add(['down', down]);
+    commands.add(['down', _down]);
   }
 
   bool get down() => _down;
 
   void set color(String color) {
     _color = color;
-    commands.add(['color', color]);
+    commands.add(['color', _color]);
   }
 
   String get color() => _color;
@@ -55,21 +57,29 @@ class Pen {
     } else {
       _width = width;
     }
-    commands.add(['width', width]);
+    commands.add(['width', _width]);
   }
 
   int get width() => _width;
+
+  void set write(String write) {
+    _write = write;
+    commands.add(['write', _write]);
+  }
+
+  String get write() => _write;
 
   randomColor() => color = randomListElement(colorList);
   randomWidth() => width = randomInt(MAX_WIDTH);
 
   moveTo(Point point) {
-    var lastLine = pen.path.lastLine();
+    var lastLine = path.lastLine();
     var segment = new Segment(1);
-    segment.draw = pen.down;
-    segment.color = pen.color;
-    segment.width = pen.width;
-    pen.path.segments.add(segment);
+    segment.draw = down;
+    segment.color = color;
+    segment.width = width;
+    segment.text = write;
+    path.segments.add(segment);
     var line = new Line.next(lastLine);
     segment.lines[0] = line;
     line.endPoint = point;
@@ -87,9 +97,10 @@ class Pen {
     int lineCount = repeat + 1;
     if (lineCount > 0) {
       var segment = new Segment(lineCount);
-      segment.draw = pen.down;
-      segment.color = pen.color;
-      segment.width = pen.width;
+      segment.draw = down;
+      segment.color = color;
+      segment.width = width;
+      segment.text = write;
       path.segments.add(segment);
       for (var i = 0; i < segment.lineCount; i++) {
         var line = new Line.next(lastLine);
@@ -99,8 +110,15 @@ class Pen {
         lastLine = line;
       }
     }
-
-    commands.add(['move', turn, advance, repeat]);
+    if (repeat == 0) {
+      if (advance == 0) {
+        commands.add(['move', turn]);
+      } else {
+        commands.add(['move', turn, advance]);
+      }
+    } else {
+      commands.add(['move', turn, advance, repeat]);
+    }
   }
 
   right (num angle) {
@@ -153,7 +171,7 @@ class Pen {
             commandLine = '$commandLine, ${command[i]}';
           }
           commandLine = '$commandLine;\n';
-          result = '$result $commandLine';
+          result = '$result$commandLine';
         }
       }
     }
@@ -187,23 +205,23 @@ class Pen {
               }
               break;
             case 'color':
-              String colorString = command[1];
-              color = colorString;
+              color = command[1];
               break;
             case 'randomColor':
               randomColor();
               break;
             case 'width':
-              String widthString = command[1];
-              width = Math.parseInt(widthString);
+              width = Math.parseInt(command[1]);
               break;
             case 'randomWidth':
               randomWidth();
               break;
+            case 'write':
+              write = command[1];
+              break;
             case 'moveTo':
-              String xString = command[1];
-              String yString = command[2];
-              moveTo(new Point(Math.parseDouble(xString), Math.parseDouble(yString)));
+              moveTo(new Point(
+                Math.parseDouble(command[1]), Math.parseDouble(command[2])));
               break;
             case 'moveToStart':
               moveToStart();
@@ -212,33 +230,32 @@ class Pen {
               randomMoveTo();
               break;
             case 'move':
-              String turnString = command[1];
-              String advanceString = command[2];
-              String repeatString = command[3];
-              move(Math.parseDouble(turnString), Math.parseDouble(advanceString), Math.parseInt(repeatString));
+              if (command.length == 2) {
+                move(Math.parseDouble(command[1]));
+              } else if (command.length == 3) {
+                move(Math.parseDouble(command[1]), Math.parseDouble(command[2]));
+              } else if (command.length == 4) {
+                move(Math.parseDouble(command[1]), Math.parseDouble(command[2]),
+                  Math.parseInt(command[3]));
+              }
               break;
             case 'right':
-              String turnString = command[1];
-              right(Math.parseDouble(turnString));
+              right(Math.parseDouble(command[1]));
               break;
             case 'left':
-              String turnString = command[1];
-              left(Math.parseDouble(turnString));
+              left(Math.parseDouble(command[1]));
               break;
             case 'forward':
-              String advanceString = command[1];
-              forward(Math.parseDouble(advanceString));
+              forward(Math.parseDouble(command[1]));
               break;
             case 'backward':
-              String advanceString = command[1];
-              backward(Math.parseDouble(advanceString));
+              backward(Math.parseDouble(command[1]));
               break;
             case 'randomMove':
               randomMove();
               break;
             case 'all':
-              String repeatString = command[1];
-              all(Math.parseInt(repeatString));
+              all(Math.parseInt(command[1]));
               break;
             case 'randomAll':
               randomAll();

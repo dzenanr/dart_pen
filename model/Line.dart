@@ -27,24 +27,24 @@ class Line {
         cumulativeAngle = cumulativeAngle - 360;
       }
     }
-    endPoint = _findEndPoint();
+    endPoint = findEndPoint(beginPoint, cumulativeAngle, pixels);
   }
 
   num get angle() => _angle;
 
   void set pixels(num pixels) {
     _pixels = pixels;
-    endPoint = _findEndPoint();
+    endPoint = findEndPoint(beginPoint, cumulativeAngle, pixels);
   }
 
   num get pixels() => _pixels;
 
-  Point _findEndPoint() {
-    var x1 = beginPoint.x;
-    var y1 = beginPoint.y;
-    var cumulativeRadian = (cumulativeAngle * Math.PI) / 180;
-    var x2 = x1 + (pixels * Math.cos(cumulativeRadian));
-    var y2 = y1 + (pixels * Math.sin(cumulativeRadian));
+  Point findEndPoint(Point startPoint, num startAngle, num length) {
+    var x1 = startPoint.x;
+    var y1 = startPoint.y;
+    var radian = (startAngle * Math.PI) / 180;
+    var x2 = x1 + (length * Math.cos(radian));
+    var y2 = y1 + (length * Math.sin(radian));
     return new Point(x2, y2);
   }
 

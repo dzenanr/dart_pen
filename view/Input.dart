@@ -1,6 +1,11 @@
 class Input {
 
-  static final String DEFAULT_TURN = '45';
+  static final bool DEFAULT_DOWN = true;
+  static final String DEFAULT_COLOR = 'black';
+  static final String DEFAULT_WIDTH = '1';
+  static final String DEFAULT_WRITE = '';
+
+  static final String DEFAULT_TURN = '0';
   static final String DEFAULT_ADVANCE = '80';
   static final String DEFAULT_REPEAT = '0';
 
@@ -9,6 +14,7 @@ class Input {
   InputElement downCheckbox;
   SelectElement colorSelect;
   SelectElement widthSelect;
+  InputElement writeInput;
   ButtonElement centerButton;
   SelectElement demosSelect;
   ButtonElement demoButton;
@@ -23,7 +29,6 @@ class Input {
 
   Input(this.pen) {
     downCheckbox = document.query('#down');
-    downCheckbox.checked = pen.down;
     downCheckbox.on.change.add((Event e) {
       pen.down = downCheckbox.checked;
     });
@@ -42,13 +47,17 @@ class Input {
       }
     });
 
+    writeInput = document.query('#write');
+    writeInput.on.change.add((Event e) {
+      pen.write = writeInput.value;
+    });
+
     centerButton = document.query('#center');
     centerButton.on.click.add((MouseEvent e) {
       pen.moveTo(center());
     });
 
     demosSelect = document.query('#demos');
-
     demoButton = document.query('#demo');
     demoButton.on.click.add((MouseEvent e) {
       try {
@@ -60,14 +69,8 @@ class Input {
     });
 
     turnInput = document.query('#turn');
-    turnInput.value = DEFAULT_TURN;
-
     advanceInput = document.query('#advance');
-    advanceInput.value = DEFAULT_ADVANCE;
-
     repeatInput = document.query('#repeat');
-    repeatInput.value = DEFAULT_REPEAT;
-
     moveButton = document.query('#move');
     moveButton.on.click.add((MouseEvent e) {
       try {
@@ -93,10 +96,21 @@ class Input {
     eraseButton = document.query('#erase');
     eraseButton.on.click.add((MouseEvent e) {
       pen.erase();
-      downCheckbox.checked = true;
-      colorSelect.value = 'black';
-      widthSelect.value = '1';
+      _init();
     });
+
+    _init();
+  }
+
+  _init() {
+    colorSelect.value = DEFAULT_COLOR;
+    widthSelect.value = DEFAULT_WIDTH;
+    downCheckbox.checked = DEFAULT_DOWN;
+    writeInput.value = DEFAULT_WRITE;
+
+    turnInput.value = DEFAULT_TURN;
+    advanceInput.value = DEFAULT_ADVANCE;
+    repeatInput.value = DEFAULT_REPEAT;
   }
 
 }

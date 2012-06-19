@@ -86,6 +86,10 @@ Math
 http://www.math.sunysb.edu/~scott/Book331/
 http://demonstrations.wolfram.com/
 
+Midpoint
+
+http://www.regentsprep.org/regents/math/geometry/GCG2/Lmidpoint.htm
+
 People
 
 http://www.cs.berkeley.edu/~bh/

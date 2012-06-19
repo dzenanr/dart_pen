@@ -3,7 +3,7 @@ class Commands {
   final Pen pen;
 
   ButtonElement showButton;
-  ButtonElement clearButton;
+  ButtonElement hideButton;
   ButtonElement drawButton;
   TextAreaElement commandsTextArea;
 
@@ -15,8 +15,8 @@ class Commands {
       commandsTextArea.select();
     });
 
-    clearButton = document.query('#clear');
-    clearButton.on.click.add((MouseEvent e) {
+    hideButton = document.query('#hide');
+    hideButton.on.click.add((MouseEvent e) {
       clear();
     });
 

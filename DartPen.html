@@ -9,10 +9,9 @@
   <body>
     <header>
       <h3>Dart Pen
-        &nbsp &nbsp &nbsp
+        &nbsp &nbsp
         <label for="down">down</label>
-        <input type="checkbox" id="down"/> 
-        &nbsp &nbsp       
+        <input type="checkbox" id="down"/>   
         <select id="color">
           <option>black</option>
           <option>blue</option>
@@ -23,7 +22,6 @@
           <option>red</option>
           <option>yellow</option>
         </select>
-        &nbsp &nbsp 
         <select id="width">
           <option>1</option>
           <option>2</option>
@@ -34,9 +32,11 @@
           <option>7</option>
           <option>8</option>
         </select>
-        &nbsp &nbsp &nbsp &nbsp
+        <label for="write">write</label>
+        <input type="text" id="write" size="8"/>
+        &nbsp 
         <button id="center">Center</button>
-        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+        &nbsp &nbsp
         <select id="demos">
           <option>random</option>
           <option>1</option>
@@ -50,6 +50,7 @@
           <option>9</option>
           <option>10</option>
           <option>11</option>
+          <option>12</option>
         </select>
         <button id="demo">Demo</button>
       </h3>
@@ -63,17 +64,17 @@
     
     <section> 
       <label for="turn">turn</label>
-      <input type="text" id="turn" size="3"/>
+      <input type="text" id="turn" size="2"/>
       <label for="advance">advance</label>
-      <input type="text" id="advance" size="6"/> 
+      <input type="text" id="advance" size="2"/>  
       <label for="repeat">repeat</label>
-      <input type="text" id="repeat" size="4"/> 
+      <input type="text" id="repeat" size="2"/> 
       <button id="move">Move</button>
-      &nbsp &nbsp
-      <button id="random">Random</button>
       &nbsp &nbsp &nbsp &nbsp
+      <button id="random">Random</button>
+      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
       <button id="all">All</button>
-      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
       <button id="erase">Erase</button>
     </section>
     
@@ -83,7 +84,7 @@
           &nbsp 
           <button id="show">Show</button>
           &nbsp 
-          <button id="clear">Clear</button>
+          <button id="hide">Hide</button>
           &nbsp &nbsp
           <button id="draw">Draw</button>
         </h4>
@@ -96,6 +97,8 @@
         <h4>Data 
           &nbsp
           <button id="display">Display</button>
+          &nbsp 
+          <button id="clear">Clear</button>
         </h4>
       </header>  
       <textarea name="path" rows=44 cols=80 id="path"></textarea>    

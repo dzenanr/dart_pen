@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure24(t1));
+  $.forEach(this._backingMap, new $.Closure26(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure25 = {"":
+$$.Closure27 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -896,7 +896,7 @@ $$.FutureAlreadyCompleteException = {"":
 };
 
 $$.Pen = {"":
- ["commands", "path?", "_width", "_color", "_down", "start"],
+ ["commands", "path?", "_write", "_width", "_color", "_down", "start"],
  super: "Object",
  interpret$1: function(commandsString) {
   try {
@@ -913,23 +913,22 @@ $$.Pen = {"":
             }
             break;
           case 'color':
-            var colorString = $.index(command, 1);
-            this.set$color(colorString);
+            this.set$color($.index(command, 1));
             break;
           case 'randomColor':
             this.randomColor$0();
             break;
           case 'width':
-            var widthString = $.index(command, 1);
-            this.set$width($.parseInt(widthString));
+            this.set$width($.parseInt($.index(command, 1)));
             break;
           case 'randomWidth':
             this.randomWidth$0();
             break;
+          case 'write':
+            this.set$write($.index(command, 1));
+            break;
           case 'moveTo':
-            var xString = $.index(command, 1);
-            var yString = $.index(command, 2);
-            this.moveTo$1($.Point($.parseDouble(xString), $.parseDouble(yString)));
+            this.moveTo$1($.Point($.parseDouble($.index(command, 1)), $.parseDouble($.index(command, 2))));
             break;
           case 'moveToStart':
             this.moveToStart$0();
@@ -938,33 +937,31 @@ $$.Pen = {"":
             this.randomMoveTo$0();
             break;
           case 'move':
-            var turnString = $.index(command, 1);
-            var advanceString = $.index(command, 2);
-            var repeatString = $.index(command, 3);
-            this.move$3($.parseDouble(turnString), $.parseDouble(advanceString), $.parseInt(repeatString));
+            if ($.eqB($.get$length(command), 2)) this.move$1($.parseDouble($.index(command, 1)));
+            else {
+              if ($.eqB($.get$length(command), 3)) this.move$2($.parseDouble($.index(command, 1)), $.parseDouble($.index(command, 2)));
+              else {
+                $.eqB($.get$length(command), 4) && this.move$3($.parseDouble($.index(command, 1)), $.parseDouble($.index(command, 2)), $.parseInt($.index(command, 3)));
+              }
+            }
             break;
           case 'right':
-            var turnString0 = $.index(command, 1);
-            this.right$1($.parseDouble(turnString0));
+            this.right$1($.parseDouble($.index(command, 1)));
             break;
           case 'left':
-            var turnString1 = $.index(command, 1);
-            this.left$1($.parseDouble(turnString1));
+            this.left$1($.parseDouble($.index(command, 1)));
             break;
           case 'forward':
-            var advanceString0 = $.index(command, 1);
-            this.forward$1($.parseDouble(advanceString0));
+            this.forward$1($.parseDouble($.index(command, 1)));
             break;
           case 'backward':
-            var advanceString1 = $.index(command, 1);
-            this.backward$1($.parseDouble(advanceString1));
+            this.backward$1($.parseDouble($.index(command, 1)));
             break;
           case 'randomMove':
             this.randomMove$0();
             break;
           case 'all':
-            var repeatString0 = $.index(command, 1);
-            this.all$1($.parseInt(repeatString0));
+            this.all$1($.parseInt($.index(command, 1)));
             break;
           case 'randomAll':
             this.randomAll$0();
@@ -1002,7 +999,7 @@ $$.Pen = {"":
           commandLine = t3 + $.S(t2[i]);
         }
         commandLine = commandLine + ';\n';
-        result = result + ' ' + commandLine;
+        result = result + commandLine;
       }
     }
   }
@@ -1050,7 +1047,7 @@ $$.Pen = {"":
                       ++i;
                     }
                     commandLine = $.S(commandLine) + ';\n';
-                    result = result + ' ' + commandLine;
+                    result = result + commandLine;
                   }
               }
             }
@@ -1177,7 +1174,7 @@ $$.Pen = {"":
  left$1: function(angle) {
   $.gtB(angle, 0) && this.move$1($.neg(angle));
  },
- get$left: function() { return new $.Closure26(this, 'left$1'); },
+ get$left: function() { return new $.Closure28(this, 'left$1'); },
  right$1: function(angle) {
   if (typeof angle !== 'number') return this.right$1$bailout(angle, 1, angle);
   angle > 0 && this.move$1(angle);
@@ -1196,13 +1193,15 @@ $$.Pen = {"":
   }
  },
  move$3: function(turn, advance, repeat) {
+  if (typeof advance !== 'number') return this.move$3$bailout(turn, advance, repeat, 1, advance);
   var lastLine = this.path.lastLine$0();
   var lineCount = $.add(repeat, 1);
   if ($.gtB(lineCount, 0)) {
     var segment = $.Segment$2(lineCount, true);
-    segment.draw = $.pen.get$down();
-    segment.color = $.pen.get$color();
-    segment.width = $.pen.get$width();
+    segment.draw = this.get$down();
+    segment.color = this.get$color();
+    segment.width = this.get$width();
+    segment.text = this.get$write();
     $.add$1(this.path.get$segments(), segment);
     for (var i = 0; $.ltB(i, segment.lineCount); ++i) {
       var line = $.Line$next$1(lastLine);
@@ -1212,7 +1211,46 @@ $$.Pen = {"":
       lastLine = line;
     }
   }
-  $.add$1(this.commands, ['move', turn, advance, repeat]);
+  if ($.eqB(repeat, 0)) {
+    if (advance === 0) $.add$1(this.commands, ['move', turn]);
+    else $.add$1(this.commands, ['move', turn, advance]);
+  } else $.add$1(this.commands, ['move', turn, advance, repeat]);
+ },
+ move$3$bailout: function(turn, advance, repeat, state, env0) {
+  switch (state) {
+    case 1:
+      advance = env0;
+      break;
+  }
+  switch (state) {
+    case 0:
+    case 1:
+      state = 0;
+      var lastLine = this.path.lastLine$0();
+      var lineCount = $.add(repeat, 1);
+      if ($.gtB(lineCount, 0)) {
+        var segment = $.Segment$2(lineCount, true);
+        segment.draw = this.get$down();
+        segment.color = this.get$color();
+        segment.width = this.get$width();
+        segment.text = this.get$write();
+        $.add$1(this.path.get$segments(), segment);
+        var i = 0;
+        L0: while (true) {
+          if (!$.ltB(i, segment.lineCount)) break L0;
+          var line = $.Line$next$1(lastLine);
+          $.indexSet(segment.lines, i, line);
+          line.set$angle(turn);
+          line.set$pixels(advance);
+          lastLine = line;
+          ++i;
+        }
+      }
+      if ($.eqB(repeat, 0)) {
+        if ($.eqB(advance, 0)) $.add$1(this.commands, ['move', turn]);
+        else $.add$1(this.commands, ['move', turn, advance]);
+      } else $.add$1(this.commands, ['move', turn, advance, repeat]);
+  }
  },
  move$1: function(turn) {
   return this.move$3(turn,0,0)
@@ -1276,12 +1314,13 @@ $$.Pen = {"":
   return this.moveTo$1(this.start);
  },
  moveTo$1: function(point) {
-  var lastLine = $.pen.get$path().lastLine$0();
+  var lastLine = this.path.lastLine$0();
   var segment = $.Segment$2(1, true);
-  segment.draw = $.pen.get$down();
-  segment.color = $.pen.get$color();
-  segment.width = $.pen.get$width();
-  $.add$1($.pen.get$path().get$segments(), segment);
+  segment.draw = this.get$down();
+  segment.color = this.get$color();
+  segment.width = this.get$width();
+  segment.text = this.get$write();
+  $.add$1(this.path.get$segments(), segment);
   var line = $.Line$next$1(lastLine);
   var t1 = segment.lines;
   if (typeof t1 !== 'object' || t1.constructor !== Array || !!t1.immutable$list || !!!t1.is$JavaScriptIndexingBehavior) return this.moveTo$1$bailout(point, 1, line, t1);
@@ -1300,12 +1339,13 @@ $$.Pen = {"":
   }
   switch (state) {
     case 0:
-      var lastLine = $.pen.get$path().lastLine$0();
+      var lastLine = this.path.lastLine$0();
       var segment = $.Segment$2(1, true);
-      segment.draw = $.pen.get$down();
-      segment.color = $.pen.get$color();
-      segment.width = $.pen.get$width();
-      $.add$1($.pen.get$path().get$segments(), segment);
+      segment.draw = this.get$down();
+      segment.color = this.get$color();
+      segment.width = this.get$width();
+      segment.text = this.get$write();
+      $.add$1(this.path.get$segments(), segment);
       var line = $.Line$next$1(lastLine);
       var t1 = segment.lines;
     case 1:
@@ -1325,27 +1365,34 @@ $$.Pen = {"":
   this.set$color(t1);
   return t1;
  },
+ get$write: function() {
+  return this._write;
+ },
+ set$write: function(write) {
+  this._write = write;
+  $.add$1(this.commands, ['write', this._write]);
+ },
  get$width: function() {
   return this._width;
  },
  set$width: function(width) {
   if ($.eqB(width, 0)) this._width = 1;
   else this._width = width;
-  $.add$1(this.commands, ['width', width]);
+  $.add$1(this.commands, ['width', this._width]);
  },
  get$color: function() {
   return this._color;
  },
  set$color: function(color) {
   this._color = color;
-  $.add$1(this.commands, ['color', color]);
+  $.add$1(this.commands, ['color', this._color]);
  },
  get$down: function() {
   return this._down;
  },
  set$down: function(down) {
   this._down = down;
-  $.add$1(this.commands, ['down', down]);
+  $.add$1(this.commands, ['down', this._down]);
  },
  erase$0: function() {
   this._init$0();
@@ -1354,6 +1401,7 @@ $$.Pen = {"":
   this._down = true;
   this._color = 'black';
   this._width = 1;
+  this._write = '';
   this.path = $.Path$0();
   var startSegment = $.Segment$2(1, false);
   $.indexSet(startSegment.lines, 0, $.Line$first$1(this.start));
@@ -1378,7 +1426,7 @@ $$.Path = {"":
   path = path + ' line count: ' + $.S(lineCount) + ' \n' + ' \n';
   for (t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
-    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' \n';
+    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' text: ' + $.S(t2.get$text()) + ' \n' + ' \n';
     for (t2 = $.iterator(t2.get$lines()); t2.hasNext$0() === true; ) {
       var t3 = t2.next$0();
       path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' cumulative angle: ' + $.S(t3.get$cumulativeAngle()) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
@@ -1427,13 +1475,14 @@ $$.Path = {"":
 };
 
 $$.Segment = {"":
- ["lines?", "width=", "color=", "draw?", "lineCount?"],
+ ["lines?", "text=", "width=", "color=", "draw?", "lineCount?"],
  super: "Object",
  copy$1: function(last) {
   var segment = $.Segment$2(this.lineCount, true);
   segment.draw = this.draw;
   segment.color = this.color;
   segment.width = this.width;
+  segment.text = this.text;
   var previousLine = last;
   var i = 0;
   while (true) {
@@ -1446,7 +1495,7 @@ $$.Segment = {"":
     if (i < 0 || i >= t2) throw $.ioore(i);
     var line = t1[i].copy$1(previousLine);
     t1 = segment.lines;
-    if (typeof t1 !== 'object' || t1.constructor !== Array || !!t1.immutable$list || !!!t1.is$JavaScriptIndexingBehavior) return this.copy$1$bailout(last, 3, i, line, segment, t1);
+    if (typeof t1 !== 'object' || t1.constructor !== Array || !!t1.immutable$list || !!!t1.is$JavaScriptIndexingBehavior) return this.copy$1$bailout(last, 3, line, i, segment, t1);
     var t3 = t1.length;
     if (i < 0 || i >= t3) throw $.ioore(i);
     t1[i] = line;
@@ -1470,8 +1519,8 @@ $$.Segment = {"":
       t1 = env3;
       break;
     case 3:
-      i = env0;
-      line = env1;
+      line = env0;
+      i = env1;
       segment = env2;
       t1 = env3;
       break;
@@ -1482,6 +1531,7 @@ $$.Segment = {"":
       segment.draw = this.draw;
       segment.color = this.color;
       segment.width = this.width;
+      segment.text = this.text;
       var previousLine = last;
       var i = 0;
     case 1:
@@ -1537,18 +1587,18 @@ $$.Line = {"":
   line.set$pixels(this.get$pixels());
   return line;
  },
- _findEndPoint$0: function() {
-  var x1 = this.beginPoint.get$x();
-  var y1 = this.beginPoint.get$y();
-  var cumulativeRadian = $.div($.mul(this.cumulativeAngle, 3.141592653589793), 180);
-  return $.Point($.add(x1, $.mul(this.get$pixels(), $.cos(cumulativeRadian))), $.add(y1, $.mul(this.get$pixels(), $.sin(cumulativeRadian))));
+ findEndPoint$3: function(startPoint, startAngle, length$) {
+  var x1 = startPoint.get$x();
+  var y1 = startPoint.get$y();
+  var radian = $.div($.mul(startAngle, 3.141592653589793), 180);
+  return $.Point($.add(x1, $.mul(length$, $.cos(radian))), $.add(y1, $.mul(length$, $.sin(radian))));
  },
  get$pixels: function() {
   return this._pixels;
  },
  set$pixels: function(pixels) {
   this._pixels = pixels;
-  this.endPoint = this._findEndPoint$0();
+  this.endPoint = this.findEndPoint$3(this.beginPoint, this.cumulativeAngle, pixels);
  },
  get$angle: function() {
   return this._angle;
@@ -1560,7 +1610,7 @@ $$.Line = {"":
     this.cumulativeAngle = $.add(this.lastLine.get$cumulativeAngle(), angle);
     if ($.gtB(this.cumulativeAngle, 360)) this.cumulativeAngle = $.sub(this.cumulativeAngle, 360);
   }
-  this.endPoint = this._findEndPoint$0();
+  this.endPoint = this.findEndPoint$3(this.beginPoint, this.cumulativeAngle, this.get$pixels());
  },
  lastLine$0: function() { return this.lastLine.$call$0(); },
  Line$first$1: function(beginPoint) {
@@ -1573,41 +1623,48 @@ $$.Line = {"":
 };
 
 $$.Input = {"":
- ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
+ ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "writeInput?", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
  super: "Object",
+ _init$0: function() {
+  this.colorSelect.set$value('black');
+  this.widthSelect.set$value('1');
+  this.downCheckbox.set$checked(true);
+  this.writeInput.set$value('');
+  this.turnInput.set$value('0');
+  this.advanceInput.set$value('80');
+  this.repeatInput.set$value('0');
+ },
  Input$1: function(pen) {
   this.downCheckbox = $.document().query$1('#down');
-  var t1 = this.pen.get$down();
-  this.downCheckbox.set$checked(t1);
-  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure12(this));
+  $.add$1(this.downCheckbox.get$on().get$change(), new $.Closure13(this));
   this.colorSelect = $.document().query$1('#color');
-  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure13(this));
+  $.add$1(this.colorSelect.get$on().get$change(), new $.Closure14(this));
   this.widthSelect = $.document().query$1('#width');
-  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure14(this));
+  $.add$1(this.widthSelect.get$on().get$change(), new $.Closure15(this));
+  this.writeInput = $.document().query$1('#write');
+  $.add$1(this.writeInput.get$on().get$change(), new $.Closure16(this));
   this.centerButton = $.document().query$1('#center');
-  $.add$1(this.centerButton.get$on().get$click(), new $.Closure15(this));
+  $.add$1(this.centerButton.get$on().get$click(), new $.Closure17(this));
   this.demosSelect = $.document().query$1('#demos');
   this.demoButton = $.document().query$1('#demo');
-  $.add$1(this.demoButton.get$on().get$click(), new $.Closure16(this));
+  $.add$1(this.demoButton.get$on().get$click(), new $.Closure18(this));
   this.turnInput = $.document().query$1('#turn');
-  this.turnInput.set$value('45');
   this.advanceInput = $.document().query$1('#advance');
-  this.advanceInput.set$value('80');
   this.repeatInput = $.document().query$1('#repeat');
-  this.repeatInput.set$value('0');
   this.moveButton = $.document().query$1('#move');
-  $.add$1(this.moveButton.get$on().get$click(), new $.Closure17(this));
+  $.add$1(this.moveButton.get$on().get$click(), new $.Closure19(this));
   this.randomButton = $.document().query$1('#random');
-  $.add$1(this.randomButton.get$on().get$click(), new $.Closure18(this));
+  $.add$1(this.randomButton.get$on().get$click(), new $.Closure20(this));
   this.allButton = $.document().query$1('#all');
-  $.add$1(this.allButton.get$on().get$click(), new $.Closure19(this));
+  $.add$1(this.allButton.get$on().get$click(), new $.Closure21(this));
   this.eraseButton = $.document().query$1('#erase');
-  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure20(this));
+  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure22(this));
+  this._init$0();
  }
 };
 
 $$.Commands = {"":
- ["commandsTextArea?", "drawButton", "clearButton", "showButton", "pen?"],
+ ["commandsTextArea?", "drawButton", "hideButton", "showButton", "pen?"],
  super: "Object",
  clear$0: function() {
   this.commandsTextArea.set$value('');
@@ -1615,17 +1672,17 @@ $$.Commands = {"":
  },
  Commands$1: function(pen) {
   this.showButton = $.document().query$1('#show');
-  $.add$1(this.showButton.get$on().get$click(), new $.Closure9(this));
-  this.clearButton = $.document().query$1('#clear');
-  $.add$1(this.clearButton.get$on().get$click(), new $.Closure10(this));
+  $.add$1(this.showButton.get$on().get$click(), new $.Closure10(this));
+  this.hideButton = $.document().query$1('#hide');
+  $.add$1(this.hideButton.get$on().get$click(), new $.Closure11(this));
   this.drawButton = $.document().query$1('#draw');
-  $.add$1(this.drawButton.get$on().get$click(), new $.Closure11(this));
+  $.add$1(this.drawButton.get$on().get$click(), new $.Closure12(this));
   this.commandsTextArea = $.document().query$1('#commands');
  }
 };
 
 $$.Data = {"":
- ["pathTextArea?", "displayButton", "pen?"],
+ ["pathTextArea?", "clearButton", "displayButton", "pen?"],
  super: "Object",
  clear$0: function() {
   this.pathTextArea.set$value('');
@@ -1634,6 +1691,8 @@ $$.Data = {"":
  Data$1: function(pen) {
   this.displayButton = $.document().query$1('#display');
   $.add$1(this.displayButton.get$on().get$click(), new $.Closure8(this));
+  this.clearButton = $.document().query$1('#clear');
+  $.add$1(this.clearButton.get$on().get$click(), new $.Closure9(this));
   this.pathTextArea = $.document().query$1('#path');
  }
 };
@@ -2092,7 +2151,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -2100,7 +2159,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -2108,7 +2167,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -2116,7 +2175,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -2128,7 +2187,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -2136,7 +2195,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -2144,7 +2203,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure25",
+ super: "Closure27",
  $call$0: function() {
   return $.CTC4;
  }
@@ -2152,7 +2211,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -2161,8 +2220,16 @@ $$.Closure8 = {"":
 };
 
 $$.Closure9 = {"":
+ ["this_1"],
+ super: "Closure27",
+ $call$1: function(e) {
+  this.this_1.clear$0();
+ }
+};
+
+$$.Closure10 = {"":
  ["this_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
@@ -2171,44 +2238,44 @@ $$.Closure9 = {"":
  }
 };
 
-$$.Closure10 = {"":
+$$.Closure11 = {"":
  ["this_1"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   this.this_1.clear$0();
  }
 };
 
-$$.Closure11 = {"":
+$$.Closure12 = {"":
  ["this_2"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   this.this_2.get$pen().erase$0();
   this.this_2.get$pen().interpret$1(this.this_2.get$commandsTextArea().get$value());
  }
 };
 
-$$.Closure12 = {"":
+$$.Closure13 = {"":
  ["this_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
  }
 };
 
-$$.Closure13 = {"":
+$$.Closure14 = {"":
  ["this_1"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
  }
 };
 
-$$.Closure14 = {"":
+$$.Closure15 = {"":
  ["this_2"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -2221,37 +2288,46 @@ $$.Closure14 = {"":
  }
 };
 
-$$.Closure15 = {"":
- ["this_3"],
- super: "Closure25",
- $call$1: function(e) {
-  this.this_3.get$pen().moveTo$1($.center());
- }
-};
-
 $$.Closure16 = {"":
- ["this_4"],
- super: "Closure25",
+ ["this_3"],
+ super: "Closure27",
  $call$1: function(e) {
-  try {
-    var d = $.parseInt(this.this_4.get$demosSelect().get$value());
-    $.demo(this.this_4.get$pen(), d);
-  } catch (exception) {
-    $.unwrapException(exception);
-    $.randomDemo(this.this_4.get$pen());
-  }
+  var t1 = this.this_3.get$writeInput().get$value();
+  this.this_3.get$pen().set$write(t1);
  }
 };
 
 $$.Closure17 = {"":
+ ["this_4"],
+ super: "Closure27",
+ $call$1: function(e) {
+  this.this_4.get$pen().moveTo$1($.center());
+ }
+};
+
+$$.Closure18 = {"":
  ["this_5"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(e) {
   try {
-    var turn = $.parseDouble(this.this_5.get$turnInput().get$value());
-    var advance = $.parseDouble(this.this_5.get$advanceInput().get$value());
-    var repeat = $.parseInt(this.this_5.get$repeatInput().get$value());
-    this.this_5.get$pen().move$3(turn, advance, repeat);
+    var d = $.parseInt(this.this_5.get$demosSelect().get$value());
+    $.demo(this.this_5.get$pen(), d);
+  } catch (exception) {
+    $.unwrapException(exception);
+    $.randomDemo(this.this_5.get$pen());
+  }
+ }
+};
+
+$$.Closure19 = {"":
+ ["this_6"],
+ super: "Closure27",
+ $call$1: function(e) {
+  try {
+    var turn = $.parseDouble(this.this_6.get$turnInput().get$value());
+    var advance = $.parseDouble(this.this_6.get$advanceInput().get$value());
+    var repeat = $.parseInt(this.this_6.get$repeatInput().get$value());
+    this.this_6.get$pen().move$3(turn, advance, repeat);
   } catch (exception) {
     var t1 = $.unwrapException(exception);
     var error = t1;
@@ -2260,36 +2336,34 @@ $$.Closure17 = {"":
  }
 };
 
-$$.Closure18 = {"":
- ["this_6"],
- super: "Closure25",
- $call$1: function(e) {
-  this.this_6.get$pen().randomMove$0();
- }
-};
-
-$$.Closure19 = {"":
- ["this_7"],
- super: "Closure25",
- $call$1: function(e) {
-  this.this_7.get$pen().all$0();
- }
-};
-
 $$.Closure20 = {"":
- ["this_8"],
- super: "Closure25",
+ ["this_7"],
+ super: "Closure27",
  $call$1: function(e) {
-  this.this_8.get$pen().erase$0();
-  this.this_8.get$downCheckbox().set$checked(true);
-  this.this_8.get$colorSelect().set$value('black');
-  this.this_8.get$widthSelect().set$value('1');
+  this.this_7.get$pen().randomMove$0();
  }
 };
 
 $$.Closure21 = {"":
+ ["this_8"],
+ super: "Closure27",
+ $call$1: function(e) {
+  this.this_8.get$pen().all$0();
+ }
+};
+
+$$.Closure22 = {"":
+ ["this_9"],
+ super: "Closure27",
+ $call$1: function(e) {
+  this.this_9.get$pen().erase$0();
+  this.this_9._init$0();
+ }
+};
+
+$$.Closure23 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_1.move$2(0, length$);
   else {
@@ -2304,9 +2378,9 @@ $$.Closure21 = {"":
  }
 };
 
-$$.Closure22 = {"":
+$$.Closure24 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_12.forward$1(length$);
   else {
@@ -2321,9 +2395,9 @@ $$.Closure22 = {"":
  }
 };
 
-$$.Closure23 = {"":
+$$.Closure25 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$1: function(size) {
   for (var t1 = $.iterator($.colorList); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
@@ -2334,15 +2408,15 @@ $$.Closure23 = {"":
  }
 };
 
-$$.Closure24 = {"":
+$$.Closure26 = {"":
  ["box_0"],
- super: "Closure25",
+ super: "Closure27",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure25 = {"":
+$$.Closure27 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -2350,10 +2424,10 @@ $$.Closure25 = {"":
  }
 };
 
-Isolate.$defineClass('Closure26', 'Closure25', ['self', 'target'], {
+Isolate.$defineClass('Closure28', 'Closure27', ['self', 'target'], {
 $call$1: function(p0) { return this.self[this.target](p0); }
 });
-Isolate.$defineClass('Closure27', 'Closure25', ['self', 'target'], {
+Isolate.$defineClass('Closure29', 'Closure27', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -2367,19 +2441,6 @@ $.FutureImpl$0 = function() {
   var t1 = [];
   var t2 = [];
   return new $.FutureImpl([], t2, t1, false, (void 0), (void 0), (void 0), false);
-};
-
-$.demo1 = function(p) {
-  p.erase$0();
-  p.set$color('red');
-  p.move$3(45, 80, 1);
-  p.set$width(2);
-  p.set$color('yellow');
-  p.move$3(50, 80, 1);
-  p.set$width(1);
-  p.set$color('blue');
-  p.move$3(65, 80, 1);
-  p.all$1(4);
 };
 
 $.randomSign = function() {
@@ -2465,6 +2526,19 @@ $._containsRef = function(c, ref) {
     if (t1.next$0() === ref) return true;
   }
   return false;
+};
+
+$.demo1 = function(p) {
+  p.erase$0();
+  p.set$color('red');
+  p.move$3(45, 80, 1);
+  p.set$width(2);
+  p.set$color('yellow');
+  p.move$3(50, 80, 1);
+  p.set$width(1);
+  p.set$color('blue');
+  p.move$3(65, 80, 1);
+  p.all$1(4);
 };
 
 $.allMatchesInStringUnchecked = function(needle, haystack) {
@@ -2869,6 +2943,11 @@ $.StringMatch$3 = function(_start, str, pattern) {
   return new $.StringMatch(pattern, str, _start);
 };
 
+$.last = function(receiver) {
+  if ($.isJsArray(receiver) !== true) return receiver.last$0();
+  return $.index(receiver, $.sub($.get$length(receiver), 1));
+};
+
 $.invokeClosure = function(closure, isolate, numberOfArguments, arg1, arg2) {
   var t1 = ({});
   t1.arg2_3 = arg2;
@@ -2906,11 +2985,6 @@ $._createMeasurementFuture = function(computeValue, completer) {
 $._postMessage2 = function(win, message, targetOrigin) {
       win.postMessage(message, targetOrigin);
 ;
-};
-
-$.last = function(receiver) {
-  if ($.isJsArray(receiver) !== true) return receiver.last$0();
-  return $.index(receiver, $.sub($.get$length(receiver), 1));
 };
 
 $._maybeScheduleMeasurementFrame = function() {
@@ -2961,7 +3035,7 @@ $.buildDynamicMetadata = function(inputTable) {
 };
 
 $.Segment$2 = function(lineCount, draw) {
-  var t1 = new $.Segment((void 0), 1, 'black', draw, lineCount);
+  var t1 = new $.Segment((void 0), '', 1, 'black', draw, lineCount);
   t1.Segment$2(lineCount, draw);
   return t1;
 };
@@ -2977,11 +3051,6 @@ $.checkNumbers = function(a, b) {
 
 $._EventSourceEventsImpl$1 = function(_ptr) {
   return new $._EventSourceEventsImpl(_ptr);
-};
-
-$.contains$1 = function(receiver, other) {
-  if (!(typeof receiver === 'string')) return receiver.contains$1(other);
-  return $.contains$2(receiver, other, 0);
 };
 
 $.mul = function(a, b) {
@@ -3000,12 +3069,36 @@ $._NotificationEventsImpl$1 = function(_ptr) {
   return new $._NotificationEventsImpl(_ptr);
 };
 
+$.parseInt = function(str) {
+  return $.parseInt2(str);
+};
+
+$.Line$next$1 = function(lastLine) {
+  var t1 = new $.Line((void 0), 0, 0, 0, (void 0), lastLine);
+  t1.Line$next$1(lastLine);
+  return t1;
+};
+
 $.randomInt = function(max) {
   return $.toInt($.randomNum(max));
 };
 
-$.parseInt = function(str) {
-  return $.parseInt2(str);
+$.parseInt2 = function(str) {
+  $.checkString(str);
+  if (!(/^\s*[+-]?(?:0[xX][abcdefABCDEF0-9]+|\d+)\s*$/.test(str))) throw $.captureStackTrace($.BadNumberFormatException$1(str));
+  var trimmed = $.trim(str);
+  if ($.gtB($.get$length(trimmed), 2)) {
+    var t1 = $.eqB($.index(trimmed, 1), 'x') || $.eqB($.index(trimmed, 1), 'X');
+  } else t1 = false;
+  if (!t1) {
+    if ($.gtB($.get$length(trimmed), 3)) {
+      t1 = $.eqB($.index(trimmed, 2), 'x') || $.eqB($.index(trimmed, 2), 'X');
+    } else t1 = false;
+  } else t1 = true;
+  var base = t1 ? 16 : 10;
+  var ret = (parseInt(trimmed, base));
+  if ($.isNaN(ret) === true) throw $.captureStackTrace($.BadNumberFormatException$1(str));
+  return ret;
 };
 
 $.lt$slow = function(a, b) {
@@ -3013,6 +3106,11 @@ $.lt$slow = function(a, b) {
     return a < b;
   }
   return a.operator$lt$1(b);
+};
+
+$.contains$1 = function(receiver, other) {
+  if (!(typeof receiver === 'string')) return receiver.contains$1(other);
+  return $.contains$2(receiver, other, 0);
 };
 
 $.index$slow = function(a, index) {
@@ -3034,22 +3132,12 @@ $.neg = function(a) {
   return a.operator$negate$0();
 };
 
-$.parseInt2 = function(str) {
-  $.checkString(str);
-  if (!(/^\s*[+-]?(?:0[xX][abcdefABCDEF0-9]+|\d+)\s*$/.test(str))) throw $.captureStackTrace($.BadNumberFormatException$1(str));
-  var trimmed = $.trim(str);
-  if ($.gtB($.get$length(trimmed), 2)) {
-    var t1 = $.eqB($.index(trimmed, 1), 'x') || $.eqB($.index(trimmed, 1), 'X');
-  } else t1 = false;
-  if (!t1) {
-    if ($.gtB($.get$length(trimmed), 3)) {
-      t1 = $.eqB($.index(trimmed, 2), 'x') || $.eqB($.index(trimmed, 2), 'X');
-    } else t1 = false;
-  } else t1 = true;
-  var base = t1 ? 16 : 10;
-  var ret = (parseInt(trimmed, base));
-  if ($.isNaN(ret) === true) throw $.captureStackTrace($.BadNumberFormatException$1(str));
-  return ret;
+$.demo12 = function(p) {
+  var t1 = ({});
+  t1.p_1 = p;
+  var t2 = new $.Closure23(t1);
+  t1.p_1.erase$0();
+  t2.$call$2(240, 4);
 };
 
 $._emitCollection = function(c, result, visiting) {
@@ -3108,7 +3196,35 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 
 $.demo5 = function(p) {
   p.erase$0();
-  p.interpret$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
+  p.left$1(90);
+  p.forward$1(100);
+  p.set$write('a');
+  p.right$1(90);
+  p.forward$1(30);
+  p.set$write('');
+  p.right$1(90);
+  p.forward$1(100);
+  p.left$1(90);
+  p.forward$1(30);
+  p.left$1(90);
+  p.forward$1(80);
+  p.set$write('b');
+  p.right$1(90);
+  p.forward$1(30);
+  p.set$write('');
+  p.right$1(90);
+  p.forward$1(80);
+  p.left$1(90);
+  p.forward$1(30);
+  p.left$1(90);
+  p.forward$1(140);
+  p.set$write('c');
+  p.right$1(90);
+  p.forward$1(30);
+  p.set$write('');
+  p.right$1(90);
+  p.forward$1(140);
+  p.left$1(90);
 };
 
 $._postMessage3 = function(win, message, targetOrigin, messagePorts) {
@@ -3124,12 +3240,6 @@ $.contains$2 = function(receiver, other, startIndex) {
 
 $._DocumentEventsImpl$1 = function(_ptr) {
   return new $._DocumentEventsImpl(_ptr);
-};
-
-$.Line$next$1 = function(lastLine) {
-  var t1 = new $.Line((void 0), 0, 0, 0, (void 0), lastLine);
-  t1.Line$next$1(lastLine);
-  return t1;
 };
 
 $.Path$0 = function() {
@@ -3162,9 +3272,9 @@ $.demo3 = function(p) {
 
 $.demo11 = function(p) {
   var t1 = ({});
-  t1.p_1 = p;
-  var t2 = new $.Closure21(t1);
-  t1.p_1.erase$0();
+  t1.p_12 = p;
+  var t2 = new $.Closure24(t1);
+  t1.p_12.erase$0();
   t2.$call$2(240, 4);
 };
 
@@ -3198,14 +3308,14 @@ $._ElementRectImpl$1 = function(element) {
   return new $._ElementRectImpl(element.$dom_getClientRects$0(), t4, t3, t2, t1);
 };
 
+$._IDBRequestEventsImpl$1 = function(_ptr) {
+  return new $._IDBRequestEventsImpl(_ptr);
+};
+
 $.HashSetImplementation$0 = function() {
   var t1 = new $.HashSetImplementation((void 0));
   t1.HashSetImplementation$0();
   return t1;
-};
-
-$._IDBRequestEventsImpl$1 = function(_ptr) {
-  return new $._IDBRequestEventsImpl(_ptr);
 };
 
 $.stringSplitUnchecked = function(receiver, pattern) {
@@ -3245,19 +3355,26 @@ $.draw = function() {
         var line = $.index(t2.get$lines(), i);
         $.context.moveTo$2(line.get$beginPoint().get$x(), line.get$beginPoint().get$y());
         $.context.lineTo$2(line.get$endPoint().get$x(), line.get$endPoint().get$y());
+        var x = $.div($.add(line.get$beginPoint().get$x(), line.get$endPoint().get$x()), 2);
+        var y = $.div($.add(line.get$beginPoint().get$y(), line.get$endPoint().get$y()), 2);
+        $.context.fillText$4(t2.get$text(), $.add(x, 2), $.sub(y, 2), line.get$pixels());
       }
       $.context.stroke$0();
       $.context.closePath$0();
     }
   }
-  var lastLine = $.last($.last($.pen.get$path().get$segments()).get$lines());
+  var lastLine = $.pen.get$path().lastLine$0();
   $.context.beginPath$0();
   $.context.set$lineWidth(1);
   t1 = $.index($.colors, $.pen.get$color());
   $.context.set$strokeStyle(t1);
   t1 = $.index($.colors, $.pen.get$color());
   $.context.set$fillStyle(t1);
-  $.context.arc$6(lastLine.get$endPoint().get$x(), lastLine.get$endPoint().get$y(), $.pen.get$width(), 0, 6.283185307179586, false);
+  $.context.arc$6(lastLine.get$endPoint().get$x(), lastLine.get$endPoint().get$y(), $.add($.pen.get$width(), 1), 0, 6.283185307179586, false);
+  var direction = $.Line$next$1(lastLine);
+  direction.endPoint = direction.findEndPoint$3(direction.beginPoint, lastLine.get$cumulativeAngle(), $.add($.pen.get$width(), 8));
+  $.context.moveTo$2(direction.beginPoint.get$x(), direction.beginPoint.get$y());
+  $.context.lineTo$2(direction.endPoint.get$x(), direction.endPoint.get$y());
   $.context.fill$0();
   $.context.stroke$0();
   $.context.closePath$0();
@@ -3314,12 +3431,12 @@ $.checkString = function(value) {
   return value;
 };
 
-$.add = function(a, b) {
-  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
-};
-
 $.div = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a / b) : $.div$slow(a, b);
+};
+
+$.add = function(a, b) {
+  return typeof a === 'number' && typeof b === 'number' ? (a + b) : $.add$slow(a, b);
 };
 
 $.defineProperty = function(obj, property, value) {
@@ -3338,22 +3455,12 @@ $.geB = function(a, b) {
 };
 
 $.demo9 = function(p) {
-  var t1 = ({});
-  t1.p_13 = p;
-  var t2 = new $.Closure23(t1);
-  t1.p_13.erase$0();
-  t1.p_13.set$width(2);
-  for (var t3 = $.iterator($.List(16)), size = 60; t3.hasNext$0() === true; ) {
-    t3.next$0();
-    t2.$call$1(size);
-    size += 10;
-    t1.p_13.forward$1(10);
-    t1.p_13.right$1(18);
-  }
+  p.erase$0();
+  p.interpret$1('color, yellow; width, 3; move, 80, 80, 3; color, gray; width, 1; move, -18, 60, 6; color, blue; width, 2; move, 120, 100, 5; move, 5, -80, 9; all, 4');
 };
 
 $.Data$1 = function(pen) {
-  var t1 = new $.Data((void 0), (void 0), pen);
+  var t1 = new $.Data((void 0), (void 0), (void 0), pen);
   t1.Data$1(pen);
   return t1;
 };
@@ -3534,7 +3641,7 @@ $.hashCode = function(receiver) {
 };
 
 $.Pen$1 = function(start) {
-  var t1 = new $.Pen((void 0), (void 0), (void 0), (void 0), (void 0), start);
+  var t1 = new $.Pen((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), start);
   t1.Pen$1(start);
   return t1;
 };
@@ -3582,7 +3689,7 @@ $._emitMap = function(m, result, visiting) {
 
 $.demo8 = function(p) {
   p.erase$0();
-  p.interpret$1('color, yellow; width, 3; move, 80, 80, 3; color, gray; width, 1; move, -18, 60, 6; color, blue; width, 2; move, 120, 100, 5; move, 5, -80, 9; all, 4');
+  p.interpret$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
 };
 
 $.startsWith = function(receiver, other) {
@@ -3608,7 +3715,7 @@ $.toStringForNativeObject = function(obj) {
 
 $.demo7 = function(p) {
   p.erase$0();
-  p.interpret$1('    color, gray; \n    width, 2; \n    move, 45, 80, 1; \n    color, green; \n    width, 1; \n    move, 33, 80, 1; \n    color, orange;  \n    width, 3; \n    move, 15, 80, 1; \n    move, 90, 80, 4; \n    all, 5;\n  ');
+  p.interpret$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
 };
 
 $.colorMap = function() {
@@ -3627,30 +3734,6 @@ $.colorMap = function() {
 
 $._MessagePortEventsImpl$1 = function(_ptr) {
   return new $._MessagePortEventsImpl(_ptr);
-};
-
-$.dynamicBind = function(obj, name$, methods, arguments$) {
-  var tag = $.getTypeNameOf(obj);
-  var method = (methods[tag]);
-  if (method === (void 0) && !($._dynamicMetadata2() === (void 0))) {
-    for (var i = 0; $.ltB(i, $.get$length($._dynamicMetadata2())); ++i) {
-      var entry = $.index($._dynamicMetadata2(), i);
-      if ($.contains$1(entry.get$set(), tag) === true) {
-        method = (methods[entry.get$tag()]);
-        if (!(method === (void 0))) break;
-      }
-    }
-  }
-  if (method === (void 0)) {
-    method = (methods['Object']);
-  }
-  var proto = (Object.getPrototypeOf(obj));
-  if (method === (void 0)) {
-    method = (function () {if (Object.getPrototypeOf(this) === proto) {$.throwNoSuchMethod.$call$3(this, name$, Array.prototype.slice.call(arguments));} else {return Object.prototype[name$].apply(this, arguments);}});
-  }
-  var nullCheckMethod = (function() {var res = method.apply(this, Array.prototype.slice.call(arguments));return res === null ? (void 0) : res;});
-  (!proto.hasOwnProperty(name$)) && $.defineProperty(proto, name$, nullCheckMethod);
-  return nullCheckMethod.apply(obj, arguments$);
 };
 
 $._MeasurementRequest$2 = function(computeValue, completer) {
@@ -3702,6 +3785,30 @@ $.toLowerCase = function(receiver) {
   return receiver.toLowerCase();
 };
 
+$.dynamicBind = function(obj, name$, methods, arguments$) {
+  var tag = $.getTypeNameOf(obj);
+  var method = (methods[tag]);
+  if (method === (void 0) && !($._dynamicMetadata2() === (void 0))) {
+    for (var i = 0; $.ltB(i, $.get$length($._dynamicMetadata2())); ++i) {
+      var entry = $.index($._dynamicMetadata2(), i);
+      if ($.contains$1(entry.get$set(), tag) === true) {
+        method = (methods[entry.get$tag()]);
+        if (!(method === (void 0))) break;
+      }
+    }
+  }
+  if (method === (void 0)) {
+    method = (methods['Object']);
+  }
+  var proto = (Object.getPrototypeOf(obj));
+  if (method === (void 0)) {
+    method = (function () {if (Object.getPrototypeOf(this) === proto) {$.throwNoSuchMethod.$call$3(this, name$, Array.prototype.slice.call(arguments));} else {return Object.prototype[name$].apply(this, arguments);}});
+  }
+  var nullCheckMethod = (function() {var res = method.apply(this, Array.prototype.slice.call(arguments));return res === null ? (void 0) : res;});
+  (!proto.hasOwnProperty(name$)) && $.defineProperty(proto, name$, nullCheckMethod);
+  return nullCheckMethod.apply(obj, arguments$);
+};
+
 $.sin = function(x) {
   return $.sin2(x);
 };
@@ -3712,14 +3819,6 @@ $.sin2 = function(value) {
 
 $.parseDouble = function(str) {
   return $.parseDouble2(str);
-};
-
-$.List = function(length$) {
-  return $.newList(length$);
-};
-
-$._SimpleClientRect$4 = function(left, top$, width, height) {
-  return new $._SimpleClientRect(height, width, top$, left);
 };
 
 $.parseDouble2 = function(str) {
@@ -3735,6 +3834,18 @@ $.parseDouble2 = function(str) {
   return ret;
 };
 
+$.List = function(length$) {
+  return $.newList(length$);
+};
+
+$._SimpleClientRect$4 = function(left, top$, width, height) {
+  return new $._SimpleClientRect(height, width, top$, left);
+};
+
+$.stringReplaceJS = function(receiver, replacer, to) {
+  return receiver.replace(replacer, to.replace('$', '$$$$'));
+};
+
 $.UnsupportedOperationException$1 = function(_message) {
   return new $.UnsupportedOperationException(_message);
 };
@@ -3742,10 +3853,6 @@ $.UnsupportedOperationException$1 = function(_message) {
 $._createSafe = function(w) {
   if (w === $.window()) return w;
   return $._DOMWindowCrossFrameImpl$1(w);
-};
-
-$.stringReplaceJS = function(receiver, replacer, to) {
-  return receiver.replace(replacer, to.replace('$', '$$$$'));
 };
 
 $._XMLHttpRequestUploadEventsImpl$1 = function(_ptr) {
@@ -3791,6 +3898,9 @@ $.demo = function(p, dn) {
         break;
       case 11:
         $.demo11(p);
+        break;
+      case 12:
+        $.demo12(p);
         break;
       default:
         $.demo1(p);
@@ -3870,7 +3980,7 @@ $._FileReaderEventsImpl$1 = function(_ptr) {
 
 $.demo6 = function(p) {
   p.erase$0();
-  p.interpret$1('    color, red; width, 2; move, 15, 160, 2; \n    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; \n    color, brown;  width, 2; move, -20, 40, 8; \n    all, 6;\n');
+  p.interpret$1('color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7');
 };
 
 $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
@@ -3878,7 +3988,7 @@ $._SharedWorkerContextEventsImpl$1 = function(_ptr) {
 };
 
 $.Input$1 = function(pen) {
-  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
+  var t1 = new $.Input((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), pen);
   t1.Input$1(pen);
   return t1;
 };
@@ -3942,10 +4052,17 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
 
 $.demo10 = function(p) {
   var t1 = ({});
-  t1.p_12 = p;
-  var t2 = new $.Closure22(t1);
-  t1.p_12.erase$0();
-  t2.$call$2(240, 4);
+  t1.p_13 = p;
+  var t2 = new $.Closure25(t1);
+  t1.p_13.erase$0();
+  t1.p_13.set$width(2);
+  for (var t3 = $.iterator($.List(16)), size = 60; t3.hasNext$0() === true; ) {
+    t3.next$0();
+    t2.$call$1(size);
+    size += 10;
+    t1.p_13.forward$1(10);
+    t1.p_13.right$1(18);
+  }
 };
 
 $.newList = function(length$) {
@@ -4487,6 +4604,9 @@ $.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", 
  lineTo$2: function(x, y) {
   return this.lineTo(x,y);
  },
+ fillText$4: function(text, x, y, maxWidth) {
+  return this.fillText(text,x,y,maxWidth);
+ },
  fill$0: function() {
   return this.fill();
  },
@@ -4660,7 +4780,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure27(this, 'click$0'); },
+ get$click: function() { return new $.Closure29(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4722,7 +4842,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure27(this, 'click$0'); },
+ get$click: function() { return new $.Closure29(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);
@@ -4863,6 +4983,9 @@ $.$defineNativeClass('FileReader', [], {
 });
 
 $.$defineNativeClass('FileWriter', ["length?"], {
+ write$1: function(data) {
+  return this.write(data);
+ },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -4872,6 +4995,9 @@ $.$defineNativeClass('FileWriter', ["length?"], {
 });
 
 $.$defineNativeClass('FileWriterSync', ["length?"], {
+ write$1: function(data) {
+  return this.write(data);
+ }
 });
 
 $.$defineNativeClass('Float32Array', ["length?"], {
@@ -5362,6 +5488,9 @@ $.$defineNativeClass('Node', [], {
  },
  set$text: function(value) {
   this.textContent = value;;
+ },
+ get$text: function() {
+  return this.textContent;;
  }
 });
 
@@ -5840,7 +5969,7 @@ $.$defineNativeClass('TextTrack', [], {
  }
 });
 
-$.$defineNativeClass('TextTrackCue', ["text!"], {
+$.$defineNativeClass('TextTrackCue', ["text="], {
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },

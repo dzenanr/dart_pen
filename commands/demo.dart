@@ -34,6 +34,9 @@ demo(var p, int dn) {
       case 11:
         demo11(p);
         break;
+      case 12:
+        demo12(p);
+        break;
       default:
         demo1(p);
     }
@@ -100,12 +103,76 @@ demo4(var p) {
 }
 
 demo5(var p) {
+  p.erase();
+  p.left(90);
+  p.forward(100);
+  p.write = 'a';
+  p.right(90);
+  p.forward(30);
+  p.write = '';
+  p.right(90);
+  p.forward(100);
+  p.left(90);
+  p.forward(30);
+  p.left(90);
+  p.forward(80);
+  p.write = 'b';
+  p.right(90);
+  p.forward(30);
+  p.write = '';
+  p.right(90);
+  p.forward(80);
+  p.left(90);
+  p.forward(30);
+  p.left(90);
+  p.forward(140);
+  p.write = 'c';
+  p.right(90);
+  p.forward(30);
+  p.write = '';
+  p.right(90);
+  p.forward(140);
+  p.left(90);
+  /*
+  move, -90;
+  move, 0, 100;
+  write, a;
+  move, 90;
+  move, 0, 30;
+  write, ;
+  move, 90;
+  move, 0, 100;
+  move, -90;
+  move, 0, 30;
+  move, -90;
+  move, 0, 80;
+  write, b;
+  move, 90;
+  move, 0, 30;
+  write, ;
+  move, 90;
+  move, 0, 80;
+  move, -90;
+  move, 0, 30;
+  move, -90;
+  move, 0, 140;
+  write, c;
+  move, 90;
+  move, 0, 30;
+  write, ;
+  move, 90;
+  move, 0, 140;
+  move, -90;
+  */
+}
+
+demo6(var p) {
   var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7';
   p.erase();
   p.interpret(commandsString);
 }
 
-demo6(var p) {
+demo7(var p) {
   var commandsString = '''
     color, red; width, 2; move, 15, 160, 2; 
     color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; 
@@ -116,7 +183,7 @@ demo6(var p) {
   p.interpret(commandsString);
 }
 
-demo7(var p) {
+demo8(var p) {
   var commandsString = '''
     color, gray; 
     width, 2; 
@@ -134,7 +201,7 @@ demo7(var p) {
   p.interpret(commandsString);
 }
 
-demo8(var p) {
+demo9(var p) {
   var commandsString =
     'color, yellow; '
     'width, 3; '
@@ -151,7 +218,7 @@ demo8(var p) {
   p.interpret(commandsString);
 }
 
-demo9(var p) {
+demo10(var p) {
   multicolorSquare(var size) {
     for (var c in colorList) {
       p.color = c;
@@ -170,7 +237,7 @@ demo9(var p) {
   }
 }
 
-demo10(var p) {
+demo11(var p) {
   f1(var length, var depth) {
     if (depth == 0) {
       p.forward(length);
@@ -190,7 +257,7 @@ demo10(var p) {
   //f1(500, 4);
 }
 
-demo11(var p) {
+demo12(var p) {
   f2(var length, var depth) {
     if (depth == 0) {
       p.move(0, length);

@@ -3,6 +3,7 @@ class Data {
   final Pen pen;
 
   ButtonElement displayButton;
+  ButtonElement clearButton;
   TextAreaElement pathTextArea;
 
   Data(this.pen) {
@@ -10,6 +11,11 @@ class Data {
     displayButton.on.click.add((MouseEvent e) {
       clear();
       pathTextArea.value = pen.path.toString();
+    });
+
+    clearButton = document.query('#clear');
+    clearButton.on.click.add((MouseEvent e) {
+      clear();
     });
 
     pathTextArea = document.query('#path');

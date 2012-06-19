@@ -4,6 +4,7 @@ class Segment {
   bool draw;
   String color = 'black';
   int width = 1;
+  String text = '';
 
   var lines;
 
@@ -26,6 +27,7 @@ class Segment {
     segment.draw = draw;
     segment.color = color;
     segment.width = width;
+    segment.text = text;
     Line previousLine = last;
     for (var i = 0; i < lineCount; i++) {
       Line line = lines[i].copy(previousLine);
