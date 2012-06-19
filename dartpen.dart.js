@@ -2668,6 +2668,22 @@ $._IDBOpenDBRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBOpenDBRequestEventsImpl(_ptr);
 };
 
+$.typeNameInIE = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) return 'DOMWindow';
+  if ($.eqB(name$, 'Document')) {
+    if (!!obj.xmlVersion) return 'Document';
+    return 'HTMLDocument';
+  }
+  if ($.eqB(name$, 'HTMLTableDataCellElement')) return 'HTMLTableCellElement';
+  if ($.eqB(name$, 'HTMLTableHeaderCellElement')) return 'HTMLTableCellElement';
+  if ($.eqB(name$, 'MSStyleCSSProperties')) return 'CSSStyleDeclaration';
+  if ($.eqB(name$, 'CanvasPixelArray')) return 'Uint8ClampedArray';
+  if ($.eqB(name$, 'HTMLPhraseElement')) return 'HTMLElement';
+  if ($.eqB(name$, 'MouseWheelEvent')) return 'WheelEvent';
+  return name$;
+};
+
 $.FutureAlreadyCompleteException$0 = function() {
   return new $.FutureAlreadyCompleteException();
 };
@@ -2702,22 +2718,6 @@ $.randomPoint = function(maxX, maxY) {
   return $.Point($.randomNum(maxX), $.randomNum(maxY));
 };
 
-$.typeNameInIE = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) return 'DOMWindow';
-  if ($.eqB(name$, 'Document')) {
-    if (!!obj.xmlVersion) return 'Document';
-    return 'HTMLDocument';
-  }
-  if ($.eqB(name$, 'HTMLTableDataCellElement')) return 'HTMLTableCellElement';
-  if ($.eqB(name$, 'HTMLTableHeaderCellElement')) return 'HTMLTableCellElement';
-  if ($.eqB(name$, 'MSStyleCSSProperties')) return 'CSSStyleDeclaration';
-  if ($.eqB(name$, 'CanvasPixelArray')) return 'Uint8ClampedArray';
-  if ($.eqB(name$, 'HTMLPhraseElement')) return 'HTMLElement';
-  if ($.eqB(name$, 'MouseWheelEvent')) return 'WheelEvent';
-  return name$;
-};
-
 $.printString = function(string) {
   if (typeof dartPrint == "function") dartPrint(string);
   else {
@@ -2727,14 +2727,6 @@ $.printString = function(string) {
       write("\n");
     }
   }
-};
-
-$.JSSyntaxRegExp$_globalVersionOf$1 = function(other) {
-  var t1 = other.get$pattern();
-  var t2 = other.get$multiLine();
-  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
-  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
-  return t1;
 };
 
 $.tdiv = function(a, b) {
@@ -2762,6 +2754,14 @@ $._FixedSizeListIterator$1 = function(array) {
 $.clear = function(receiver) {
   if ($.isJsArray(receiver) !== true) return receiver.clear$0();
   $.set$length(receiver, 0);
+};
+
+$.JSSyntaxRegExp$_globalVersionOf$1 = function(other) {
+  var t1 = other.get$pattern();
+  var t2 = other.get$multiLine();
+  t1 = new $.JSSyntaxRegExp(other.get$ignoreCase(), t2, t1);
+  t1.JSSyntaxRegExp$_globalVersionOf$1(other);
+  return t1;
 };
 
 $.split = function(receiver, pattern) {
@@ -3196,6 +3196,7 @@ $._WorkerContextEventsImpl$1 = function(_ptr) {
 
 $.demo5 = function(p) {
   p.erase$0();
+  p.set$color('blue');
   p.left$1(90);
   p.forward$1(100);
   p.set$write('a');
@@ -3204,8 +3205,10 @@ $.demo5 = function(p) {
   p.set$write('');
   p.right$1(90);
   p.forward$1(100);
+  p.set$color('black');
   p.left$1(90);
   p.forward$1(30);
+  p.set$color('red');
   p.left$1(90);
   p.forward$1(80);
   p.set$write('b');
@@ -3214,8 +3217,10 @@ $.demo5 = function(p) {
   p.set$write('');
   p.right$1(90);
   p.forward$1(80);
+  p.set$color('black');
   p.left$1(90);
   p.forward$1(30);
+  p.set$color('green');
   p.left$1(90);
   p.forward$1(140);
   p.set$write('c');
@@ -3224,6 +3229,7 @@ $.demo5 = function(p) {
   p.set$write('');
   p.right$1(90);
   p.forward$1(140);
+  p.set$color('black');
   p.left$1(90);
 };
 
@@ -3357,7 +3363,9 @@ $.draw = function() {
         $.context.lineTo$2(line.get$endPoint().get$x(), line.get$endPoint().get$y());
         var x = $.div($.add(line.get$beginPoint().get$x(), line.get$endPoint().get$x()), 2);
         var y = $.div($.add(line.get$beginPoint().get$y(), line.get$endPoint().get$y()), 2);
-        $.context.fillText$4(t2.get$text(), $.add(x, 2), $.sub(y, 2), line.get$pixels());
+        $.context.set$font('14px sans-serif');
+        $.context.set$textAlign('center');
+        $.context.strokeText$4(t2.get$text(), $.add(x, 2), $.sub(y, 2), line.get$pixels());
       }
       $.context.stroke$0();
       $.context.closePath$0();
@@ -4553,6 +4561,9 @@ $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
  get$top: function() {
   return this.getPropertyValue$1('top');
  },
+ set$textAlign: function(value) {
+  this.setProperty$3('text-align', value, '');
+ },
  get$right: function() {
   return this.getPropertyValue$1('right');
  },
@@ -4563,6 +4574,9 @@ $.$defineNativeClass('CSSStyleDeclaration', ["length?"], {
  left$1: function(arg0) { return this.get$left().$call$1(arg0); },
  get$height: function() {
   return this.getPropertyValue$1('height');
+ },
+ set$font: function(value) {
+  this.setProperty$3('font', value, '');
  },
  set$color: function(value) {
   this.setProperty$3('color', value, '');
@@ -4591,7 +4605,10 @@ $.$defineNativeClass('HTMLCanvasElement', ["width=", "height?"], {
  }
 });
 
-$.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", "fillStyle!"], {
+$.$defineNativeClass('CanvasRenderingContext2D', ["textAlign!", "strokeStyle!", "lineWidth!", "font!", "fillStyle!"], {
+ strokeText$4: function(text, x, y, maxWidth) {
+  return this.strokeText(text,x,y,maxWidth);
+ },
  stroke$0: function() {
   return this.stroke();
  },
@@ -4603,9 +4620,6 @@ $.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", 
  },
  lineTo$2: function(x, y) {
   return this.lineTo(x,y);
- },
- fillText$4: function(text, x, y, maxWidth) {
-  return this.fillText(text,x,y,maxWidth);
  },
  fill$0: function() {
   return this.fill();

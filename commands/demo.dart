@@ -104,6 +104,7 @@ demo4(var p) {
 
 demo5(var p) {
   p.erase();
+  p.color = 'blue';
   p.left(90);
   p.forward(100);
   p.write = 'a';
@@ -112,8 +113,10 @@ demo5(var p) {
   p.write = '';
   p.right(90);
   p.forward(100);
+  p.color = 'black';
   p.left(90);
   p.forward(30);
+  p.color = 'red';
   p.left(90);
   p.forward(80);
   p.write = 'b';
@@ -122,8 +125,10 @@ demo5(var p) {
   p.write = '';
   p.right(90);
   p.forward(80);
+  p.color = 'black';
   p.left(90);
   p.forward(30);
+  p.color = 'green';
   p.left(90);
   p.forward(140);
   p.write = 'c';
@@ -132,37 +137,44 @@ demo5(var p) {
   p.write = '';
   p.right(90);
   p.forward(140);
+  p.color = 'black';
   p.left(90);
   /*
-  move, -90;
-  move, 0, 100;
-  write, a;
-  move, 90;
-  move, 0, 30;
-  write, ;
-  move, 90;
-  move, 0, 100;
-  move, -90;
-  move, 0, 30;
-  move, -90;
-  move, 0, 80;
-  write, b;
-  move, 90;
-  move, 0, 30;
-  write, ;
-  move, 90;
-  move, 0, 80;
-  move, -90;
-  move, 0, 30;
-  move, -90;
-  move, 0, 140;
-  write, c;
-  move, 90;
-  move, 0, 30;
-  write, ;
-  move, 90;
-  move, 0, 140;
-  move, -90;
+color, blue;
+move, -90;
+move, 0, 100;
+write, a;
+move, 90;
+move, 0, 30;
+write, ;
+move, 90;
+move, 0, 100;
+color, black;
+move, -90;
+move, 0, 30;
+color, red;
+move, -90;
+move, 0, 80;
+write, b;
+move, 90;
+move, 0, 30;
+write, ;
+move, 90;
+move, 0, 80;
+color, black;
+move, -90;
+move, 0, 30;
+color, green;
+move, -90;
+move, 0, 140;
+write, c;
+move, 90;
+move, 0, 30;
+write, ;
+move, 90;
+move, 0, 140;
+color, black;
+move, -90;
   */
 }
 

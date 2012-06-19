@@ -68,7 +68,9 @@ draw() {
         context.lineTo(line.endPoint.x, line.endPoint.y);
         var x = (line.beginPoint.x + line.endPoint.x) / 2;
         var y = (line.beginPoint.y + line.endPoint.y) / 2;
-        context.fillText(segment.text, x + 2, y - 2, line.pixels);
+        context.font = '14px sans-serif';
+        context.textAlign = 'center';
+        context.strokeText(segment.text, x + 2, y - 2, line.pixels);
       }
       context.stroke();
       context.closePath();
