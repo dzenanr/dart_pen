@@ -1,16 +1,18 @@
 class Segment {
 
   num lineCount;
-  bool draw;
+  bool drawn;
   String color = 'black';
   int width = 1;
   String text = '';
 
   var lines;
 
-  Segment(this.lineCount, [this.draw = true]) {
+  Segment(this.lineCount, [this.drawn = true]) {
     lines = new List<Line>(lineCount);
   }
+
+  bool isDrawn() => drawn;
 
   Line lastLine() {
     Line last;
@@ -24,7 +26,7 @@ class Segment {
 
   Segment copy(Line last) {
     Segment segment = new Segment(lineCount);
-    segment.draw = draw;
+    segment.drawn = drawn;
     segment.color = color;
     segment.width = width;
     segment.text = text;

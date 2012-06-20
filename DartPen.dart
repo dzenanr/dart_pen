@@ -57,7 +57,7 @@ border() {
 draw() {
   clear();
   for (Segment segment in pen.path.segments) {
-    if (segment.draw) {
+    if (segment.drawn) {
       // draw segment lines
       context.beginPath();
       context.lineWidth = segment.width;
@@ -77,22 +77,24 @@ draw() {
     }
   }
   // draw pen as a circle
-  Line lastLine = pen.path.lastLine();
-  context.beginPath();
-  context.lineWidth = DEFAULT_LINE_WIDTH;
-  context.strokeStyle = colors[pen.color];
-  context.fillStyle = colors[pen.color];
-  context.arc(
-    lastLine.endPoint.x, lastLine.endPoint.y, pen.width + 1, 0, Math.PI * 2, false);
-  // draw the current direction
-  Line direction = new Line.next(lastLine);
-  direction.endPoint = direction.findEndPoint(
-    direction.beginPoint, lastLine.cumulativeAngle, pen.width + 8);
-  context.moveTo(direction.beginPoint.x, direction.beginPoint.y);
-  context.lineTo(direction.endPoint.x, direction.endPoint.y);
-  context.fill();
-  context.stroke();
-  context.closePath();
+  if (pen.visible) {
+    Line lastLine = pen.path.lastLine();
+    context.beginPath();
+    context.lineWidth = DEFAULT_LINE_WIDTH;
+    context.strokeStyle = colors[pen.color];
+    context.fillStyle = colors[pen.color];
+    context.arc(
+      lastLine.endPoint.x, lastLine.endPoint.y, pen.width + 1, 0, Math.PI * 2, false);
+    // draw the current direction
+    Line direction = new Line.next(lastLine);
+    direction.endPoint = direction.findEndPoint(
+      direction.beginPoint, lastLine.cumulativeAngle, pen.width + 8);
+    context.moveTo(direction.beginPoint.x, direction.beginPoint.y);
+    context.lineTo(direction.endPoint.x, direction.endPoint.y);
+    context.fill();
+    context.stroke();
+    context.closePath();
+  }
 }
 
 main() {

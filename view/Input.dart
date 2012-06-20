@@ -4,6 +4,7 @@ class Input {
   static final String DEFAULT_COLOR = 'black';
   static final String DEFAULT_WIDTH = '1';
   static final String DEFAULT_WRITE = '';
+  static final bool DEFAULT_VISIBLE = true;
 
   static final String DEFAULT_TURN = '0';
   static final String DEFAULT_ADVANCE = '80';
@@ -15,9 +16,9 @@ class Input {
   SelectElement colorSelect;
   SelectElement widthSelect;
   InputElement writeInput;
+  InputElement visibleCheckbox;
   ButtonElement centerButton;
   SelectElement demosSelect;
-  ButtonElement demoButton;
 
   InputElement turnInput;
   InputElement advanceInput;
@@ -52,14 +53,18 @@ class Input {
       pen.write = writeInput.value;
     });
 
+    visibleCheckbox = document.query('#visible');
+    visibleCheckbox.on.change.add((Event e) {
+      pen.visible = visibleCheckbox.checked;
+    });
+
     centerButton = document.query('#center');
     centerButton.on.click.add((MouseEvent e) {
       pen.moveTo(center());
     });
 
     demosSelect = document.query('#demos');
-    demoButton = document.query('#demo');
-    demoButton.on.click.add((MouseEvent e) {
+    demosSelect.on.change.add((MouseEvent e) {
       try {
         var d = Math.parseInt(demosSelect.value);
         demo(pen, d);
@@ -103,10 +108,11 @@ class Input {
   }
 
   _init() {
+    downCheckbox.checked = DEFAULT_DOWN;
     colorSelect.value = DEFAULT_COLOR;
     widthSelect.value = DEFAULT_WIDTH;
-    downCheckbox.checked = DEFAULT_DOWN;
     writeInput.value = DEFAULT_WRITE;
+    visibleCheckbox.checked = DEFAULT_VISIBLE;
 
     turnInput.value = DEFAULT_TURN;
     advanceInput.value = DEFAULT_ADVANCE;

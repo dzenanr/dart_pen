@@ -45,7 +45,7 @@ class Path {
     for (Segment segment in segments) {
       path = '$path Segment \n';
       path = '$path line count: ${segment.lineCount} \n';
-      path = '$path draw: ${segment.draw} \n';
+      path = '$path drawn: ${segment.drawn} \n';
       path = '$path color: ${segment.color} \n';
       path = '$path width: ${segment.width} \n';
       path = '$path text: ${segment.text} \n';

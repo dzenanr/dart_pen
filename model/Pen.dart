@@ -12,6 +12,8 @@ class Pen {
   int _width;
   String _write;
 
+  bool visible;
+
   var path;
   var commands;
 
@@ -25,8 +27,10 @@ class Pen {
     _width = 1;
     _write = '';
 
+    visible = true;
+
     path = new Path();
-    var startSegment = new Segment(1, draw:false);
+    var startSegment = new Segment(1, drawn:false);
     startSegment.lines[0] = new Line.first(start);
     path.segments.add(startSegment);
 
@@ -43,6 +47,7 @@ class Pen {
   }
 
   bool get down() => _down;
+  bool isDown() => down;
 
   void set color(String color) {
     _color = color;
@@ -69,13 +74,15 @@ class Pen {
 
   String get write() => _write;
 
+  bool isVisible() => visible;
+
   randomColor() => color = randomListElement(colorList);
   randomWidth() => width = randomInt(MAX_WIDTH);
 
   moveTo(Point point) {
     var lastLine = path.lastLine();
     var segment = new Segment(1);
-    segment.draw = down;
+    segment.drawn = down;
     segment.color = color;
     segment.width = width;
     segment.text = write;
@@ -97,7 +104,7 @@ class Pen {
     int lineCount = repeat + 1;
     if (lineCount > 0) {
       var segment = new Segment(lineCount);
-      segment.draw = down;
+      segment.drawn = down;
       segment.color = color;
       segment.width = width;
       segment.text = write;

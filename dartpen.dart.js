@@ -376,7 +376,7 @@ $$.HashSetImplementation = {"":
  forEach$1: function(f) {
   var t1 = ({});
   t1.f_1 = f;
-  $.forEach(this._backingMap, new $.Closure26(t1));
+  $.forEach(this._backingMap, new $.Closure27(t1));
  },
  contains$1: function(value) {
   return this._backingMap.containsKey$1(value);
@@ -697,7 +697,7 @@ $$.ListIterator = {"":
  }
 };
 
-$$.Closure27 = {"":
+$$.Closure28 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -896,7 +896,7 @@ $$.FutureAlreadyCompleteException = {"":
 };
 
 $$.Pen = {"":
- ["commands", "path?", "_write", "_width", "_color", "_down", "start"],
+ ["commands", "path?", "visible=", "_write", "_width", "_color", "_down", "start"],
  super: "Object",
  interpret$1: function(commandsString) {
   try {
@@ -1174,7 +1174,7 @@ $$.Pen = {"":
  left$1: function(angle) {
   $.gtB(angle, 0) && this.move$1($.neg(angle));
  },
- get$left: function() { return new $.Closure28(this, 'left$1'); },
+ get$left: function() { return new $.Closure29(this, 'left$1'); },
  right$1: function(angle) {
   if (typeof angle !== 'number') return this.right$1$bailout(angle, 1, angle);
   angle > 0 && this.move$1(angle);
@@ -1198,7 +1198,7 @@ $$.Pen = {"":
   var lineCount = $.add(repeat, 1);
   if ($.gtB(lineCount, 0)) {
     var segment = $.Segment$2(lineCount, true);
-    segment.draw = this.get$down();
+    segment.drawn = this.get$down();
     segment.color = this.get$color();
     segment.width = this.get$width();
     segment.text = this.get$write();
@@ -1230,7 +1230,7 @@ $$.Pen = {"":
       var lineCount = $.add(repeat, 1);
       if ($.gtB(lineCount, 0)) {
         var segment = $.Segment$2(lineCount, true);
-        segment.draw = this.get$down();
+        segment.drawn = this.get$down();
         segment.color = this.get$color();
         segment.width = this.get$width();
         segment.text = this.get$write();
@@ -1316,7 +1316,7 @@ $$.Pen = {"":
  moveTo$1: function(point) {
   var lastLine = this.path.lastLine$0();
   var segment = $.Segment$2(1, true);
-  segment.draw = this.get$down();
+  segment.drawn = this.get$down();
   segment.color = this.get$color();
   segment.width = this.get$width();
   segment.text = this.get$write();
@@ -1341,7 +1341,7 @@ $$.Pen = {"":
     case 0:
       var lastLine = this.path.lastLine$0();
       var segment = $.Segment$2(1, true);
-      segment.draw = this.get$down();
+      segment.drawn = this.get$down();
       segment.color = this.get$color();
       segment.width = this.get$width();
       segment.text = this.get$write();
@@ -1402,6 +1402,7 @@ $$.Pen = {"":
   this._color = 'black';
   this._width = 1;
   this._write = '';
+  this.visible = true;
   this.path = $.Path$0();
   var startSegment = $.Segment$2(1, false);
   $.indexSet(startSegment.lines, 0, $.Line$first$1(this.start));
@@ -1426,7 +1427,7 @@ $$.Path = {"":
   path = path + ' line count: ' + $.S(lineCount) + ' \n' + ' \n';
   for (t1 = $.iterator(this.segments); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
-    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' draw: ' + $.S(t2.get$draw()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' text: ' + $.S(t2.get$text()) + ' \n' + ' \n';
+    path = path + ' Segment \n' + ' line count: ' + $.S(t2.get$lineCount()) + ' \n' + ' drawn: ' + $.S(t2.get$drawn()) + ' \n' + ' color: ' + $.S(t2.get$color()) + ' \n' + ' width: ' + $.S(t2.get$width()) + ' \n' + ' text: ' + $.S(t2.get$text()) + ' \n' + ' \n';
     for (t2 = $.iterator(t2.get$lines()); t2.hasNext$0() === true; ) {
       var t3 = t2.next$0();
       path = path + ' Line \n' + ' begin point x: ' + $.S(t3.get$beginPoint().get$x()) + ' \n' + ' begin point y: ' + $.S(t3.get$beginPoint().get$y()) + ' \n' + ' angle: ' + $.S(t3.get$angle()) + ' \n' + ' cumulative angle: ' + $.S(t3.get$cumulativeAngle()) + ' \n' + ' pixels: ' + $.S(t3.get$pixels()) + ' \n' + ' end point x: ' + $.S(t3.get$endPoint().get$x()) + ' \n' + ' end point y: ' + $.S(t3.get$endPoint().get$y()) + ' \n' + ' \n';
@@ -1475,11 +1476,11 @@ $$.Path = {"":
 };
 
 $$.Segment = {"":
- ["lines?", "text=", "width=", "color=", "draw?", "lineCount?"],
+ ["lines?", "text=", "width=", "color=", "drawn?", "lineCount?"],
  super: "Object",
  copy$1: function(last) {
   var segment = $.Segment$2(this.lineCount, true);
-  segment.draw = this.draw;
+  segment.drawn = this.drawn;
   segment.color = this.color;
   segment.width = this.width;
   segment.text = this.text;
@@ -1528,7 +1529,7 @@ $$.Segment = {"":
   switch (state) {
     case 0:
       var segment = $.Segment$2(this.lineCount, true);
-      segment.draw = this.draw;
+      segment.drawn = this.drawn;
       segment.color = this.color;
       segment.width = this.width;
       segment.text = this.text;
@@ -1570,7 +1571,7 @@ $$.Segment = {"":
   }
   return last;
  },
- Segment$2: function(lineCount, draw) {
+ Segment$2: function(lineCount, drawn) {
   var t1 = $.List(this.lineCount);
   $.setRuntimeTypeInfo(t1, ({E: 'Line'}));
   this.lines = t1;
@@ -1623,13 +1624,14 @@ $$.Line = {"":
 };
 
 $$.Input = {"":
- ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demoButton", "demosSelect?", "centerButton", "writeInput?", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
+ ["eraseButton", "allButton", "randomButton", "moveButton", "repeatInput?", "advanceInput?", "turnInput?", "demosSelect?", "centerButton", "visibleCheckbox?", "writeInput?", "widthSelect?", "colorSelect?", "downCheckbox?", "pen?"],
  super: "Object",
  _init$0: function() {
+  this.downCheckbox.set$checked(true);
   this.colorSelect.set$value('black');
   this.widthSelect.set$value('1');
-  this.downCheckbox.set$checked(true);
   this.writeInput.set$value('');
+  this.visibleCheckbox.set$checked(true);
   this.turnInput.set$value('0');
   this.advanceInput.set$value('80');
   this.repeatInput.set$value('0');
@@ -1643,22 +1645,23 @@ $$.Input = {"":
   $.add$1(this.widthSelect.get$on().get$change(), new $.Closure15(this));
   this.writeInput = $.document().query$1('#write');
   $.add$1(this.writeInput.get$on().get$change(), new $.Closure16(this));
+  this.visibleCheckbox = $.document().query$1('#visible');
+  $.add$1(this.visibleCheckbox.get$on().get$change(), new $.Closure17(this));
   this.centerButton = $.document().query$1('#center');
-  $.add$1(this.centerButton.get$on().get$click(), new $.Closure17(this));
+  $.add$1(this.centerButton.get$on().get$click(), new $.Closure18(this));
   this.demosSelect = $.document().query$1('#demos');
-  this.demoButton = $.document().query$1('#demo');
-  $.add$1(this.demoButton.get$on().get$click(), new $.Closure18(this));
+  $.add$1(this.demosSelect.get$on().get$change(), new $.Closure19(this));
   this.turnInput = $.document().query$1('#turn');
   this.advanceInput = $.document().query$1('#advance');
   this.repeatInput = $.document().query$1('#repeat');
   this.moveButton = $.document().query$1('#move');
-  $.add$1(this.moveButton.get$on().get$click(), new $.Closure19(this));
+  $.add$1(this.moveButton.get$on().get$click(), new $.Closure20(this));
   this.randomButton = $.document().query$1('#random');
-  $.add$1(this.randomButton.get$on().get$click(), new $.Closure20(this));
+  $.add$1(this.randomButton.get$on().get$click(), new $.Closure21(this));
   this.allButton = $.document().query$1('#all');
-  $.add$1(this.allButton.get$on().get$click(), new $.Closure21(this));
+  $.add$1(this.allButton.get$on().get$click(), new $.Closure22(this));
   this.eraseButton = $.document().query$1('#erase');
-  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure22(this));
+  $.add$1(this.eraseButton.get$on().get$click(), new $.Closure23(this));
   this._init$0();
  }
 };
@@ -2151,7 +2154,7 @@ $$._VariableSizeListIterator = {"":
 
 $$.Closure = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$0: function() {
   return this.box_0.closure_1.$call$0();
  }
@@ -2159,7 +2162,7 @@ $$.Closure = {"":
 
 $$.Closure2 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$0: function() {
   return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  }
@@ -2167,7 +2170,7 @@ $$.Closure2 = {"":
 
 $$.Closure3 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$0: function() {
   return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  }
@@ -2175,7 +2178,7 @@ $$.Closure3 = {"":
 
 $$.Closure4 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$2: function(k, v) {
   this.box_0.first_3 !== true && $.add$1(this.box_0.result_1, ', ');
   this.box_0.first_3 = false;
@@ -2187,7 +2190,7 @@ $$.Closure4 = {"":
 
 $$.Closure5 = {"":
  ["this_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$0: function() {
   return $._ElementRectImpl$1(this.this_0);
  }
@@ -2195,7 +2198,7 @@ $$.Closure5 = {"":
 
 $$.Closure6 = {"":
  [],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   return $._completeMeasurementFutures();
  }
@@ -2203,7 +2206,7 @@ $$.Closure6 = {"":
 
 $$.Closure7 = {"":
  [],
- super: "Closure27",
+ super: "Closure28",
  $call$0: function() {
   return $.CTC4;
  }
@@ -2211,7 +2214,7 @@ $$.Closure7 = {"":
 
 $$.Closure8 = {"":
  ["this_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = $.toString(this.this_0.get$pen().get$path());
@@ -2221,7 +2224,7 @@ $$.Closure8 = {"":
 
 $$.Closure9 = {"":
  ["this_1"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   this.this_1.clear$0();
  }
@@ -2229,7 +2232,7 @@ $$.Closure9 = {"":
 
 $$.Closure10 = {"":
  ["this_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   this.this_0.clear$0();
   var t1 = this.this_0.get$pen().fromCommands$0();
@@ -2240,7 +2243,7 @@ $$.Closure10 = {"":
 
 $$.Closure11 = {"":
  ["this_1"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   this.this_1.clear$0();
  }
@@ -2248,7 +2251,7 @@ $$.Closure11 = {"":
 
 $$.Closure12 = {"":
  ["this_2"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   this.this_2.get$pen().erase$0();
   this.this_2.get$pen().interpret$1(this.this_2.get$commandsTextArea().get$value());
@@ -2257,7 +2260,7 @@ $$.Closure12 = {"":
 
 $$.Closure13 = {"":
  ["this_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   var t1 = this.this_0.get$downCheckbox().get$checked();
   this.this_0.get$pen().set$down(t1);
@@ -2266,7 +2269,7 @@ $$.Closure13 = {"":
 
 $$.Closure14 = {"":
  ["this_1"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   var t1 = this.this_1.get$colorSelect().get$value();
   this.this_1.get$pen().set$color(t1);
@@ -2275,7 +2278,7 @@ $$.Closure14 = {"":
 
 $$.Closure15 = {"":
  ["this_2"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   try {
     var t1 = $.parseInt(this.this_2.get$widthSelect().get$value());
@@ -2290,7 +2293,7 @@ $$.Closure15 = {"":
 
 $$.Closure16 = {"":
  ["this_3"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   var t1 = this.this_3.get$writeInput().get$value();
   this.this_3.get$pen().set$write(t1);
@@ -2299,35 +2302,44 @@ $$.Closure16 = {"":
 
 $$.Closure17 = {"":
  ["this_4"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
-  this.this_4.get$pen().moveTo$1($.center());
+  var t1 = this.this_4.get$visibleCheckbox().get$checked();
+  this.this_4.get$pen().set$visible(t1);
  }
 };
 
 $$.Closure18 = {"":
  ["this_5"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
-  try {
-    var d = $.parseInt(this.this_5.get$demosSelect().get$value());
-    $.demo(this.this_5.get$pen(), d);
-  } catch (exception) {
-    $.unwrapException(exception);
-    $.randomDemo(this.this_5.get$pen());
-  }
+  this.this_5.get$pen().moveTo$1($.center());
  }
 };
 
 $$.Closure19 = {"":
  ["this_6"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
   try {
-    var turn = $.parseDouble(this.this_6.get$turnInput().get$value());
-    var advance = $.parseDouble(this.this_6.get$advanceInput().get$value());
-    var repeat = $.parseInt(this.this_6.get$repeatInput().get$value());
-    this.this_6.get$pen().move$3(turn, advance, repeat);
+    var d = $.parseInt(this.this_6.get$demosSelect().get$value());
+    $.demo(this.this_6.get$pen(), d);
+  } catch (exception) {
+    $.unwrapException(exception);
+    $.randomDemo(this.this_6.get$pen());
+  }
+ }
+};
+
+$$.Closure20 = {"":
+ ["this_7"],
+ super: "Closure28",
+ $call$1: function(e) {
+  try {
+    var turn = $.parseDouble(this.this_7.get$turnInput().get$value());
+    var advance = $.parseDouble(this.this_7.get$advanceInput().get$value());
+    var repeat = $.parseInt(this.this_7.get$repeatInput().get$value());
+    this.this_7.get$pen().move$3(turn, advance, repeat);
   } catch (exception) {
     var t1 = $.unwrapException(exception);
     var error = t1;
@@ -2336,34 +2348,34 @@ $$.Closure19 = {"":
  }
 };
 
-$$.Closure20 = {"":
- ["this_7"],
- super: "Closure27",
- $call$1: function(e) {
-  this.this_7.get$pen().randomMove$0();
- }
-};
-
 $$.Closure21 = {"":
  ["this_8"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
-  this.this_8.get$pen().all$0();
+  this.this_8.get$pen().randomMove$0();
  }
 };
 
 $$.Closure22 = {"":
  ["this_9"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(e) {
-  this.this_9.get$pen().erase$0();
-  this.this_9._init$0();
+  this.this_9.get$pen().all$0();
  }
 };
 
 $$.Closure23 = {"":
+ ["this_10"],
+ super: "Closure28",
+ $call$1: function(e) {
+  this.this_10.get$pen().erase$0();
+  this.this_10._init$0();
+ }
+};
+
+$$.Closure24 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_1.move$2(0, length$);
   else {
@@ -2378,9 +2390,9 @@ $$.Closure23 = {"":
  }
 };
 
-$$.Closure24 = {"":
+$$.Closure25 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$2: function(length$, depth) {
   if ($.eqB(depth, 0)) this.box_0.p_12.forward$1(length$);
   else {
@@ -2395,9 +2407,9 @@ $$.Closure24 = {"":
  }
 };
 
-$$.Closure25 = {"":
+$$.Closure26 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$1: function(size) {
   for (var t1 = $.iterator($.colorList); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
@@ -2408,15 +2420,15 @@ $$.Closure25 = {"":
  }
 };
 
-$$.Closure26 = {"":
+$$.Closure27 = {"":
  ["box_0"],
- super: "Closure27",
+ super: "Closure28",
  $call$2: function(key, value) {
   this.box_0.f_1.$call$1(key);
  }
 };
 
-$$.Closure27 = {"":
+$$.Closure28 = {"":
  [],
  super: "Object",
  toString$0: function() {
@@ -2424,10 +2436,10 @@ $$.Closure27 = {"":
  }
 };
 
-Isolate.$defineClass('Closure28', 'Closure27', ['self', 'target'], {
+Isolate.$defineClass('Closure29', 'Closure28', ['self', 'target'], {
 $call$1: function(p0) { return this.self[this.target](p0); }
 });
-Isolate.$defineClass('Closure29', 'Closure27', ['self', 'target'], {
+Isolate.$defineClass('Closure30', 'Closure28', ['self', 'target'], {
 $call$0: function() { return this.self[this.target](); }
 });
 $.mul$slow = function(a, b) {
@@ -3034,9 +3046,9 @@ $.buildDynamicMetadata = function(inputTable) {
   return result;
 };
 
-$.Segment$2 = function(lineCount, draw) {
-  var t1 = new $.Segment((void 0), '', 1, 'black', draw, lineCount);
-  t1.Segment$2(lineCount, draw);
+$.Segment$2 = function(lineCount, drawn) {
+  var t1 = new $.Segment((void 0), '', 1, 'black', drawn, lineCount);
+  t1.Segment$2(lineCount, drawn);
   return t1;
 };
 
@@ -3135,7 +3147,7 @@ $.neg = function(a) {
 $.demo12 = function(p) {
   var t1 = ({});
   t1.p_1 = p;
-  var t2 = new $.Closure23(t1);
+  var t2 = new $.Closure24(t1);
   t1.p_1.erase$0();
   t2.$call$2(240, 4);
 };
@@ -3279,7 +3291,7 @@ $.demo3 = function(p) {
 $.demo11 = function(p) {
   var t1 = ({});
   t1.p_12 = p;
-  var t2 = new $.Closure24(t1);
+  var t2 = new $.Closure25(t1);
   t1.p_12.erase$0();
   t2.$call$2(240, 4);
 };
@@ -3351,7 +3363,7 @@ $.draw = function() {
   $.clear2();
   for (var t1 = $.iterator($.pen.get$path().get$segments()); t1.hasNext$0() === true; ) {
     var t2 = t1.next$0();
-    if (t2.get$draw() === true) {
+    if (t2.get$drawn() === true) {
       $.context.beginPath$0();
       var t3 = t2.get$width();
       $.context.set$lineWidth(t3);
@@ -3371,21 +3383,23 @@ $.draw = function() {
       $.context.closePath$0();
     }
   }
-  var lastLine = $.pen.get$path().lastLine$0();
-  $.context.beginPath$0();
-  $.context.set$lineWidth(1);
-  t1 = $.index($.colors, $.pen.get$color());
-  $.context.set$strokeStyle(t1);
-  t1 = $.index($.colors, $.pen.get$color());
-  $.context.set$fillStyle(t1);
-  $.context.arc$6(lastLine.get$endPoint().get$x(), lastLine.get$endPoint().get$y(), $.add($.pen.get$width(), 1), 0, 6.283185307179586, false);
-  var direction = $.Line$next$1(lastLine);
-  direction.endPoint = direction.findEndPoint$3(direction.beginPoint, lastLine.get$cumulativeAngle(), $.add($.pen.get$width(), 8));
-  $.context.moveTo$2(direction.beginPoint.get$x(), direction.beginPoint.get$y());
-  $.context.lineTo$2(direction.endPoint.get$x(), direction.endPoint.get$y());
-  $.context.fill$0();
-  $.context.stroke$0();
-  $.context.closePath$0();
+  if ($.pen.get$visible() === true) {
+    var lastLine = $.pen.get$path().lastLine$0();
+    $.context.beginPath$0();
+    $.context.set$lineWidth(1);
+    t1 = $.index($.colors, $.pen.get$color());
+    $.context.set$strokeStyle(t1);
+    t1 = $.index($.colors, $.pen.get$color());
+    $.context.set$fillStyle(t1);
+    $.context.arc$6(lastLine.get$endPoint().get$x(), lastLine.get$endPoint().get$y(), $.add($.pen.get$width(), 1), 0, 6.283185307179586, false);
+    var direction = $.Line$next$1(lastLine);
+    direction.endPoint = direction.findEndPoint$3(direction.beginPoint, lastLine.get$cumulativeAngle(), $.add($.pen.get$width(), 8));
+    $.context.moveTo$2(direction.beginPoint.get$x(), direction.beginPoint.get$y());
+    $.context.lineTo$2(direction.endPoint.get$x(), direction.endPoint.get$y());
+    $.context.fill$0();
+    $.context.stroke$0();
+    $.context.closePath$0();
+  }
 };
 
 $.toInt = function(receiver) {
@@ -3649,7 +3663,7 @@ $.hashCode = function(receiver) {
 };
 
 $.Pen$1 = function(start) {
-  var t1 = new $.Pen((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), start);
+  var t1 = new $.Pen((void 0), (void 0), (void 0), (void 0), (void 0), (void 0), (void 0), start);
   t1.Pen$1(start);
   return t1;
 };
@@ -4061,7 +4075,7 @@ $._FileWriterEventsImpl$1 = function(_ptr) {
 $.demo10 = function(p) {
   var t1 = ({});
   t1.p_13 = p;
-  var t2 = new $.Closure25(t1);
+  var t2 = new $.Closure26(t1);
   t1.p_13.erase$0();
   t1.p_13.set$width(2);
   for (var t3 = $.iterator($.List(16)), size = 60; t3.hasNext$0() === true; ) {
@@ -4521,6 +4535,9 @@ $.$defineNativeClass('HTMLBRElement', [], {
  clear$0: function() { return this.clear.$call$0(); }
 });
 
+$.$defineNativeClass('BarInfo', ["visible?"], {
+});
+
 $.$defineNativeClass('HTMLBaseFontElement', ["color="], {
 });
 
@@ -4794,7 +4811,7 @@ $.$defineNativeClass('DocumentFragment', [], {
  },
  click$0: function() {
  },
- get$click: function() { return new $.Closure29(this, 'click$0'); },
+ get$click: function() { return new $.Closure30(this, 'click$0'); },
  get$rect: function() {
   var t1 = new $.Closure7();
   var t2 = $.CompleterImpl$0();
@@ -4856,7 +4873,7 @@ $.$defineNativeClass('Element', [], {
  click$0: function() {
   return this.click();
  },
- get$click: function() { return new $.Closure29(this, 'click$0'); },
+ get$click: function() { return new $.Closure30(this, 'click$0'); },
  get$on: function() {
   if (Object.getPrototypeOf(this).hasOwnProperty('get$on')) {
     return $._ElementEventsImpl$1(this);
@@ -5836,6 +5853,9 @@ $.$defineNativeClass('SVGUseElement', ["y?", "x?", "width?", "height?"], {
 $.$defineNativeClass('Screen', ["width?", "height?"], {
 });
 
+$.$defineNativeClass('ScriptProfileNode', ["visible?"], {
+});
+
 $.$defineNativeClass('HTMLSelectElement', ["value=", "length="], {
 });
 
@@ -6263,8 +6283,8 @@ $.$defineNativeClass('IDBOpenDBRequest', [], {
  }
 });
 
-// 216 dynamic classes.
-// 324 classes
+// 218 dynamic classes.
+// 326 classes
 // 26 !leaf
 (function(){
   var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
