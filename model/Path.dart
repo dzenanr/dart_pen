@@ -10,7 +10,7 @@ class Path {
     Line last;
     try {
       last = segments.last().lastLine();
-    } catch(final error) {
+    } catch(error) {
       print('Error in finding the last line of the path! -- $error');
     }
     return last;
@@ -28,7 +28,7 @@ class Path {
       for (Segment copiedSegment in copiedSegments) {
         segments.add(copiedSegment);
       }
-    } catch(final error) {
+    } catch(error) {
       print('Error in doubling the path! -- $error');
     }
   }

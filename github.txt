@@ -3,6 +3,10 @@ GitHub
 https://github.com/
 http://git-scm.com/videos
 
+Git
+
+http://marklodato.github.com/visual-git-guide/index-en.html
+
 Education
 
 https://github.com/edu

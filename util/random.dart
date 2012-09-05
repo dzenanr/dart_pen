@@ -1,10 +1,11 @@
-randomNum(num max) => Math.random() * max;
 
-randomInt(int max) => randomNum(max).toInt();
+randomDouble(double max) => new Random().nextDouble();
+
+randomInt(int max) => new Random().nextInt(max);
 
 randomListElement(List list) => list[randomInt(list.length - 1)];
 
-randomPoint(num maxX, num maxY) => new Point(randomNum(maxX), randomNum(maxY));
+randomPoint(double maxX, double maxY) => new Point(randomDouble(maxX), randomDouble(maxY));
 
 randomSign() {
   int result = 1;

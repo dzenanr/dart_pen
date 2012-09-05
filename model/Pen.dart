@@ -46,7 +46,7 @@ class Pen {
     commands.add(['down', _down]);
   }
 
-  bool get down() => _down;
+  bool get down => _down;
   bool isDown() => down;
 
   void set color(String color) {
@@ -54,7 +54,7 @@ class Pen {
     commands.add(['color', _color]);
   }
 
-  String get color() => _color;
+  String get color => _color;
 
   void set width(int width) {
     if (width == 0) {
@@ -65,14 +65,14 @@ class Pen {
     commands.add(['width', _width]);
   }
 
-  int get width() => _width;
+  int get width => _width;
 
   void set write(String write) {
     _write = write;
     commands.add(['write', _write]);
   }
 
-  String get write() => _write;
+  String get write => _write;
 
   bool isVisible() => visible;
 
@@ -153,8 +153,8 @@ class Pen {
   }
 
   randomMove() =>
-      move(randomSign() * randomNum(MAX_TURN),
-        randomSign() * randomNum(MAX_ADVANCE), randomInt(MAX_REPEAT));
+      move(randomSign() * randomInt(MAX_TURN),
+        randomSign() * randomInt(MAX_ADVANCE), randomInt(MAX_REPEAT));
 
   all([int repeat = 1]) {
     for (var i = 0; i < repeat; i++) {
@@ -218,7 +218,7 @@ class Pen {
               randomColor();
               break;
             case 'width':
-              width = Math.parseInt(command[1]);
+              width = parseInt(command[1]);
               break;
             case 'randomWidth':
               randomWidth();
@@ -228,7 +228,7 @@ class Pen {
               break;
             case 'moveTo':
               moveTo(new Point(
-                Math.parseDouble(command[1]), Math.parseDouble(command[2])));
+                parseDouble(command[1]), parseDouble(command[2])));
               break;
             case 'moveToStart':
               moveToStart();
@@ -238,31 +238,31 @@ class Pen {
               break;
             case 'move':
               if (command.length == 2) {
-                move(Math.parseDouble(command[1]));
+                move(parseDouble(command[1]));
               } else if (command.length == 3) {
-                move(Math.parseDouble(command[1]), Math.parseDouble(command[2]));
+                move(parseDouble(command[1]), parseDouble(command[2]));
               } else if (command.length == 4) {
-                move(Math.parseDouble(command[1]), Math.parseDouble(command[2]),
-                  Math.parseInt(command[3]));
+                move(parseDouble(command[1]), parseDouble(command[2]),
+                  parseInt(command[3]));
               }
               break;
             case 'right':
-              right(Math.parseDouble(command[1]));
+              right(parseDouble(command[1]));
               break;
             case 'left':
-              left(Math.parseDouble(command[1]));
+              left(parseDouble(command[1]));
               break;
             case 'forward':
-              forward(Math.parseDouble(command[1]));
+              forward(parseDouble(command[1]));
               break;
             case 'backward':
-              backward(Math.parseDouble(command[1]));
+              backward(parseDouble(command[1]));
               break;
             case 'randomMove':
               randomMove();
               break;
             case 'all':
-              all(Math.parseInt(command[1]));
+              all(parseInt(command[1]));
               break;
             case 'randomAll':
               randomAll();

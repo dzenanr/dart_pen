@@ -179,7 +179,10 @@ move, -90;
 }
 
 demo6(var p) {
-  var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; move, 50, 80, 1; width, 2; color, blue; move, 65, 80, 1; down, false; moveTo, 333, 333; down, true; move, 15, 120, 4; all, 7';
+  var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; '
+                       'move, 50, 80, 1; width, 2; color, blue; '
+                       'move, 65, 80, 1; down, false; moveTo, 333, 333; '
+                       'down, true; move, 15, 120, 4; all, 7';
   p.erase();
   p.interpret(commandsString);
 }

@@ -18,7 +18,7 @@ class Segment {
     Line last;
     try {
       last = lines.last();
-    } catch(final error) {
+    } catch(error) {
       print('Error in finding the last line of the segment! -- $error');
     }
     return last;
