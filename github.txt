@@ -24,14 +24,14 @@ http://scottr.org/presentations/git-in-5-minutes/
 ---------------------------------------------------------------------
 
 After creating an account, create a remote repository.
-The following is what I did for WanderingPath.
+The following is what I did for dart_pen.
 
 http://help.github.com/create-a-repo/
 
 Create a New Repository
-Project Name: DartPen
+Project Name: dart_pen
 Description: 
-  Drawing a path of segments, each having one or more lines.    
+  Dart canvas: drawing a path of segments, each having one or more lines.    
 
 ----------------------------------------------------------------------
 
@@ -40,14 +40,14 @@ Git with Git Bash
 Clone a remote repository into a local repository.
 
 cd git/dart/teach
-git clone https://github.com/dzenanr/DartPen.git
-cd DartPen
+git clone https://github.com/dzenanr/dart_pen.git
+cd dart_pen
 
 Read+Write:
-https://github.com/dzenanr/DartPen.git
+https://github.com/dzenanr/dart_pen.git
 
 Read only:
-git://github.com/dzenanr/DartPen.git
+git://github.com/dzenanr/dart_pen.git
 
 Get the latest changes from the remote repository
 
@@ -58,7 +58,7 @@ git pull origin master
 
 Work with a local repository
 
-cd git/dart/taech/DartPen
+cd git/dart/teach/dart_pen
 
 git add .
 
@@ -108,7 +108,7 @@ git checkout s01a
 Switching from spiral to master
 
 to exclude js:
-git checkout dartpen.dart.js
+git checkout dart_pen.dart.js
 or 
 (see http://scottr.org/presentations/git-in-5-minutes/)
 git stash

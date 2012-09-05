@@ -269,7 +269,7 @@ class Pen {
           } // switch
         } // if
       } // for
-    } catch(final error) {
+    } catch(error) {
       print('Error in interpretation of commands! -- $error');
     }
   }

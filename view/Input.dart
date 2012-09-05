@@ -43,7 +43,7 @@ class Input {
     widthSelect.on.change.add((Event e) {
       try {
         pen.width = parseInt(widthSelect.value);
-      } catch(final error) {
+      } catch(error) {
         print('Error in input! -- $error');
       }
     });

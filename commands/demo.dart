@@ -40,7 +40,7 @@ demo(var p, int dn) {
       default:
         demo1(p);
     }
-  } catch(final error) {
+  } catch(error) {
     print('Error in demo! -- $error');
   }
 }
