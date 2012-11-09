@@ -2881,6 +2881,80 @@ move, 56, 78, 3;
 move, 88, 94, 7;
 all, 8;
 
+color, orange;
+width, 3;
+move, 51, 14;
+move, 356, 82, 1;
+color, red;
+width, 3;
+move, 181, 123, 2;
+down, false;
+moveTo, 333, 333;
+down, true;
+color, gray;
+width, 1;
+move, 210, 34, 8;
+moveTo, 333, 333;
+move, 331, 140, 6;
+move, 250, 21, 2;
+all, 6;
+
+color, green;
+width, 1;
+move, -292, 67, 3;
+move, 97, 107, 9;
+color, red;
+width, 2;
+move, 32, 138;
+down, false;
+moveTo, 333.0, 333.0;
+down, true;
+color, red;
+width, 2;
+move, 202, 41, 5;
+moveTo, 333.0, 333.0;
+move, 338, 54, 6;
+move, 329, 35;
+all, 6;
+
+color, red;
+width, 3;
+move, 28, 68;
+move, 329, 122, 9;
+color, black;
+width, 2;
+move, 24, 150, 2;
+down, false;
+moveTo, 333.0, 333.0;
+down, true;
+color, gray;
+width, 4;
+move, 86, 10, 2;
+moveTo, 333.0, 333.0;
+move, 74, 157, 3;
+move, 356, 23, 7;
+all, 3;
+
+color, blue;
+width, 1;
+move, 144, 20, 2;
+move, 257, 104, 5;
+color, green;
+width, 3;
+move, 241, 115;
+down, false;
+moveTo, 333.0, 333.0;
+down, true;
+color, gray;
+width, 1;
+move, 335, 16;
+moveTo, 333.0, 333.0;
+move, 302, 89, 4;
+move, 273, 35, 9;
+all, 8;
+
+
+
 
 
 

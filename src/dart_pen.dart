@@ -1,16 +1,17 @@
-#import('dart:html');
-#import('dart:math');
+import 'dart:html';
+import 'dart:isolate';
+import 'dart:math';
 
-#source('model/Pen.dart');
-#source('model/Path.dart');
-#source('model/Segment.dart');
-#source('model/Line.dart');
-#source('view/Input.dart');
-#source('view/Commands.dart');
-#source('view/Data.dart');
-#source('util/color.dart');
-#source('util/random.dart');
-#source('commands/demo.dart');
+part 'model/pen.dart';
+part 'model/path.dart';
+part 'model/segment.dart';
+part 'model/line.dart';
+part 'view/input.dart';
+part 'view/commands.dart';
+part 'view/data.dart';
+part 'util/color.dart';
+part 'util/random.dart';
+part 'commands/demo.dart';
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 
@@ -23,11 +24,10 @@
 
 // For debugging use print() and CTRL+SHIFT+J to open the console in Chrome.
 
-final int DEFAULT_LINE_WIDTH = 1;
-final String DEFAULT_LINE_COLOR = '#000000'; // black
-final int DEFAULT_FONT_SIZE = 11;
-// The board is redrawn every INTERVAL ms.
-final int INTERVAL = 8;
+final int lineWidth = 1;
+final String lineColor = '#000000'; // black
+// The board is redrawn every interval ms.
+final int interval = 8;
 
 var canvas;
 var context;
@@ -50,8 +50,8 @@ clear() {
 border() {
   context.beginPath();
   context.rect(0, 0, canvas.width, canvas.height);
-  context.lineWidth = DEFAULT_LINE_WIDTH;
-  context.strokeStyle = DEFAULT_LINE_COLOR;
+  context.lineWidth = lineWidth;
+  context.strokeStyle = lineColor;
   context.closePath();
   context.stroke();
 }
@@ -82,7 +82,7 @@ draw() {
   if (pen.visible) {
     Line lastLine = pen.path.lastLine();
     context.beginPath();
-    context.lineWidth = DEFAULT_LINE_WIDTH;
+    context.lineWidth = lineWidth;
     context.strokeStyle = colors[pen.color];
     context.fillStyle = colors[pen.color];
     context.arc(
@@ -107,6 +107,6 @@ main() {
   input = new Input(pen);
   commands = new Commands(pen);
   data = new Data(pen);
-  // Redraw every INTERVAL ms.
-  document.window.setInterval(draw, INTERVAL);
+  // Redraw every interval ms.
+  new Timer.repeating(interval, (t) => draw());
 }

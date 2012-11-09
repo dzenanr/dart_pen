@@ -218,7 +218,7 @@ class Pen {
               randomColor();
               break;
             case 'width':
-              width = parseInt(command[1]);
+              width = int.parse(command[1]);
               break;
             case 'randomWidth':
               randomWidth();
@@ -228,7 +228,7 @@ class Pen {
               break;
             case 'moveTo':
               moveTo(new Point(
-                parseDouble(command[1]), parseDouble(command[2])));
+                double.parse(command[1]), double.parse(command[2])));
               break;
             case 'moveToStart':
               moveToStart();
@@ -238,31 +238,31 @@ class Pen {
               break;
             case 'move':
               if (command.length == 2) {
-                move(parseDouble(command[1]));
+                move(double.parse(command[1]));
               } else if (command.length == 3) {
-                move(parseDouble(command[1]), parseDouble(command[2]));
+                move(double.parse(command[1]), double.parse(command[2]));
               } else if (command.length == 4) {
-                move(parseDouble(command[1]), parseDouble(command[2]),
-                  parseInt(command[3]));
+                move(double.parse(command[1]), double.parse(command[2]),
+                  int.parse(command[3]));
               }
               break;
             case 'right':
-              right(parseDouble(command[1]));
+              right(double.parse(command[1]));
               break;
             case 'left':
-              left(parseDouble(command[1]));
+              left(double.parse(command[1]));
               break;
             case 'forward':
-              forward(parseDouble(command[1]));
+              forward(double.parse(command[1]));
               break;
             case 'backward':
-              backward(parseDouble(command[1]));
+              backward(double.parse(command[1]));
               break;
             case 'randomMove':
               randomMove();
               break;
             case 'all':
-              all(parseInt(command[1]));
+              all(int.parse(command[1]));
               break;
             case 'randomAll':
               randomAll();

@@ -42,7 +42,7 @@ class Input {
     widthSelect = document.query('#width');
     widthSelect.on.change.add((Event e) {
       try {
-        pen.width = parseInt(widthSelect.value);
+        pen.width = int.parse(widthSelect.value);
       } catch(error) {
         print('Error in input! -- $error');
       }
@@ -69,7 +69,7 @@ class Input {
         if (demosSelect.value == 'demos' || demosSelect.value == 'random') {
           randomDemo(pen);
         } else {
-          int d = parseInt(demosSelect.value);
+          int d = int.parse(demosSelect.value);
           demo(pen, d);
         }
       } on FormatException catch(error) {
@@ -83,9 +83,9 @@ class Input {
     moveButton = document.query('#move');
     moveButton.on.click.add((MouseEvent e) {
       try {
-        num turn = parseDouble(turnInput.value);
-        num advance = parseDouble(advanceInput.value);
-        int repeat = parseInt(repeatInput.value);
+        num turn = double.parse(turnInput.value);
+        num advance = double.parse(advanceInput.value);
+        int repeat = int.parse(repeatInput.value);
         pen.move(turn, advance, repeat);
       } on FormatException catch(error) {
         print('Error in input! -- $error');

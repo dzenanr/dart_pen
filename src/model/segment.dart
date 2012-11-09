@@ -8,7 +8,7 @@ class Segment {
 
   var lines;
 
-  Segment(this.lineCount, [this.drawn = true]) {
+  Segment(this.lineCount, {this.drawn: true}) {
     lines = new List<Line>(lineCount);
   }
 
@@ -17,7 +17,7 @@ class Segment {
   Line lastLine() {
     Line last;
     try {
-      last = lines.last();
+      last = lines.last;
     } catch(error) {
       print('Error in finding the last line of the segment! -- $error');
     }

@@ -1,4 +1,4 @@
-demo(var p, int dn) {
+demo(Pen p, int dn) {
   try {
     switch(dn) {
       case 1:
@@ -45,7 +45,7 @@ demo(var p, int dn) {
   }
 }
 
-demo1(var p) {
+demo1(Pen p) {
   p.erase();
   p.color = 'red';
   p.move(45, 80, 1);
@@ -58,7 +58,7 @@ demo1(var p) {
   p.all(4);
 }
 
-demo2(var p) {
+demo2(Pen p) {
   p.erase();
   p.color = 'red';
   p.move(90, 100, 0);
@@ -72,7 +72,7 @@ demo2(var p) {
   p.all(3);
 }
 
-demo3(var p) {
+demo3(Pen p) {
   p.erase();
   p.color = 'red';
   p.move(33, 100, 0);
@@ -86,7 +86,7 @@ demo3(var p) {
   p.all(6);
 }
 
-demo4(var p) {
+demo4(Pen p) {
   p.erase();
   p.color = 'red';
   p.move(33, 100, 2);
@@ -102,7 +102,7 @@ demo4(var p) {
   p.all(8);
 }
 
-demo5(var p) {
+demo5(Pen p) {
   p.erase();
   p.color = 'blue';
   p.left(90);
@@ -178,7 +178,7 @@ move, -90;
   */
 }
 
-demo6(var p) {
+demo6(Pen p) {
   var commandsString = 'color, red; move, 45, 80, 1; width, 3; color, yellow; '
                        'move, 50, 80, 1; width, 2; color, blue; '
                        'move, 65, 80, 1; down, false; moveTo, 333, 333; '
@@ -187,36 +187,36 @@ demo6(var p) {
   p.interpret(commandsString);
 }
 
-demo7(var p) {
+demo7(Pen p) {
   var commandsString = '''
-    color, red; width, 2; move, 15, 160, 2; 
-    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6; 
-    color, brown;  width, 2; move, -20, 40, 8; 
+    color, red; width, 2; move, 15, 160, 2;
+    color, green; width, 1; move, -45, 200, 3; move, 66, 80, 6;
+    color, brown;  width, 2; move, -20, 40, 8;
     all, 6;
 ''';
   p.erase();
   p.interpret(commandsString);
 }
 
-demo8(var p) {
+demo8(Pen p) {
   var commandsString = '''
-    color, gray; 
-    width, 2; 
-    move, 45, 80, 1; 
-    color, green; 
-    width, 1; 
-    move, 33, 80, 1; 
-    color, orange;  
-    width, 3; 
-    move, 15, 80, 1; 
-    move, 90, 80, 4; 
+    color, gray;
+    width, 2;
+    move, 45, 80, 1;
+    color, green;
+    width, 1;
+    move, 33, 80, 1;
+    color, orange;
+    width, 3;
+    move, 15, 80, 1;
+    move, 90, 80, 4;
     all, 5;
   ''';
   p.erase();
   p.interpret(commandsString);
 }
 
-demo9(var p) {
+demo9(Pen p) {
   var commandsString =
     'color, yellow; '
     'width, 3; '
@@ -233,7 +233,7 @@ demo9(var p) {
   p.interpret(commandsString);
 }
 
-demo10(var p) {
+demo10(Pen p) {
   multicolorSquare(var size) {
     for (var c in colorList) {
       p.color = c;
@@ -252,7 +252,7 @@ demo10(var p) {
   }
 }
 
-demo11(var p) {
+demo11(Pen p) {
   f1(var length, var depth) {
     if (depth == 0) {
       p.forward(length);
@@ -272,7 +272,7 @@ demo11(var p) {
   //f1(500, 4);
 }
 
-demo12(var p) {
+demo12(Pen p) {
   f2(var length, var depth) {
     if (depth == 0) {
       p.move(0, length);
@@ -290,7 +290,7 @@ demo12(var p) {
   f2(240, 4);
 }
 
-randomDemo(var p) {
+randomDemo(Pen p) {
   var commandsString =
     'randomColor; '
     'randomWidth; '

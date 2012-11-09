@@ -9,7 +9,7 @@ class Path {
   Line lastLine() {
     Line last;
     try {
-      last = segments.last().lastLine();
+      last = segments.last.lastLine();
     } catch(error) {
       print('Error in finding the last line of the path! -- $error');
     }

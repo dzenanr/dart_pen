@@ -1,0 +1,4 @@
+.children
+*.js
+*.js.map
+*~
