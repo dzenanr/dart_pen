@@ -1,3 +1,5 @@
+part of dart_pen;
+
 class Data {
 
   final Pen pen;

@@ -1,3 +1,4 @@
+part of dart_pen;
 
 randomDouble(double max) => new Random().nextDouble();
 

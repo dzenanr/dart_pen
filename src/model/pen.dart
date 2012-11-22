@@ -1,3 +1,5 @@
+part of dart_pen;
+
 class Pen {
 
   static final num MAX_TURN = 360;
@@ -266,6 +268,7 @@ class Pen {
               break;
             case 'randomAll':
               randomAll();
+              break;
           } // switch
         } // if
       } // for

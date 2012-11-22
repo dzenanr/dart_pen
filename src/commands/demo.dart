@@ -1,3 +1,5 @@
+part of dart_pen;
+
 demo(Pen p, int dn) {
   try {
     switch(dn) {

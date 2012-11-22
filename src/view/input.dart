@@ -1,3 +1,5 @@
+part of dart_pen;
+
 class Input {
 
   static final bool DEFAULT_DOWN = true;

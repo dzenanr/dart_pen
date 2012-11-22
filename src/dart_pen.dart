@@ -1,3 +1,5 @@
+library dart_pen;
+
 import 'dart:html';
 import 'dart:isolate';
 import 'dart:math';

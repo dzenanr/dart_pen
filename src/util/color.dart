@@ -1,3 +1,5 @@
+part of dart_pen;
+
 var colors;
 var colorList;
 
