@@ -4,16 +4,16 @@ import 'dart:html';
 import 'dart:isolate';
 import 'dart:math';
 
-part 'model/pen.dart';
-part 'model/path.dart';
-part 'model/segment.dart';
-part 'model/line.dart';
-part 'view/input.dart';
-part 'view/commands.dart';
-part 'view/data.dart';
-part 'util/color.dart';
-part 'util/random.dart';
-part 'commands/demo.dart';
+part 'src/model/pen.dart';
+part 'src/model/path.dart';
+part 'src/model/segment.dart';
+part 'src/model/line.dart';
+part 'src/view/input.dart';
+part 'src/view/commands.dart';
+part 'src/view/data.dart';
+part 'src/util/color.dart';
+part 'src/util/random.dart';
+part 'src/commands/demo.dart';
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 

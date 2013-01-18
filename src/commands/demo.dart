@@ -41,6 +41,7 @@ demo(Pen p, int dn) {
         break;
       default:
         demo1(p);
+        break;
     }
   } catch(error) {
     print('Error in demo! -- $error');

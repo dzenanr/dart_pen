@@ -11,7 +11,7 @@
       <h3>Dart Pen
         &nbsp &nbsp
         <label for="down">down</label>
-        <input type="checkbox" id="down"/>   
+        <input type="checkbox" id="down"/>
         <select id="color">
           <option>black</option>
           <option>blue</option>
@@ -31,14 +31,14 @@
           <option>6</option>
           <option>7</option>
           <option>8</option>
-        </select> 
+        </select>
         <label for="write">write</label>
         <input type="text" id="write" size="8"/>
         &nbsp
         <label for="visible">visible</label>
         <input type="checkbox" id="visible"/>
         <button id="center">Center</button>
-        &nbsp 
+        &nbsp
         <select id="demos">
           <option selected>demos</option>
           <option>random</option>
@@ -57,58 +57,56 @@
         </select>
       </h3>
     </header>
-    
-    <section> 
+
+    <section>
       <canvas id="canvas" width="666" height="666">
         Canvas is not supported in your browser.
-      </canvas>  
+      </canvas>
     </section>
-    
-    <section> 
+
+    <section>
       <label for="turn">turn</label>
       <input type="text" id="turn" size="2"/>
       <label for="advance">advance</label>
-      <input type="text" id="advance" size="2"/>  
+      <input type="text" id="advance" size="2"/>
       <label for="repeat">repeat</label>
-      <input type="text" id="repeat" size="2"/> 
+      <input type="text" id="repeat" size="2"/>
       <button id="move">Move</button>
-      &nbsp &nbsp &nbsp 
+      &nbsp &nbsp &nbsp
       <button id="random">Random</button>
       &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
       <button id="all">All</button>
-      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
+      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
       <button id="erase">Erase</button>
     </section>
-    
-    <section> 
+
+    <section>
       <header>
-        <h4>Commands 
-          &nbsp 
+        <h4>Commands
+          &nbsp
           <button id="show">Show</button>
-          &nbsp 
+          &nbsp
           <button id="hide">Hide</button>
           &nbsp &nbsp
           <button id="draw">Draw</button>
         </h4>
-      </header>  
-      <textarea name="commands" rows=44 cols=80 id="commands"></textarea>    
-    </section> 
-    
-    <section> 
+      </header>
+      <textarea name="commands" rows=44 cols=80 id="commands"></textarea>
+    </section>
+
+    <section>
       <header>
-        <h4>Data 
+        <h4>Data
           &nbsp
           <button id="display">Display</button>
-          &nbsp 
+          &nbsp
           <button id="clear">Clear</button>
         </h4>
-      </header>  
-      <textarea name="path" rows=44 cols=80 id="path"></textarea>    
-    </section> 
-    
+      </header>
+      <textarea name="path" rows=44 cols=80 id="path"></textarea>
+    </section>
+
     <script type="application/dart" src="dart_pen.dart"></script>
-    <script 
-    src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js">
-    </script>
+    <script src="packages/browser/dart.js"></script>
   </body>
 </html>
