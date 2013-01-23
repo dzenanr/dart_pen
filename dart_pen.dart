@@ -1,7 +1,7 @@
 library dart_pen;
 
 import 'dart:html';
-import 'dart:isolate';
+import 'dart:async';
 import 'dart:math';
 
 part 'src/model/pen.dart';
