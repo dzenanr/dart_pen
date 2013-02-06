@@ -11,19 +11,19 @@ class Commands {
 
   Commands(this.pen) {
     showButton = document.query('#show');
-    showButton.on.click.add((MouseEvent e) {
+    showButton.onClick.listen((MouseEvent e) {
       clear();
       commandsTextArea.value = pen.fromCommands();
       commandsTextArea.select();
     });
 
     hideButton = document.query('#hide');
-    hideButton.on.click.add((MouseEvent e) {
+    hideButton.onClick.listen((MouseEvent e) {
       clear();
     });
 
     drawButton = document.query('#draw');
-    drawButton.on.click.add((MouseEvent e) {
+    drawButton.onClick.listen((MouseEvent e) {
       pen.erase();
       pen.interpret(commandsTextArea.value);
     });

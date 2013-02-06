@@ -38,6 +38,11 @@ var commands;
 var data;
 var pen;
 
+class Point {
+  num x, y;
+  Point(this.x, this.y);
+}
+
 Point center() {
   var x = canvas.width / 2;
   var y = canvas.height / 2;

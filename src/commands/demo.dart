@@ -247,7 +247,7 @@ demo10(Pen p) {
   p.erase();
   p.width = 2;
   var size = 60;
-  for (var i in new List(16)) {
+  for (var i in new List.fixedLength(16)) {
     multicolorSquare(size);
     size = size + 10;       // Increase the size for next time
     p.forward(10);          // Move the pen forward

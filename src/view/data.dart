@@ -10,13 +10,13 @@ class Data {
 
   Data(this.pen) {
     displayButton = document.query('#display');
-    displayButton.on.click.add((MouseEvent e) {
+    displayButton.onClick.listen((MouseEvent e) {
       clear();
       pathTextArea.value = pen.path.toString();
     });
 
     clearButton = document.query('#clear');
-    clearButton.on.click.add((MouseEvent e) {
+    clearButton.onClick.listen((MouseEvent e) {
       clear();
     });
 

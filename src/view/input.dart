@@ -32,17 +32,17 @@ class Input {
 
   Input(this.pen) {
     downCheckbox = document.query('#down');
-    downCheckbox.on.change.add((Event e) {
+    downCheckbox.onChange.listen((Event e) {
       pen.down = downCheckbox.checked;
     });
 
     colorSelect = document.query('#color');
-    colorSelect.on.change.add((Event e) {
+    colorSelect.onChange.listen((Event e) {
       pen.color = colorSelect.value;
     });
 
     widthSelect = document.query('#width');
-    widthSelect.on.change.add((Event e) {
+    widthSelect.onChange.listen((Event e) {
       try {
         pen.width = int.parse(widthSelect.value);
       } catch(error) {
@@ -51,22 +51,22 @@ class Input {
     });
 
     writeInput = document.query('#write');
-    writeInput.on.change.add((Event e) {
+    writeInput.onChange.listen((Event e) {
       pen.write = writeInput.value;
     });
 
     visibleCheckbox = document.query('#visible');
-    visibleCheckbox.on.change.add((Event e) {
+    visibleCheckbox.onChange.listen((Event e) {
       pen.visible = visibleCheckbox.checked;
     });
 
     centerButton = document.query('#center');
-    centerButton.on.click.add((MouseEvent e) {
+    centerButton.onClick.listen((MouseEvent e) {
       pen.moveTo(center());
     });
 
     demosSelect = document.query('#demos');
-    demosSelect.on.change.add((Event e) {
+    demosSelect.onChange.listen((Event e) {
       try {
         if (demosSelect.value == 'demos' || demosSelect.value == 'random') {
           randomDemo(pen);
@@ -83,7 +83,7 @@ class Input {
     advanceInput = document.query('#advance');
     repeatInput = document.query('#repeat');
     moveButton = document.query('#move');
-    moveButton.on.click.add((MouseEvent e) {
+    moveButton.onClick.listen((MouseEvent e) {
       try {
         num turn = double.parse(turnInput.value);
         num advance = double.parse(advanceInput.value);
@@ -95,17 +95,17 @@ class Input {
     });
 
     randomButton = document.query('#random');
-    randomButton.on.click.add((MouseEvent e) {
+    randomButton.onClick.listen((MouseEvent e) {
       pen.randomMove();
     });
 
     allButton = document.query('#all');
-    allButton.on.click.add((MouseEvent e) {
+    allButton.onClick.listen((MouseEvent e) {
       pen.all();
     });
 
     eraseButton = document.query('#erase');
-    eraseButton.on.click.add((MouseEvent e) {
+    eraseButton.onClick.listen((MouseEvent e) {
       pen.erase();
       _init();
     });
