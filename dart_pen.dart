@@ -29,7 +29,7 @@ part 'src/commands/demo.dart';
 final int lineWidth = 1;
 final String lineColor = '#000000'; // black
 // The board is redrawn every interval ms.
-final int interval = 8;
+const int interval = 8;
 
 var canvas;
 var context;
@@ -115,5 +115,5 @@ main() {
   commands = new Commands(pen);
   data = new Data(pen);
   // Redraw every interval ms.
-  new Timer.repeating(interval, (t) => draw());
+  new Timer.repeating(const Duration(milliseconds: interval), (t) => draw());
 }
