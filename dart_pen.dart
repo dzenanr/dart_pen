@@ -115,5 +115,5 @@ main() {
   commands = new Commands(pen);
   data = new Data(pen);
   // Redraw every interval ms.
-  new Timer.periodic(const Duration(milliseconds: interval), (t) => draw());
+  new Timer.repeating(const Duration(milliseconds: interval), (t) => draw());
 }
