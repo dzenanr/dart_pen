@@ -31,17 +31,17 @@ class Input {
   ButtonElement eraseButton;
 
   Input(this.pen) {
-    downCheckbox = document.query('#down');
+    downCheckbox = document.querySelector('#down');
     downCheckbox.onChange.listen((Event e) {
       pen.down = downCheckbox.checked;
     });
 
-    colorSelect = document.query('#color');
+    colorSelect = document.querySelector('#color');
     colorSelect.onChange.listen((Event e) {
       pen.color = colorSelect.value;
     });
 
-    widthSelect = document.query('#width');
+    widthSelect = document.querySelector('#width');
     widthSelect.onChange.listen((Event e) {
       try {
         pen.width = int.parse(widthSelect.value);
@@ -50,22 +50,22 @@ class Input {
       }
     });
 
-    writeInput = document.query('#write');
+    writeInput = document.querySelector('#write');
     writeInput.onChange.listen((Event e) {
       pen.write = writeInput.value;
     });
 
-    visibleCheckbox = document.query('#visible');
+    visibleCheckbox = document.querySelector('#visible');
     visibleCheckbox.onChange.listen((Event e) {
       pen.visible = visibleCheckbox.checked;
     });
 
-    centerButton = document.query('#center');
+    centerButton = document.querySelector('#center');
     centerButton.onClick.listen((MouseEvent e) {
       pen.moveTo(center());
     });
 
-    demosSelect = document.query('#demos');
+    demosSelect = document.querySelector('#demos');
     demosSelect.onChange.listen((Event e) {
       try {
         if (demosSelect.value == 'demos' || demosSelect.value == 'random') {
@@ -79,10 +79,10 @@ class Input {
       }
     });
 
-    turnInput = document.query('#turn');
-    advanceInput = document.query('#advance');
-    repeatInput = document.query('#repeat');
-    moveButton = document.query('#move');
+    turnInput = document.querySelector('#turn');
+    advanceInput = document.querySelector('#advance');
+    repeatInput = document.querySelector('#repeat');
+    moveButton = document.querySelector('#move');
     moveButton.onClick.listen((MouseEvent e) {
       try {
         num turn = double.parse(turnInput.value);
@@ -94,17 +94,17 @@ class Input {
       }
     });
 
-    randomButton = document.query('#random');
+    randomButton = document.querySelector('#random');
     randomButton.onClick.listen((MouseEvent e) {
       pen.randomMove();
     });
 
-    allButton = document.query('#all');
+    allButton = document.querySelector('#all');
     allButton.onClick.listen((MouseEvent e) {
       pen.all();
     });
 
-    eraseButton = document.query('#erase');
+    eraseButton = document.querySelector('#erase');
     eraseButton.onClick.listen((MouseEvent e) {
       pen.erase();
       _init();

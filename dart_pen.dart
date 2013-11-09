@@ -108,7 +108,7 @@ draw() {
 
 main() {
   colorMap();
-  canvas = document.query('#canvas');
+  canvas = document.querySelector('#canvas');
   context = canvas.getContext('2d');
   pen = new Pen(center());
   input = new Input(pen);

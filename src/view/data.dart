@@ -9,18 +9,18 @@ class Data {
   TextAreaElement pathTextArea;
 
   Data(this.pen) {
-    displayButton = document.query('#display');
+    displayButton = document.querySelector('#display');
     displayButton.onClick.listen((MouseEvent e) {
       clear();
       pathTextArea.value = pen.path.toString();
     });
 
-    clearButton = document.query('#clear');
+    clearButton = document.querySelector('#clear');
     clearButton.onClick.listen((MouseEvent e) {
       clear();
     });
 
-    pathTextArea = document.query('#path');
+    pathTextArea = document.querySelector('#path');
   }
 
   clear() => pathTextArea.value = '';
