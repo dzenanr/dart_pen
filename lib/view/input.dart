@@ -62,6 +62,14 @@ class Input {
 
     centerButton = document.querySelector('#center');
     centerButton.onClick.listen((MouseEvent e) {
+      var canvas = document.querySelector('#canvas');
+      
+      Point center() {
+        var x = canvas.width / 2;
+        var y = canvas.height / 2;
+        return new Point(x, y);
+      }
+      
       pen.moveTo(center());
     });
 

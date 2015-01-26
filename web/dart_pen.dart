@@ -1,19 +1,8 @@
-library dart_pen;
-
 import 'dart:html';
 import 'dart:async';
 import 'dart:math';
 
-part 'src/model/pen.dart';
-part 'src/model/path.dart';
-part 'src/model/segment.dart';
-part 'src/model/line.dart';
-part 'src/view/input.dart';
-part 'src/view/commands.dart';
-part 'src/view/data.dart';
-part 'src/util/color.dart';
-part 'src/util/random.dart';
-part 'src/commands/demo.dart';
+import 'package:dart_pen/dart_pen.dart';
 
 // See the style guide: http://www.dartlang.org/articles/style-guide/ .
 
@@ -37,17 +26,6 @@ var input;
 var commands;
 var data;
 var pen;
-
-class Point {
-  num x, y;
-  Point(this.x, this.y);
-}
-
-Point center() {
-  var x = canvas.width / 2;
-  var y = canvas.height / 2;
-  return new Point(x, y);
-}
 
 clear() {
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -107,6 +85,12 @@ draw() {
 }
 
 main() {
+  Point center() {
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+    return new Point(x, y);
+  }
+  
   colorMap();
   canvas = document.querySelector('#canvas');
   context = canvas.getContext('2d');
